@@ -1,5 +1,5 @@
 {
-    "ts_utc":  "2026-11-06T23:33:01Z",
+    "ts_utc":  "2026-11-06T23:33:04Z",
     "heatmap":  {
 
                 },
@@ -7,9 +7,9 @@
                      "price":  75840.65,
                      "binance_price":  75950,
                      "premium_pct":  -0.144,
-                     "last1000_taker_buy_btc":  1.608,
+                     "last1000_taker_buy_btc":  1.603,
                      "last1000_taker_sell_btc":  0.901,
-                     "buy_ratio":  64.1,
+                     "buy_ratio":  64,
                      "span_min":  4
                  },
     "etf":  [
@@ -391,15 +391,11 @@
                 }
             ],
     "errors":  [
-                   "coinglass BTC https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=BTC\u0026range=1d -\u003e code=400 msg=type error",
-                   "coinglass BTC https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance\u0026symbol=BTCUSDT\u0026range=1d -\u003e code=400 msg=type error",
-                   "coinglass ETH https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=ETH\u0026range=1d -\u003e code=400 msg=type error",
-                   "coinglass ETH https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance\u0026symbol=ETHUSDT\u0026range=1d -\u003e code=400 msg=type error",
-                   "coinglass SOL https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=SOL\u0026range=1d -\u003e code=400 msg=type error",
-                   "coinglass SOL https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance\u0026symbol=SOLUSDT\u0026range=1d -\u003e code=400 msg=type error",
+                   "heatmap parse BTC -\u003e Cannot index into a null array.",
+                   "heatmap parse ETH -\u003e Cannot index into a null array.",
+                   "heatmap parse SOL -\u003e Cannot index into a null array.",
                    "cq exch_netflow_hour -\u003e 远程服务器返回错误: (403) 已禁止。",
-                   "cq coinbase_premium -\u003e 远程服务器返回错误: (403) 已禁止。",
-                   "cq fund_flow_etf -\u003e 远程服务器返回错误: (400) 错误的请求。"
+                   "cq coinbase_premium -\u003e 远程服务器返回错误: (404) 未找到。"
                ],
     "etf_source":  "coinglass",
     "cryptoquant":  {
