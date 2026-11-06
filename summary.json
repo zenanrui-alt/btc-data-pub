@@ -1,20 +1,116 @@
 {
-    "ts_utc":  "2026-11-06T23:00:29Z",
+    "ts_utc":  "2026-11-06T23:02:19Z",
     "heatmap":  {
 
                 },
     "coinbase":  {
-                     "price":  75799.14,
-                     "binance_price":  75910.01,
-                     "premium_pct":  -0.146,
-                     "last1000_taker_buy_btc":  3.248,
-                     "last1000_taker_sell_btc":  3.313,
-                     "buy_ratio":  49.5,
-                     "span_min":  3.4
+                     "price":  75804.82,
+                     "binance_price":  75919.01,
+                     "premium_pct":  -0.15,
+                     "last1000_taker_buy_btc":  4.115,
+                     "last1000_taker_sell_btc":  2.739,
+                     "buy_ratio":  60,
+                     "span_min":  3.2
                  },
     "etf":  null,
     "errors":  [
                    "coinglass key empty, skipped",
-                   "farside -\u003e 远程服务器返回错误: (403) 已禁止。"
-               ]
+                   "farside -\u003e 远程服务器返回错误: (403) 已禁止。",
+                   "cq exch_netflow_hour -\u003e 远程服务器返回错误: (403) 已禁止。",
+                   "cq coinbase_premium -\u003e 远程服务器返回错误: (403) 已禁止。",
+                   "cq fund_flow_etf -\u003e 远程服务器返回错误: (400) 错误的请求。"
+               ],
+    "cryptoquant":  {
+                        "exch_netflow_day":  [
+                                                 {
+                                                     "date":  "2026-11-06",
+                                                     "netflow_total":  -1957.598885
+                                                 },
+                                                 {
+                                                     "date":  "2026-11-05",
+                                                     "netflow_total":  -4921.506181
+                                                 },
+                                                 {
+                                                     "date":  "2026-11-04",
+                                                     "netflow_total":  -4234.947281
+                                                 }
+                                             ],
+                        "exch_reserve_day":  [
+                                                 {
+                                                     "date":  "2026-11-06",
+                                                     "reserve":  2832569.35574837,
+                                                     "reserve_usd":  215280891178.77879
+                                                 },
+                                                 {
+                                                     "date":  "2026-11-05",
+                                                     "reserve":  2834526.95463337,
+                                                     "reserve_usd":  215429672578.139104
+                                                 },
+                                                 {
+                                                     "date":  "2026-11-04",
+                                                     "reserve":  2839448.46081437,
+                                                     "reserve_usd":  228423784020.785971
+                                                 }
+                                             ],
+                        "taker_buy_sell":  [
+                                               {
+                                                   "date":  "2026-11-05",
+                                                   "taker_buy_volume":  12218279903.2045,
+                                                   "taker_sell_volume":  12670833130.8959,
+                                                   "taker_buy_ratio":  0.49090861,
+                                                   "taker_sell_ratio":  0.50909139,
+                                                   "taker_buy_sell_ratio":  0.96428386
+                                               },
+                                               {
+                                                   "date":  "2026-11-04",
+                                                   "taker_buy_volume":  12008143280.2317,
+                                                   "taker_sell_volume":  11488547068.5227,
+                                                   "taker_buy_ratio":  0.5110568,
+                                                   "taker_sell_ratio":  0.4889432,
+                                                   "taker_buy_sell_ratio":  1.04522732
+                                               },
+                                               {
+                                                   "date":  "2026-11-03",
+                                                   "taker_buy_volume":  5330347974.4321,
+                                                   "taker_sell_volume":  5352988296.7499,
+                                                   "taker_buy_ratio":  0.49894039,
+                                                   "taker_sell_ratio":  0.50105961,
+                                                   "taker_buy_sell_ratio":  0.99577053
+                                               }
+                                           ],
+                        "lth_sopr":  [
+                                         {
+                                             "date":  "2026-11-05",
+                                             "sopr_ratio":  0.99399055
+                                         },
+                                         {
+                                             "date":  "2026-11-04",
+                                             "sopr_ratio":  1.05563094
+                                         },
+                                         {
+                                             "date":  "2026-11-03",
+                                             "sopr_ratio":  0.87823609
+                                         }
+                                     ],
+                        "miner_outflow":  [
+                                              {
+                                                  "date":  "2026-11-06",
+                                                  "outflow_total":  6796.633548,
+                                                  "outflow_top10":  3308.976542,
+                                                  "outflow_mean":  0.13959853
+                                              },
+                                              {
+                                                  "date":  "2026-11-05",
+                                                  "outflow_total":  8334.163606,
+                                                  "outflow_top10":  4182.619003,
+                                                  "outflow_mean":  0.24549793
+                                              },
+                                              {
+                                                  "date":  "2026-11-04",
+                                                  "outflow_total":  5983.349423,
+                                                  "outflow_top10":  2762.307405,
+                                                  "outflow_mean":  0.04819025
+                                              }
+                                          ]
+                    }
 }
