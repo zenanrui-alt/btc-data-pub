@@ -1,25 +1,404 @@
 {
-    "ts_utc":  "2026-11-06T23:17:02Z",
+    "ts_utc":  "2026-11-06T23:18:34Z",
     "heatmap":  {
 
                 },
     "coinbase":  {
-                     "price":  75798.56,
-                     "binance_price":  75910.22,
-                     "premium_pct":  -0.147,
-                     "last1000_taker_buy_btc":  6.701,
-                     "last1000_taker_sell_btc":  10.092,
-                     "buy_ratio":  39.9,
-                     "span_min":  3
+                     "price":  75782.33,
+                     "binance_price":  75892.55,
+                     "premium_pct":  -0.145,
+                     "last1000_taker_buy_btc":  1.8,
+                     "last1000_taker_sell_btc":  1.755,
+                     "buy_ratio":  50.6,
+                     "span_min":  3.8
                  },
-    "etf":  null,
+    "etf":  [
+                {
+                    "timestamp":  1793232000000,
+                    "flow_usd":  17200000.0,
+                    "price_usd":  81308.9,
+                    "etf_flows":  [
+                                      {
+                                          "etf_ticker":  "IBIT",
+                                          "flow_usd":  12800000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "FBTC",
+                                          "flow_usd":  10500000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BITB",
+                                          "flow_usd":  8800000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "ARKB",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCO",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "EZBC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BRRR",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "HODL",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCW",
+                                          "flow_usd":  -3800000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "MSBT",
+                                          "flow_usd":  4200000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "GBTC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTC",
+                                          "flow_usd":  -15300000.0
+                                      }
+                                  ]
+                },
+                {
+                    "timestamp":  1793318400000,
+                    "flow_usd":  -643200000.0,
+                    "price_usd":  77962.7,
+                    "etf_flows":  [
+                                      {
+                                          "etf_ticker":  "IBIT",
+                                          "flow_usd":  -233700000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "FBTC",
+                                          "flow_usd":  -201000000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BITB",
+                                          "flow_usd":  -25700000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "ARKB",
+                                          "flow_usd":  -129500000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCO",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "EZBC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BRRR",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "HODL",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCW",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "MSBT",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "GBTC",
+                                          "flow_usd":  -53300000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTC",
+                                          "flow_usd":  0.0
+                                      }
+                                  ]
+                },
+                {
+                    "timestamp":  1793577600000,
+                    "flow_usd":  -398600000.0,
+                    "price_usd":  78313.1,
+                    "etf_flows":  [
+                                      {
+                                          "etf_ticker":  "IBIT",
+                                          "flow_usd":  -405300000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "FBTC",
+                                          "flow_usd":  6700000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BITB",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "ARKB",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCO",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "EZBC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BRRR",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "HODL",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCW",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "MSBT",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "GBTC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTC",
+                                          "flow_usd":  0.0
+                                      }
+                                  ]
+                },
+                {
+                    "timestamp":  1793664000000,
+                    "flow_usd":  -115600000.0,
+                    "price_usd":  76791.3,
+                    "etf_flows":  [
+                                      {
+                                          "etf_ticker":  "IBIT",
+                                          "flow_usd":  -95000000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "FBTC",
+                                          "flow_usd":  6800000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BITB",
+                                          "flow_usd":  21900000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "ARKB",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCO",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "EZBC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BRRR",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "HODL",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCW",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "MSBT",
+                                          "flow_usd":  3300000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "GBTC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTC",
+                                          "flow_usd":  -52600000.0
+                                      }
+                                  ]
+                },
+                {
+                    "timestamp":  1793750400000,
+                    "flow_usd":  74600000.0,
+                    "price_usd":  77441.6,
+                    "etf_flows":  [
+                                      {
+                                          "etf_ticker":  "IBIT",
+                                          "flow_usd":  -201200000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "FBTC",
+                                          "flow_usd":  236700000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BITB",
+                                          "flow_usd":  15200000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "ARKB",
+                                          "flow_usd":  19900000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCO",
+                                          "flow_usd":  4000000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "EZBC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BRRR",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "HODL",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCW",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "MSBT",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "GBTC",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTC",
+                                          "flow_usd":  0.0
+                                      }
+                                  ]
+                },
+                {
+                    "timestamp":  1793836800000,
+                    "flow_usd":  -430200000.0,
+                    "price_usd":  80466.4,
+                    "etf_flows":  [
+                                      {
+                                          "etf_ticker":  "IBIT",
+                                          "flow_usd":  -105000000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "FBTC",
+                                          "flow_usd":  -199900000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BITB",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "ARKB",
+                                          "flow_usd":  -18900000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCO",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "EZBC",
+                                          "flow_usd":  -32900000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BRRR",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "HODL",
+                                          "flow_usd":  -23600000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCW",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "MSBT",
+                                          "flow_usd":  0.0
+                                      },
+                                      {
+                                          "etf_ticker":  "GBTC",
+                                          "flow_usd":  -49900000.0
+                                      },
+                                      {
+                                          "etf_ticker":  "BTC",
+                                          "flow_usd":  0.0
+                                      }
+                                  ]
+                },
+                {
+                    "timestamp":  1793923200000,
+                    "flow_usd":  0,
+                    "price_usd":  76050,
+                    "etf_flows":  [
+                                      {
+                                          "etf_ticker":  "IBIT"
+                                      },
+                                      {
+                                          "etf_ticker":  "FBTC"
+                                      },
+                                      {
+                                          "etf_ticker":  "BITB"
+                                      },
+                                      {
+                                          "etf_ticker":  "ARKB"
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCO"
+                                      },
+                                      {
+                                          "etf_ticker":  "EZBC"
+                                      },
+                                      {
+                                          "etf_ticker":  "BRRR"
+                                      },
+                                      {
+                                          "etf_ticker":  "HODL"
+                                      },
+                                      {
+                                          "etf_ticker":  "BTCW"
+                                      },
+                                      {
+                                          "etf_ticker":  "MSBT"
+                                      },
+                                      {
+                                          "etf_ticker":  "GBTC"
+                                      },
+                                      {
+                                          "etf_ticker":  "BTC"
+                                      }
+                                  ]
+                }
+            ],
     "errors":  [
-                   "coinglass key empty, skipped",
-                   "farside -\u003e 远程服务器返回错误: (403) 已禁止。",
+                   "coinglass BTC https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=BTC\u0026range=1d -\u003e code=401 msg=Upgrade plan",
+                   "coinglass BTC https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance\u0026symbol=BTCUSDT\u0026range=1d -\u003e code=401 msg=Upgrade plan",
+                   "coinglass ETH https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=ETH\u0026range=1d -\u003e code=401 msg=Upgrade plan",
+                   "coinglass ETH https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance\u0026symbol=ETHUSDT\u0026range=1d -\u003e code=401 msg=Upgrade plan",
+                   "coinglass SOL https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=SOL\u0026range=1d -\u003e code=401 msg=Upgrade plan",
+                   "coinglass SOL https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance\u0026symbol=SOLUSDT\u0026range=1d -\u003e code=401 msg=Upgrade plan",
                    "cq exch_netflow_hour -\u003e 远程服务器返回错误: (403) 已禁止。",
                    "cq coinbase_premium -\u003e 远程服务器返回错误: (403) 已禁止。",
                    "cq fund_flow_etf -\u003e 远程服务器返回错误: (400) 错误的请求。"
                ],
+    "etf_source":  "coinglass",
     "cryptoquant":  {
                         "exch_netflow_day":  [
                                                  {
