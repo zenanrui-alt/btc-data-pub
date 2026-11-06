@@ -68,12 +68,14 @@ try:
         tt = t["time"]
         tmin = tt if tmin is None or tt < tmin else tmin
         tmax = tt if tmax is None or tt > tmax else tmax
-    cbpx = cb_price("BTC"); bnpx = None
+    cbpx = cb_price("BTC"); bnpx = None; ref = "binance"
     try: bnpx = float(get("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT")["price"])
-    except Exception as e: summary["errors"].append(f"binance -> {e}")
+    except Exception:
+        try: bnpx = float(get("https://www.okx.com/api/v5/market/ticker?instId=BTC-USDT")["data"][0]["last"]); ref = "okx"
+        except Exception as e: summary["errors"].append(f"ref price -> {e}")
     def ts(s): return dt.datetime.strptime(s[:19], "%Y-%m-%dT%H:%M:%S")
     span = round((ts(tmax) - ts(tmin)).total_seconds() / 60, 1) if tmin and tmax else None
-    summary["coinbase"] = {"price": cbpx, "binance_price": bnpx, "premium_pct": round((cbpx / bnpx - 1) * 100, 3) if (cbpx and bnpx) else None,
+    summary["coinbase"] = {"price": cbpx, "ref": ref, "binance_price": bnpx, "premium_pct": round((cbpx / bnpx - 1) * 100, 3) if (cbpx and bnpx) else None,
                            "last1000_taker_buy_btc": round(buy, 3), "last1000_taker_sell_btc": round(sell, 3),
                            "buy_ratio": round(buy / (buy + sell) * 100, 1) if buy + sell else None, "span_min": span}
 except Exception as e:
