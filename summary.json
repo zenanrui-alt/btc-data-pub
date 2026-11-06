@@ -1,666 +1,667 @@
 {
-    "ts_utc":  "2026-11-06T23:50:01Z",
-    "heatmap":  {
-                    "BTC":  {
-                                "price":  75949.6,
-                                "below":  [
-                                              {
-                                                  "price":  74825.85,
-                                                  "dist_pct":  -1.48,
-                                                  "strength":  0.95
-                                              },
-                                              {
-                                                  "price":  74655.78,
-                                                  "dist_pct":  -1.7,
-                                                  "strength":  0.73
-                                              },
-                                              {
-                                                  "price":  74769.16,
-                                                  "dist_pct":  -1.55,
-                                                  "strength":  0.51
-                                              },
-                                              {
-                                                  "price":  74429.02,
-                                                  "dist_pct":  -2,
-                                                  "strength":  0.51
-                                              },
-                                              {
-                                                  "price":  74088.88,
-                                                  "dist_pct":  -2.45,
-                                                  "strength":  0.5
-                                              }
-                                          ],
-                                "above":  [
-                                              {
-                                                  "price":  76356.48,
-                                                  "dist_pct":  0.54,
-                                                  "strength":  1
-                                              },
-                                              {
-                                                  "price":  77150.14,
-                                                  "dist_pct":  1.58,
-                                                  "strength":  0.85
-                                              },
-                                              {
-                                                  "price":  76923.38,
-                                                  "dist_pct":  1.28,
-                                                  "strength":  0.77
-                                              },
-                                              {
-                                                  "price":  76866.69,
-                                                  "dist_pct":  1.21,
-                                                  "strength":  0.7
-                                              },
-                                              {
-                                                  "price":  76469.86,
-                                                  "dist_pct":  0.69,
-                                                  "strength":  0.69
-                                              }
-                                          ],
-                                "window":  "24h",
-                                "levels":  129
-                            },
-                    "ETH":  {
-                                "price":  2240.03,
-                                "below":  [
-                                              {
-                                                  "price":  2200.05,
-                                                  "dist_pct":  -1.78,
-                                                  "strength":  1
-                                              },
-                                              {
-                                                  "price":  2205.05,
-                                                  "dist_pct":  -1.56,
-                                                  "strength":  0.88
-                                              },
-                                              {
-                                                  "price":  2206.71,
-                                                  "dist_pct":  -1.49,
-                                                  "strength":  0.8
-                                              },
-                                              {
-                                                  "price":  2210.05,
-                                                  "dist_pct":  -1.34,
-                                                  "strength":  0.72
-                                              },
-                                              {
-                                                  "price":  2208.38,
-                                                  "dist_pct":  -1.41,
-                                                  "strength":  0.6
-                                              }
-                                          ],
-                                "above":  [
-                                              {
-                                                  "price":  2253.36,
-                                                  "dist_pct":  0.6,
-                                                  "strength":  0.89
-                                              },
-                                              {
-                                                  "price":  2265.02,
-                                                  "dist_pct":  1.12,
-                                                  "strength":  0.83
-                                              },
-                                              {
-                                                  "price":  2250.03,
-                                                  "dist_pct":  0.45,
-                                                  "strength":  0.63
-                                              },
-                                              {
-                                                  "price":  2266.69,
-                                                  "dist_pct":  1.19,
-                                                  "strength":  0.62
-                                              },
-                                              {
-                                                  "price":  2263.36,
-                                                  "dist_pct":  1.04,
-                                                  "strength":  0.62
-                                              }
-                                          ],
-                                "window":  "24h",
-                                "levels":  126
-                            },
-                    "SOL":  {
-                                "price":  90.26,
-                                "below":  [
-                                              {
-                                                  "price":  88.31,
-                                                  "dist_pct":  -2.16,
-                                                  "strength":  1
-                                              },
-                                              {
-                                                  "price":  89.09,
-                                                  "dist_pct":  -1.29,
-                                                  "strength":  0.7
-                                              },
-                                              {
-                                                  "price":  89.38,
-                                                  "dist_pct":  -0.98,
-                                                  "strength":  0.47
-                                              },
-                                              {
-                                                  "price":  88.88,
-                                                  "dist_pct":  -1.53,
-                                                  "strength":  0.42
-                                              },
-                                              {
-                                                  "price":  88.52,
-                                                  "dist_pct":  -1.92,
-                                                  "strength":  0.42
-                                              }
-                                          ],
-                                "above":  [
-                                              {
-                                                  "price":  91.79,
-                                                  "dist_pct":  1.7,
-                                                  "strength":  0.71
-                                              },
-                                              {
-                                                  "price":  91.01,
-                                                  "dist_pct":  0.83,
-                                                  "strength":  0.46
-                                              },
-                                              {
-                                                  "price":  90.94,
-                                                  "dist_pct":  0.75,
-                                                  "strength":  0.46
-                                              },
-                                              {
-                                                  "price":  90.87,
-                                                  "dist_pct":  0.67,
-                                                  "strength":  0.35
-                                              },
-                                              {
-                                                  "price":  91.72,
-                                                  "dist_pct":  1.62,
-                                                  "strength":  0.3
-                                              }
-                                          ],
-                                "window":  "24h",
-                                "levels":  126
-                            }
-                },
-    "coinbase":  {
-                     "price":  75876.58,
-                     "binance_price":  75982.14,
-                     "premium_pct":  -0.139,
-                     "last1000_taker_buy_btc":  2.104,
-                     "last1000_taker_sell_btc":  1.873,
-                     "buy_ratio":  52.9,
-                     "span_min":  4
-                 },
-    "etf":  [
-                {
-                    "timestamp":  1793232000000,
-                    "flow_usd":  17200000.0,
-                    "price_usd":  81308.9,
-                    "etf_flows":  [
-                                      {
-                                          "etf_ticker":  "IBIT",
-                                          "flow_usd":  12800000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "FBTC",
-                                          "flow_usd":  10500000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BITB",
-                                          "flow_usd":  8800000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "ARKB",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCO",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "EZBC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BRRR",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "HODL",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCW",
-                                          "flow_usd":  -3800000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "MSBT",
-                                          "flow_usd":  4200000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "GBTC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTC",
-                                          "flow_usd":  -15300000.0
-                                      }
-                                  ]
-                },
-                {
-                    "timestamp":  1793318400000,
-                    "flow_usd":  -643200000.0,
-                    "price_usd":  77962.7,
-                    "etf_flows":  [
-                                      {
-                                          "etf_ticker":  "IBIT",
-                                          "flow_usd":  -233700000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "FBTC",
-                                          "flow_usd":  -201000000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BITB",
-                                          "flow_usd":  -25700000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "ARKB",
-                                          "flow_usd":  -129500000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCO",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "EZBC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BRRR",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "HODL",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCW",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "MSBT",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "GBTC",
-                                          "flow_usd":  -53300000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTC",
-                                          "flow_usd":  0.0
-                                      }
-                                  ]
-                },
-                {
-                    "timestamp":  1793577600000,
-                    "flow_usd":  -398600000.0,
-                    "price_usd":  78313.1,
-                    "etf_flows":  [
-                                      {
-                                          "etf_ticker":  "IBIT",
-                                          "flow_usd":  -405300000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "FBTC",
-                                          "flow_usd":  6700000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BITB",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "ARKB",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCO",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "EZBC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BRRR",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "HODL",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCW",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "MSBT",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "GBTC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTC",
-                                          "flow_usd":  0.0
-                                      }
-                                  ]
-                },
-                {
-                    "timestamp":  1793664000000,
-                    "flow_usd":  -115600000.0,
-                    "price_usd":  76791.3,
-                    "etf_flows":  [
-                                      {
-                                          "etf_ticker":  "IBIT",
-                                          "flow_usd":  -95000000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "FBTC",
-                                          "flow_usd":  6800000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BITB",
-                                          "flow_usd":  21900000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "ARKB",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCO",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "EZBC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BRRR",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "HODL",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCW",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "MSBT",
-                                          "flow_usd":  3300000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "GBTC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTC",
-                                          "flow_usd":  -52600000.0
-                                      }
-                                  ]
-                },
-                {
-                    "timestamp":  1793750400000,
-                    "flow_usd":  74600000.0,
-                    "price_usd":  77441.6,
-                    "etf_flows":  [
-                                      {
-                                          "etf_ticker":  "IBIT",
-                                          "flow_usd":  -201200000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "FBTC",
-                                          "flow_usd":  236700000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BITB",
-                                          "flow_usd":  15200000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "ARKB",
-                                          "flow_usd":  19900000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCO",
-                                          "flow_usd":  4000000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "EZBC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BRRR",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "HODL",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCW",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "MSBT",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "GBTC",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTC",
-                                          "flow_usd":  0.0
-                                      }
-                                  ]
-                },
-                {
-                    "timestamp":  1793836800000,
-                    "flow_usd":  -430200000.0,
-                    "price_usd":  80466.4,
-                    "etf_flows":  [
-                                      {
-                                          "etf_ticker":  "IBIT",
-                                          "flow_usd":  -105000000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "FBTC",
-                                          "flow_usd":  -199900000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BITB",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "ARKB",
-                                          "flow_usd":  -18900000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCO",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "EZBC",
-                                          "flow_usd":  -32900000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BRRR",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "HODL",
-                                          "flow_usd":  -23600000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCW",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "MSBT",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "GBTC",
-                                          "flow_usd":  -49900000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTC",
-                                          "flow_usd":  0.0
-                                      }
-                                  ]
-                },
-                {
-                    "timestamp":  1793923200000,
-                    "flow_usd":  -11100000.0,
-                    "price_usd":  76050,
-                    "etf_flows":  [
-                                      {
-                                          "etf_ticker":  "IBIT"
-                                      },
-                                      {
-                                          "etf_ticker":  "FBTC"
-                                      },
-                                      {
-                                          "etf_ticker":  "BITB"
-                                      },
-                                      {
-                                          "etf_ticker":  "ARKB"
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCO"
-                                      },
-                                      {
-                                          "etf_ticker":  "EZBC"
-                                      },
-                                      {
-                                          "etf_ticker":  "BRRR"
-                                      },
-                                      {
-                                          "etf_ticker":  "HODL"
-                                      },
-                                      {
-                                          "etf_ticker":  "BTCW"
-                                      },
-                                      {
-                                          "etf_ticker":  "MSBT",
-                                          "flow_usd":  0.0
-                                      },
-                                      {
-                                          "etf_ticker":  "GBTC",
-                                          "flow_usd":  -11100000.0
-                                      },
-                                      {
-                                          "etf_ticker":  "BTC",
-                                          "flow_usd":  0.0
-                                      }
-                                  ]
-                }
-            ],
-    "errors":  [
-
-               ],
-    "etf_source":  "coinglass",
-    "cryptoquant":  {
-                        "exch_netflow_day":  [
-                                                 {
-                                                     "date":  "2026-11-06",
-                                                     "netflow_total":  -1957.598885
-                                                 },
-                                                 {
-                                                     "date":  "2026-11-05",
-                                                     "netflow_total":  -4921.506181
-                                                 },
-                                                 {
-                                                     "date":  "2026-11-04",
-                                                     "netflow_total":  -4234.947281
-                                                 }
-                                             ],
-                        "exch_reserve_day":  [
-                                                 {
-                                                     "date":  "2026-11-06",
-                                                     "reserve":  2832569.35574837,
-                                                     "reserve_usd":  215280891178.77879
-                                                 },
-                                                 {
-                                                     "date":  "2026-11-05",
-                                                     "reserve":  2834526.95463337,
-                                                     "reserve_usd":  215429672578.139104
-                                                 },
-                                                 {
-                                                     "date":  "2026-11-04",
-                                                     "reserve":  2839448.46081437,
-                                                     "reserve_usd":  228423784020.785971
-                                                 }
-                                             ],
-                        "taker_buy_sell":  [
-                                               {
-                                                   "date":  "2026-11-05",
-                                                   "taker_buy_volume":  12218279903.2045,
-                                                   "taker_sell_volume":  12670833130.8959,
-                                                   "taker_buy_ratio":  0.49090861,
-                                                   "taker_sell_ratio":  0.50909139,
-                                                   "taker_buy_sell_ratio":  0.96428386
-                                               },
-                                               {
-                                                   "date":  "2026-11-04",
-                                                   "taker_buy_volume":  12008143280.2317,
-                                                   "taker_sell_volume":  11488547068.5227,
-                                                   "taker_buy_ratio":  0.5110568,
-                                                   "taker_sell_ratio":  0.4889432,
-                                                   "taker_buy_sell_ratio":  1.04522732
-                                               },
-                                               {
-                                                   "date":  "2026-11-03",
-                                                   "taker_buy_volume":  5330347974.4321,
-                                                   "taker_sell_volume":  5352988296.7499,
-                                                   "taker_buy_ratio":  0.49894039,
-                                                   "taker_sell_ratio":  0.50105961,
-                                                   "taker_buy_sell_ratio":  0.99577053
-                                               }
-                                           ],
-                        "lth_sopr":  [
-                                         {
-                                             "date":  "2026-11-05",
-                                             "sopr_ratio":  0.99399055
-                                         },
-                                         {
-                                             "date":  "2026-11-04",
-                                             "sopr_ratio":  1.05563094
-                                         },
-                                         {
-                                             "date":  "2026-11-03",
-                                             "sopr_ratio":  0.87823609
-                                         }
-                                     ],
-                        "miner_outflow":  [
-                                              {
-                                                  "date":  "2026-11-06",
-                                                  "outflow_total":  6796.633548,
-                                                  "outflow_top10":  3308.976542,
-                                                  "outflow_mean":  0.13959853
-                                              },
-                                              {
-                                                  "date":  "2026-11-05",
-                                                  "outflow_total":  8334.163606,
-                                                  "outflow_top10":  4182.619003,
-                                                  "outflow_mean":  0.24549793
-                                              },
-                                              {
-                                                  "date":  "2026-11-04",
-                                                  "outflow_total":  5983.349423,
-                                                  "outflow_top10":  2762.307405,
-                                                  "outflow_mean":  0.04819025
-                                              }
-                                          ]
-                    }
+ "ts_utc": "2026-11-06T23:53:19Z",
+ "heatmap": {
+  "BTC": {
+   "price": 75951.9,
+   "below": [
+    {
+     "price": 74825.85,
+     "dist_pct": -1.48,
+     "strength": 0.95
+    },
+    {
+     "price": 74655.78,
+     "dist_pct": -1.71,
+     "strength": 0.73
+    },
+    {
+     "price": 74769.16,
+     "dist_pct": -1.56,
+     "strength": 0.51
+    },
+    {
+     "price": 74429.02,
+     "dist_pct": -2.01,
+     "strength": 0.51
+    },
+    {
+     "price": 74088.88,
+     "dist_pct": -2.45,
+     "strength": 0.5
+    }
+   ],
+   "above": [
+    {
+     "price": 76356.48,
+     "dist_pct": 0.53,
+     "strength": 1.0
+    },
+    {
+     "price": 77150.14,
+     "dist_pct": 1.58,
+     "strength": 0.85
+    },
+    {
+     "price": 76923.38,
+     "dist_pct": 1.28,
+     "strength": 0.77
+    },
+    {
+     "price": 76866.69,
+     "dist_pct": 1.2,
+     "strength": 0.7
+    },
+    {
+     "price": 76469.86,
+     "dist_pct": 0.68,
+     "strength": 0.69
+    }
+   ],
+   "window": "24h",
+   "levels": 129
+  },
+  "ETH": {
+   "price": 2240.26,
+   "below": [
+    {
+     "price": 2200.05,
+     "dist_pct": -1.79,
+     "strength": 1.0
+    },
+    {
+     "price": 2205.05,
+     "dist_pct": -1.57,
+     "strength": 0.88
+    },
+    {
+     "price": 2206.71,
+     "dist_pct": -1.5,
+     "strength": 0.8
+    },
+    {
+     "price": 2210.05,
+     "dist_pct": -1.35,
+     "strength": 0.72
+    },
+    {
+     "price": 2208.38,
+     "dist_pct": -1.42,
+     "strength": 0.6
+    }
+   ],
+   "above": [
+    {
+     "price": 2253.36,
+     "dist_pct": 0.58,
+     "strength": 0.89
+    },
+    {
+     "price": 2265.02,
+     "dist_pct": 1.11,
+     "strength": 0.83
+    },
+    {
+     "price": 2250.03,
+     "dist_pct": 0.44,
+     "strength": 0.63
+    },
+    {
+     "price": 2266.69,
+     "dist_pct": 1.18,
+     "strength": 0.62
+    },
+    {
+     "price": 2263.36,
+     "dist_pct": 1.03,
+     "strength": 0.62
+    }
+   ],
+   "window": "24h",
+   "levels": 126
+  },
+  "SOL": {
+   "price": 90.26,
+   "below": [
+    {
+     "price": 88.31,
+     "dist_pct": -2.16,
+     "strength": 1.0
+    },
+    {
+     "price": 89.09,
+     "dist_pct": -1.29,
+     "strength": 0.7
+    },
+    {
+     "price": 89.38,
+     "dist_pct": -0.98,
+     "strength": 0.47
+    },
+    {
+     "price": 88.88,
+     "dist_pct": -1.53,
+     "strength": 0.42
+    },
+    {
+     "price": 88.52,
+     "dist_pct": -1.92,
+     "strength": 0.42
+    }
+   ],
+   "above": [
+    {
+     "price": 91.79,
+     "dist_pct": 1.7,
+     "strength": 0.71
+    },
+    {
+     "price": 91.01,
+     "dist_pct": 0.83,
+     "strength": 0.46
+    },
+    {
+     "price": 90.94,
+     "dist_pct": 0.75,
+     "strength": 0.46
+    },
+    {
+     "price": 90.87,
+     "dist_pct": 0.67,
+     "strength": 0.35
+    },
+    {
+     "price": 91.72,
+     "dist_pct": 1.62,
+     "strength": 0.3
+    }
+   ],
+   "window": "24h",
+   "levels": 126
+  }
+ },
+ "coinbase": {
+  "price": 75880.21,
+  "binance_price": null,
+  "premium_pct": null,
+  "last1000_taker_buy_btc": 1.169,
+  "last1000_taker_sell_btc": 2.116,
+  "buy_ratio": 35.6,
+  "span_min": 4.0
+ },
+ "etf": [
+  {
+   "timestamp": 1793232000000,
+   "flow_usd": 17200000.0,
+   "price_usd": 81308.9,
+   "etf_flows": [
+    {
+     "etf_ticker": "IBIT",
+     "flow_usd": 12800000.0
+    },
+    {
+     "etf_ticker": "FBTC",
+     "flow_usd": 10500000.0
+    },
+    {
+     "etf_ticker": "BITB",
+     "flow_usd": 8800000.0
+    },
+    {
+     "etf_ticker": "ARKB",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCO",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "EZBC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BRRR",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "HODL",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCW",
+     "flow_usd": -3800000.0
+    },
+    {
+     "etf_ticker": "MSBT",
+     "flow_usd": 4200000.0
+    },
+    {
+     "etf_ticker": "GBTC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTC",
+     "flow_usd": -15300000.0
+    }
+   ]
+  },
+  {
+   "timestamp": 1793318400000,
+   "flow_usd": -643200000.0,
+   "price_usd": 77962.7,
+   "etf_flows": [
+    {
+     "etf_ticker": "IBIT",
+     "flow_usd": -233700000.0
+    },
+    {
+     "etf_ticker": "FBTC",
+     "flow_usd": -201000000.0
+    },
+    {
+     "etf_ticker": "BITB",
+     "flow_usd": -25700000.0
+    },
+    {
+     "etf_ticker": "ARKB",
+     "flow_usd": -129500000.0
+    },
+    {
+     "etf_ticker": "BTCO",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "EZBC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BRRR",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "HODL",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCW",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "MSBT",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "GBTC",
+     "flow_usd": -53300000.0
+    },
+    {
+     "etf_ticker": "BTC",
+     "flow_usd": 0.0
+    }
+   ]
+  },
+  {
+   "timestamp": 1793577600000,
+   "flow_usd": -398600000.0,
+   "price_usd": 78313.1,
+   "etf_flows": [
+    {
+     "etf_ticker": "IBIT",
+     "flow_usd": -405300000.0
+    },
+    {
+     "etf_ticker": "FBTC",
+     "flow_usd": 6700000.0
+    },
+    {
+     "etf_ticker": "BITB",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "ARKB",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCO",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "EZBC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BRRR",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "HODL",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCW",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "MSBT",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "GBTC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTC",
+     "flow_usd": 0.0
+    }
+   ]
+  },
+  {
+   "timestamp": 1793664000000,
+   "flow_usd": -115600000.0,
+   "price_usd": 76791.3,
+   "etf_flows": [
+    {
+     "etf_ticker": "IBIT",
+     "flow_usd": -95000000.0
+    },
+    {
+     "etf_ticker": "FBTC",
+     "flow_usd": 6800000.0
+    },
+    {
+     "etf_ticker": "BITB",
+     "flow_usd": 21900000.0
+    },
+    {
+     "etf_ticker": "ARKB",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCO",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "EZBC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BRRR",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "HODL",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCW",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "MSBT",
+     "flow_usd": 3300000.0
+    },
+    {
+     "etf_ticker": "GBTC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTC",
+     "flow_usd": -52600000.0
+    }
+   ]
+  },
+  {
+   "timestamp": 1793750400000,
+   "flow_usd": 74600000.0,
+   "price_usd": 77441.6,
+   "etf_flows": [
+    {
+     "etf_ticker": "IBIT",
+     "flow_usd": -201200000.0
+    },
+    {
+     "etf_ticker": "FBTC",
+     "flow_usd": 236700000.0
+    },
+    {
+     "etf_ticker": "BITB",
+     "flow_usd": 15200000.0
+    },
+    {
+     "etf_ticker": "ARKB",
+     "flow_usd": 19900000.0
+    },
+    {
+     "etf_ticker": "BTCO",
+     "flow_usd": 4000000.0
+    },
+    {
+     "etf_ticker": "EZBC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BRRR",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "HODL",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTCW",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "MSBT",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "GBTC",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "BTC",
+     "flow_usd": 0.0
+    }
+   ]
+  },
+  {
+   "timestamp": 1793836800000,
+   "flow_usd": -430200000.0,
+   "price_usd": 80466.4,
+   "etf_flows": [
+    {
+     "etf_ticker": "IBIT",
+     "flow_usd": -105000000.0
+    },
+    {
+     "etf_ticker": "FBTC",
+     "flow_usd": -199900000.0
+    },
+    {
+     "etf_ticker": "BITB",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "ARKB",
+     "flow_usd": -18900000.0
+    },
+    {
+     "etf_ticker": "BTCO",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "EZBC",
+     "flow_usd": -32900000.0
+    },
+    {
+     "etf_ticker": "BRRR",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "HODL",
+     "flow_usd": -23600000.0
+    },
+    {
+     "etf_ticker": "BTCW",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "MSBT",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "GBTC",
+     "flow_usd": -49900000.0
+    },
+    {
+     "etf_ticker": "BTC",
+     "flow_usd": 0.0
+    }
+   ]
+  },
+  {
+   "timestamp": 1793923200000,
+   "flow_usd": -11100000.0,
+   "price_usd": 76050,
+   "etf_flows": [
+    {
+     "etf_ticker": "IBIT"
+    },
+    {
+     "etf_ticker": "FBTC"
+    },
+    {
+     "etf_ticker": "BITB"
+    },
+    {
+     "etf_ticker": "ARKB"
+    },
+    {
+     "etf_ticker": "BTCO"
+    },
+    {
+     "etf_ticker": "EZBC"
+    },
+    {
+     "etf_ticker": "BRRR"
+    },
+    {
+     "etf_ticker": "HODL"
+    },
+    {
+     "etf_ticker": "BTCW"
+    },
+    {
+     "etf_ticker": "MSBT",
+     "flow_usd": 0.0
+    },
+    {
+     "etf_ticker": "GBTC",
+     "flow_usd": -11100000.0
+    },
+    {
+     "etf_ticker": "BTC",
+     "flow_usd": 0.0
+    }
+   ]
+  }
+ ],
+ "errors": [
+  "binance -> HTTP Error 451: "
+ ],
+ "source": "github-actions",
+ "etf_source": "coinglass",
+ "cryptoquant": {
+  "exch_netflow_day": [
+   {
+    "date": "2026-11-06",
+    "netflow_total": -1957.598885
+   },
+   {
+    "date": "2026-11-05",
+    "netflow_total": -4921.506181
+   },
+   {
+    "date": "2026-11-04",
+    "netflow_total": -4234.947281
+   }
+  ],
+  "exch_reserve_day": [
+   {
+    "date": "2026-11-06",
+    "reserve": 2832569.35574837,
+    "reserve_usd": 215280891178.77878
+   },
+   {
+    "date": "2026-11-05",
+    "reserve": 2834526.95463337,
+    "reserve_usd": 215429672578.1391
+   },
+   {
+    "date": "2026-11-04",
+    "reserve": 2839448.46081437,
+    "reserve_usd": 228423784020.78598
+   }
+  ],
+  "taker_buy_sell": [
+   {
+    "date": "2026-11-05",
+    "taker_buy_volume": 12218279903.2045,
+    "taker_sell_volume": 12670833130.8959,
+    "taker_buy_ratio": 0.49090861,
+    "taker_sell_ratio": 0.50909139,
+    "taker_buy_sell_ratio": 0.96428386
+   },
+   {
+    "date": "2026-11-04",
+    "taker_buy_volume": 12008143280.2317,
+    "taker_sell_volume": 11488547068.5227,
+    "taker_buy_ratio": 0.5110568,
+    "taker_sell_ratio": 0.4889432,
+    "taker_buy_sell_ratio": 1.04522732
+   },
+   {
+    "date": "2026-11-03",
+    "taker_buy_volume": 5330347974.4321,
+    "taker_sell_volume": 5352988296.7499,
+    "taker_buy_ratio": 0.49894039,
+    "taker_sell_ratio": 0.50105961,
+    "taker_buy_sell_ratio": 0.99577053
+   }
+  ],
+  "lth_sopr": [
+   {
+    "date": "2026-11-05",
+    "sopr_ratio": 0.99399055
+   },
+   {
+    "date": "2026-11-04",
+    "sopr_ratio": 1.05563094
+   },
+   {
+    "date": "2026-11-03",
+    "sopr_ratio": 0.87823609
+   }
+  ],
+  "miner_outflow": [
+   {
+    "date": "2026-11-06",
+    "outflow_total": 6796.633548,
+    "outflow_top10": 3308.976542,
+    "outflow_mean": 0.13959853
+   },
+   {
+    "date": "2026-11-05",
+    "outflow_total": 8334.163606,
+    "outflow_top10": 4182.619003,
+    "outflow_mean": 0.24549793
+   },
+   {
+    "date": "2026-11-04",
+    "outflow_total": 5983.349423,
+    "outflow_top10": 2762.307405,
+    "outflow_mean": 0.04819025
+   }
+  ]
+ }
 }
