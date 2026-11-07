@@ -369,7 +369,9 @@ try:
                 if accts:
                     L.append("━━━━━━━━━━")
                     for label, a in accts.items():
-                        L.append(f"{label}  {a.get('mgn_ratio_pct')}%  杠杆 {a.get('leverage')}x  全仓距强平 {a.get('drop_to_liq_pct')}%" + (f"  逐仓{a.get('n_isolated')}个" if a.get('n_isolated') else ""))
+                        cross_coins = [(c, v) for c, v in (a.get("coins") or {}).items() if v.get("mode") == "cross" and v.get("liq_dist_pct") is not None]
+                        cr_txt = f"全仓距强平 {a.get('drop_to_liq_pct')}%" if a.get('drop_to_liq_pct') is not None else ("全仓 " + " ".join(f"{c} {-v['liq_dist_pct']:.0f}%" for c, v in cross_coins) if cross_coins else "")
+                        L.append(f"{label}  {a.get('mgn_ratio_pct')}%  杠杆 {a.get('leverage')}x  {cr_txt}" + (f"  逐仓{a.get('n_isolated')}个" if a.get('n_isolated') else ""))
                         iso = [(c, v) for c, v in (a.get("coins") or {}).items() if v.get("mode") == "isolated" and v.get("liq_dist_pct") is not None]
                         if iso:
                             iso.sort(key=lambda kv: -kv[1]["liq_dist_pct"])
