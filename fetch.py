@@ -109,6 +109,99 @@ if CQ:
         except Exception as e:
             summary["errors"].append(f"cq {k} -> {e}")
 
+# 5) Coinglass extras: global OI / long-short / top traders / liquidations / liquidation map / orderbook / options / stablecoin
+if CG:
+    summary["cg"] = {}
+    B = "https://open-api-v4.coinglass.com"
+    extras = [
+        ("oi_agg_1h",      [f"{B}/api/futures/open-interest/aggregated-history?symbol=BTC&interval=1h&limit=24",
+                            f"{B}/api/futures/open-interest/aggregated-history?symbol=BTC&interval=h1&limit=24"]),
+        ("ls_global_1h",   [f"{B}/api/futures/global-long-short-account-ratio/history?exchange=Binance&symbol=BTCUSDT&interval=1h&limit=24",
+                            f"{B}/api/futures/global-long-short-account-ratio/history?symbol=BTCUSDT&exchange=Binance&interval=h1&limit=24"]),
+        ("ls_top_acct_1h", [f"{B}/api/futures/top-long-short-account-ratio/history?exchange=Binance&symbol=BTCUSDT&interval=1h&limit=24"]),
+        ("ls_top_pos_1h",  [f"{B}/api/futures/top-long-short-position-ratio/history?exchange=Binance&symbol=BTCUSDT&interval=1h&limit=24"]),
+        ("liq_agg_1h",     [f"{B}/api/futures/liquidation/aggregated-history?symbol=BTC&interval=1h&limit=24",
+                            f"{B}/api/futures/liquidation/aggregated-history?symbol=BTC&exchange_list=ALL&interval=1h&limit=24"]),
+        ("liq_by_exch_24h",[f"{B}/api/futures/liquidation/exchange-list?symbol=BTC&range=24h",
+                            f"{B}/api/futures/liquidation/exchange-list?symbol=BTC&range=1d"]),
+        ("liq_map_agg",    [f"{B}/api/futures/liquidation/aggregated-map?symbol=BTC&range=1d",
+                            f"{B}/api/futures/liquidation/aggregated-map?symbol=BTC&range=24h"]),
+        ("orderbook_hist", [f"{B}/api/spot/orderbook/history?exchange=Binance&symbol=BTCUSDT&interval=1h&limit=12",
+                            f"{B}/api/spot/orderbook/history?exchange=Coinbase&symbol=BTC-USD&interval=1h&limit=12"]),
+        ("opt_max_pain",   [f"{B}/api/option/max-pain?symbol=BTC&exchange=Deribit",
+                            f"{B}/api/option/max-pain?symbol=BTC"]),
+        ("opt_info",       [f"{B}/api/option/info?symbol=BTC"]),
+        ("stablecoin_mcap",[f"{B}/api/index/stableCoin-marketCap-history",
+                            f"{B}/api/index/stableCoin-marketCap-history?interval=1d&limit=14"]),
+    ]
+    for key, urls in extras:
+        ok = False
+        for u in urls:
+            try:
+                r = get(u, {"CG-API-KEY": CG})
+                if str(r.get("code")) == "0" and r.get("data") not in (None, [], {}):
+                    d = r["data"]
+                    if isinstance(d, list) and len(d) > 8:
+                        d = d[-8:]
+                    txt = json.dumps(d, ensure_ascii=False)
+                    summary["cg"][key] = d if len(txt) < 6000 else json.loads(txt[:0] or "null") or {"truncated_sample": txt[:3000]}
+                    ok = True; break
+                else:
+                    summary["errors"].append(f"cg {key} {u.split('?')[0].split('/api/')[1]} -> code={r.get('code')} msg={str(r.get('msg'))[:80]}")
+            except Exception as e:
+                summary["errors"].append(f"cg {key} -> {str(e)[:100]}")
+        if not ok: summary["cg"][key] = None
+
+# 6) Telegram alerts (market only). State kept in alerts_state.json to avoid repeats.
+TG_TOKEN = os.environ.get("TG_TOKEN", "").strip(); TG_CHAT = os.environ.get("TG_CHAT_ID", "").strip()
+if TG_TOKEN and TG_CHAT:
+    try:
+        state = json.load(open("alerts_state.json")) if os.path.exists("alerts_state.json") else {}
+    except Exception:
+        state = {}
+    now = time.time(); alerts = []
+    def fire(key, text, cooldown_h=4):
+        if now - state.get(key, 0) > cooldown_h * 3600:
+            alerts.append(text); state[key] = now
+    # heatmap proximity: strongest band within 0.6%
+    for sym, h in summary["heatmap"].items():
+        for side, rows in (("下", h["below"]), ("上", h["above"])):
+            for b in rows[:2]:
+                if b["strength"] >= 0.8 and abs(b["dist_pct"]) <= 0.6:
+                    fire(f"hm_{sym}_{side}_{int(b['price']//(50 if sym=='BTC' else 1))}",
+                         f"🔥 {sym} {h['price']:.0f} 距{side}方厚带 {b['price']:.0f} 仅 {b['dist_pct']:+.2f}%（强度{b['strength']}）", 3)
+    # ETF big flow (latest day)
+    if summary.get("etf"):
+        e = summary["etf"][-1]; fu = e.get("flow_usd")
+        if fu is not None and abs(fu) >= 3e8:
+            d = dt.datetime.utcfromtimestamp(e["timestamp"]/1000).strftime("%m-%d")
+            fire(f"etf_{d}", f"🏦 ETF {d} 净{'流入' if fu>0 else '流出'} {abs(fu)/1e6:.0f}M", 20)
+    cq = summary.get("cryptoquant") or {}
+    if cq.get("exch_netflow_day"):
+        r = cq["exch_netflow_day"][0]
+        if r["netflow_total"] >= 5000: fire(f"nf_{r['date']}", f"⚠️ 链上 {r['date'][5:]} 交易所净流入 +{r['netflow_total']:.0f} BTC（进所抛压）", 20)
+    if cq.get("miner_outflow"):
+        r = cq["miner_outflow"][0]
+        if r["outflow_total"] >= 8000: fire(f"mo_{r['date']}", f"⛏️ 矿工 {r['date'][5:]} 流出 {r['outflow_total']:.0f} BTC", 20)
+    # BTC 15m move via Deribit
+    try:
+        r = get("https://www.deribit.com/api/v2/public/get_tradingview_chart_data?instrument_name=BTC-PERPETUAL&resolution=15&start_timestamp=%d&end_timestamp=%d" % (int((now-1800)*1000), int(now*1000)))["result"]
+        if r.get("close") and len(r["close"]) >= 2:
+            o, c = r["open"][-2], r["close"][-2]; chg = (c/o-1)*100
+            if abs(chg) >= 1.0: fire(f"mv_{int(now//900)}", f"⚡ BTC 15m {chg:+.2f}% → {c:.0f}（量{r['volume'][-2]:.0f}）", 0)
+    except Exception as e:
+        summary["errors"].append(f"deribit -> {e}")
+    if alerts:
+        text = "\n".join(alerts)
+        try:
+            urllib.request.urlopen(urllib.request.Request(
+                f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+                data=urllib.parse.urlencode({"chat_id": TG_CHAT, "text": text}).encode(), headers={"User-Agent": UA}), timeout=20).read()
+        except Exception as e:
+            summary["errors"].append(f"tg -> {e}")
+    json.dump(state, open("alerts_state.json", "w"))
+    summary["alerts_sent"] = alerts
+
 with open("summary.json", "w", encoding="utf-8") as f:
     json.dump(summary, f, ensure_ascii=False, indent=1)
 print("ok", summary["ts_utc"], "heatmap=", ",".join(summary["heatmap"].keys()), "errors=", len(summary["errors"]))
