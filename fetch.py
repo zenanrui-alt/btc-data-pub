@@ -164,6 +164,7 @@ def okx_get(path, key, sec, pwd):
 ACCTS = [("大神1", "OKX_1"), ("OKX2", "OKX_2"), ("OKX3", "OKX_3"), ("OKX4", "OKX_4")]
 summary["accounts"] = {}
 _priv_acct = {}
+_priv_pos = {}
 for label, pre in ACCTS:
     k, sc, pw = (os.environ.get(pre+"_KEY","").strip(), os.environ.get(pre+"_SECRET","").strip(), os.environ.get(pre+"_PASS","").strip())
     if not (k and sc and pw): continue
@@ -186,13 +187,22 @@ for label, pre in ACCTS:
         for p_ in pos:
             n = abs(float(p_.get("notionalUsd") or 0)); notional += n
             c = p_["instId"].split("-")[0]
-            coins[c] = {"notional_pct": 0, "vs_avg_pct": round((float(p_.get("markPx") or 0)/float(p_.get("avgPx") or 1)-1)*100, 2), "liq": float(p_.get("liqPx") or 0), "mark": float(p_.get("markPx") or 0), "avg": float(p_.get("avgPx") or 0)}
+            mark_ = float(p_.get("markPx") or 0); liq_ = float(p_.get("liqPx") or 0)
+            coins[c] = {"notional_pct": 0, "mode": p_.get("mgnMode"), "vs_avg_pct": round((mark_/float(p_.get("avgPx") or 1)-1)*100, 2), "liq": liq_, "mark": mark_, "avg": float(p_.get("avgPx") or 0),
+                        "liq_dist_pct": round((liq_/mark_-1)*100, 2) if (mark_ and liq_) else None,
+                        "iso_mgn_ratio_pct": round(float(p_.get("mgnRatio") or 0)*100, 1) if p_.get("mgnMode")=="isolated" and p_.get("mgnRatio") else None}
+            _priv_pos.setdefault(label, {})[c] = {"margin": float(p_.get("margin") or 0), "notional": abs(float(p_.get("notionalUsd") or 0)), "mmr": float(p_.get("mmr") or 0), "mode": p_.get("mgnMode")}
         for c, v in coins.items(): v["notional_pct"] = round(abs(float([q for q in pos if q["instId"].split("-")[0]==c][0].get("notionalUsd") or 0)) / notional * 100, 1) if notional else 0
         # cushion: equity - maintenance margin, as % of notional = how far整体 can drop before liquidation
-        mm = sum(float(p_.get("mmr") or 0) for p_ in pos) or (eq / mmr if mmr else 0)
-        cushion_pct = round((eq - mm) / notional * 100, 2) if notional else None
-        _priv_acct[label] = {"eq": eq, "notional": notional, "mm": mm}
-        summary["accounts"][label] = {"mgn_ratio_pct": round(mmr*100, 1), "leverage": round(notional/eq, 2) if eq else None, "drop_to_liq_pct": cushion_pct, "coins": coins, "avail_pct": round(avail/eq*100, 1) if eq else None}
+        cross_pos = [p_ for p_ in pos if p_.get("mgnMode") == "cross"]
+        iso_margin = sum(float(p_.get("margin") or 0) for p_ in pos if p_.get("mgnMode") == "isolated")
+        cross_notional = sum(abs(float(p_.get("notionalUsd") or 0)) for p_ in cross_pos)
+        mm = sum(float(p_.get("mmr") or 0) for p_ in cross_pos) or (eq / mmr if mmr else 0)
+        cross_eq = eq - iso_margin
+        cushion_pct = round((cross_eq - mm) / cross_notional * 100, 2) if cross_notional else None
+        n_iso = len(pos) - len(cross_pos)
+        _priv_acct[label] = {"eq": cross_eq, "notional": cross_notional, "mm": mm}
+        summary["accounts"][label] = {"n_isolated": n_iso, "n_cross": len(cross_pos), "mgn_ratio_pct": round(mmr*100, 1), "leverage": round(notional/eq, 2) if eq else None, "drop_to_liq_pct": cushion_pct, "coins": coins, "avail_pct": round(avail/eq*100, 1) if eq else None}
     except Exception as e:
         summary["errors"].append(f"okx {label} -> {str(e)[:120]}")
 
@@ -294,6 +304,17 @@ try:
                     if after < 12 and 0 < drop <= 3:
                         fire(f"acct_{label}_pre_{sym}", f"🧭 {label}：{sym} 支撑带 {fp(b['price'])} 若跌破（−{drop:.1f}%），整体余量会从 {d}% 缩到 ≈{after:.0f}%，提前备好 ≈{need_to(20):,.0f} USDT", 6)
             except Exception: pass
+            # isolated positions: each has its own liquidation
+            for c, v in (a.get("coins") or {}).items():
+                if v.get("mode") == "isolated" and v.get("liq_dist_pct") is not None:
+                    dist = -v["liq_dist_pct"]  # positive % drop to liq for longs
+                    pp = (_priv_pos.get(label) or {}).get(c) or {}
+                    # margin needed so liq distance becomes 20%: approx add = notional*(0.20 - dist/100)
+                    add = max(0.0, pp.get("notional", 0) * (0.20 - dist/100))
+                    if 0 < dist < 8:
+                        fire(f"iso_{label}_{c}_8", f"🚨 {label} {c}[逐仓] 距强平仅 {dist:.1f}%（强平价 {fp(v['liq'])}）：立即给该仓加 ≈{add:,.0f} USDT 或减仓", 1)
+                    elif 0 < dist < 12:
+                        fire(f"iso_{label}_{c}_12", f"⚠️ {label} {c}[逐仓] 距强平 {dist:.1f}%（强平价 {fp(v['liq'])}），建议给该仓加 ≈{add:,.0f} USDT", 3)
             if r is not None:
                 if r < 400: fire(f"acct_{label}_400", f"🚨 OKX {label}账户 维持保证金率 {r:.0f}% <400%，距强平≈{d}%", 2)
                 elif r < 600: fire(f"acct_{label}_600", f"⚠️ OKX {label}账户 维持保证金率 {r:.0f}% <600%，距强平≈{d}%", 4)
@@ -344,7 +365,11 @@ try:
                 if accts:
                     L.append("━━━━━━━━━━")
                     for label, a in accts.items():
-                        L.append(f"{label}  {a.get('mgn_ratio_pct')}%  杠杆 {a.get('leverage')}x  距强平 {a.get('drop_to_liq_pct')}%")
+                        L.append(f"{label}  {a.get('mgn_ratio_pct')}%  杠杆 {a.get('leverage')}x  全仓距强平 {a.get('drop_to_liq_pct')}%" + (f"  逐仓{a.get('n_isolated')}个" if a.get('n_isolated') else ""))
+                        iso = [(c, v) for c, v in (a.get("coins") or {}).items() if v.get("mode") == "isolated" and v.get("liq_dist_pct") is not None]
+                        if iso:
+                            iso.sort(key=lambda kv: -kv[1]["liq_dist_pct"])
+                            L.append("  逐仓距强平: " + "  ".join(f"{c} {-v['liq_dist_pct']:.0f}%" for c, v in iso))
                 alerts.append("\n".join(L)); state["brief"] = now
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
