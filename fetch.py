@@ -161,7 +161,7 @@ def okx_get(path, key, sec, pwd):
     sign = base64.b64encode(hmac.new(sec.encode(), (ts + "GET" + path).encode(), hashlib.sha256).digest()).decode()
     req = urllib.request.Request("https://www.okx.com" + path, headers={"OK-ACCESS-KEY": key, "OK-ACCESS-SIGN": sign, "OK-ACCESS-TIMESTAMP": ts, "OK-ACCESS-PASSPHRASE": pwd, "Content-Type": "application/json", "User-Agent": UA})
     with urllib.request.urlopen(req, timeout=20) as r: return json.loads(r.read().decode())
-ACCTS = [("OKX1", "OKX_1"), ("OKX2", "OKX_2"), ("OKX3", "OKX_3"), ("OKX4", "OKX_4")]
+ACCTS = [("大神1", "OKX_1"), ("OKX2", "OKX_2"), ("OKX3", "OKX_3"), ("OKX4", "OKX_4")]
 summary["accounts"] = {}
 for label, pre in ACCTS:
     k, sc, pw = (os.environ.get(pre+"_KEY","").strip(), os.environ.get(pre+"_SECRET","").strip(), os.environ.get(pre+"_PASS","").strip())
@@ -318,12 +318,13 @@ try:
                 summary["errors"].append(f"brief -> {e}")
         if alerts:
             text = "\n".join(alerts)
-            try:
-                urllib.request.urlopen(urllib.request.Request(
-                    f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-                    data=urllib.parse.urlencode({"chat_id": TG_CHAT, "text": text}).encode(), headers={"User-Agent": UA}), timeout=20).read()
-            except Exception as e:
-                summary["errors"].append(f"tg -> {e}")
+            for cid in [c.strip() for c in TG_CHAT.split(",") if c.strip()]:
+                try:
+                    urllib.request.urlopen(urllib.request.Request(
+                        f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+                        data=urllib.parse.urlencode({"chat_id": cid, "text": text}).encode(), headers={"User-Agent": UA}), timeout=20).read()
+                except Exception as e:
+                    summary["errors"].append(f"tg {cid[:4]}.. -> {e}")
         json.dump(state, open("alerts_state.json", "w"))
         summary["alerts_sent"] = alerts
 except Exception as _e:
