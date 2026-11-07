@@ -199,7 +199,11 @@ for label, pre in ACCTS:
         cross_notional = sum(abs(float(p_.get("notionalUsd") or 0)) for p_ in cross_pos)
         mm = sum(float(p_.get("mmr") or 0) for p_ in cross_pos) or (eq / mmr if mmr else 0)
         cross_eq = eq - iso_margin
+        # robust cushion: if mm is tiny/odd, derive maintenance margin from OKX mgnRatio (eq/mmr) instead
+        if mmr and (not mm or mm <= 0 or mm > cross_eq):
+            mm = cross_eq / mmr if mmr else mm
         cushion_pct = round((cross_eq - mm) / cross_notional * 100, 2) if cross_notional else None
+        if cushion_pct is not None and (cushion_pct < 0 or cushion_pct > 95): cushion_pct = None
         n_iso = len(pos) - len(cross_pos)
         _priv_acct[label] = {"eq": cross_eq, "notional": cross_notional, "mm": mm}
         summary["accounts"][label] = {"n_isolated": n_iso, "n_cross": len(cross_pos), "mgn_ratio_pct": round(mmr*100, 1), "leverage": round(notional/eq, 2) if eq else None, "drop_to_liq_pct": cushion_pct, "coins": coins, "avail_pct": round(avail/eq*100, 1) if eq else None}
@@ -370,6 +374,19 @@ try:
                         if iso:
                             iso.sort(key=lambda kv: -kv[1]["liq_dist_pct"])
                             L.append("  逐仓距强平: " + "  ".join(f"{c} {-v['liq_dist_pct']:.0f}%" for c, v in iso))
+                            tips = []
+                            for c, v in iso:
+                                dist = -v["liq_dist_pct"]; pp = (_priv_pos.get(label) or {}).get(c) or {}
+                                if dist < 20:
+                                    add = max(0.0, pp.get("notional", 0) * (0.20 - dist/100))
+                                    tag = "🚨" if dist < 10 else ("⚠️" if dist < 15 else "·")
+                                    tips.append(f"{tag} {c} 加≈{add:,.0f}U→20%（强平{fp(v['liq'])}）")
+                            if tips: L.append("  建议: " + "  ".join(tips))
+                        cr = a.get("drop_to_liq_pct")
+                        if cr is not None and cr < 20:
+                            pv = _priv_acct.get(label) or {}
+                            addc = max(0.0, 0.20*pv.get("notional",0) + pv.get("mm",0) - pv.get("eq",0))
+                            L.append(f"  全仓建议: 加≈{addc:,.0f}U→20%")
                 alerts.append("\n".join(L)); state["brief"] = now
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
