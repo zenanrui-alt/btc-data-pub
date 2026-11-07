@@ -169,17 +169,28 @@ for label, pre in ACCTS:
     try:
         bal = okx_get("/api/v5/account/balance", k, sc, pw)["data"][0]
         pos = okx_get("/api/v5/account/positions?instType=SWAP", k, sc, pw)["data"]
-        eq = float(bal.get("totalEq") or 0); mmr = float(bal.get("mgnRatio") or 0)  # OKX cross: mgnRatio = 维持保证金率 (x100 = %)
+        eq = float(bal.get("totalEq") or 0)
+        mmr = 0.0
+        for src in (bal.get("mgnRatio"), (bal.get("details") or [{}])[0].get("mgnRatio") if bal.get("details") else None):
+            try:
+                if src not in (None, ""): mmr = float(src); break
+            except Exception: pass
+        if not mmr:
+            try:
+                for p_ in pos:
+                    if p_.get("mgnRatio") not in (None, ""): mmr = float(p_["mgnRatio"]); break
+            except Exception: pass
+        avail = float(bal.get("availEq") or 0) or sum(float(d.get("availEq") or 0) for d in (bal.get("details") or []))
         notional = 0.0; coins = {}
         for p_ in pos:
             n = abs(float(p_.get("notionalUsd") or 0)); notional += n
             c = p_["instId"].split("-")[0]
-            coins[c] = {"notional_pct": 0, "upl_pct": round(float(p_.get("uplRatio") or 0)*100, 2), "liq": float(p_.get("liqPx") or 0), "mark": float(p_.get("markPx") or 0), "avg": float(p_.get("avgPx") or 0)}
+            coins[c] = {"notional_pct": 0, "vs_avg_pct": round((float(p_.get("markPx") or 0)/float(p_.get("avgPx") or 1)-1)*100, 2), "liq": float(p_.get("liqPx") or 0), "mark": float(p_.get("markPx") or 0), "avg": float(p_.get("avgPx") or 0)}
         for c, v in coins.items(): v["notional_pct"] = round(abs(float([q for q in pos if q["instId"].split("-")[0]==c][0].get("notionalUsd") or 0)) / notional * 100, 1) if notional else 0
         # cushion: equity - maintenance margin, as % of notional = how far整体 can drop before liquidation
-        mm = float(bal.get("mmr") or 0) if bal.get("mmr") else (eq / mmr if mmr else 0)
+        mm = sum(float(p_.get("mmr") or 0) for p_ in pos) or (eq / mmr if mmr else 0)
         cushion_pct = round((eq - mm) / notional * 100, 2) if notional else None
-        summary["accounts"][label] = {"mgn_ratio_pct": round(mmr*100, 1), "leverage": round(notional/eq, 2) if eq else None, "drop_to_liq_pct": cushion_pct, "coins": coins, "avail_pct": round(float(bal.get("availEq") or 0)/eq*100, 1) if eq else None}
+        summary["accounts"][label] = {"mgn_ratio_pct": round(mmr*100, 1), "leverage": round(notional/eq, 2) if eq else None, "drop_to_liq_pct": cushion_pct, "coins": coins, "avail_pct": round(avail/eq*100, 1) if eq else None}
     except Exception as e:
         summary["errors"].append(f"okx {label} -> {str(e)[:120]}")
 
@@ -264,7 +275,7 @@ try:
                 if r < 400: fire(f"acct_{label}_400", f"🚨 OKX {label}账户 维持保证金率 {r:.0f}% <400%，距强平≈{d}%", 2)
                 elif r < 600: fire(f"acct_{label}_600", f"⚠️ OKX {label}账户 维持保证金率 {r:.0f}% <600%，距强平≈{d}%", 4)
             for c, v in (a.get("coins") or {}).items():
-                if v.get("upl_pct") is not None and v["upl_pct"] <= -20: fire(f"acct_{label}_{c}_20", f"📉 {label} {c} 浮亏 {v['upl_pct']}%", 12)
+                if v.get("vs_avg_pct") is not None and v["vs_avg_pct"] <= -20: fire(f"acct_{label}_{c}_20", f"📉 {label} {c} 标记价低于成本 {v['vs_avg_pct']}%", 12)
         # BTC 15m move via Deribit
         try:
             r = get("https://www.deribit.com/api/v2/public/get_tradingview_chart_data?instrument_name=BTC-PERPETUAL&resolution=15&start_timestamp=%d&end_timestamp=%d" % (int((now-1800)*1000), int(now*1000)))["result"]
