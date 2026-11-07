@@ -6,7 +6,7 @@ import os, json, time, datetime as dt, urllib.request, urllib.parse
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36"
 CG = os.environ.get("COINGLASS_KEY", "").strip()
 CQ = os.environ.get("CRYPTOQUANT_KEY", "").strip()
-SYMBOLS = [s.strip() for s in os.environ.get("SYMBOLS", "BTC,ETH,SOL").split(",") if s.strip()]
+SYMBOLS = [s.strip() for s in os.environ.get("SYMBOLS", "BTC,ETH,SOL,UNI,SUI,ADA,XRP,DOGE,LTC").split(",") if s.strip()]
 
 summary = {"ts_utc": dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), "heatmap": {}, "coinbase": {}, "etf": None, "errors": [], "source": "github-actions"}
 
@@ -131,6 +131,7 @@ if CG:
         ("opt_max_pain",   [f"{B}/api/option/max-pain?symbol=BTC&exchange=Deribit",
                             f"{B}/api/option/max-pain?symbol=BTC"]),
         ("opt_info",       [f"{B}/api/option/info?symbol=BTC"]),
+        ("funding_oi_weighted", [f"{B}/api/futures/funding-rate/oi-weight-history?symbol=BTC&interval=1h&limit=6"]),
         ("stablecoin_mcap",[f"{B}/api/index/stableCoin-marketCap-history",
                             f"{B}/api/index/stableCoin-marketCap-history?interval=1d&limit=14"]),
     ]
@@ -184,6 +185,48 @@ try:
         if cq.get("miner_outflow"):
             r = cq["miner_outflow"][0]
             if r["outflow_total"] >= 8000: fire(f"mo_{r['date']}", f"⛏️ 矿工 {r['date'][5:]} 流出 {r['outflow_total']:.0f} BTC", 20)
+        # 2) ladder feet proximity (main account): coin -> (减仓脚/止盈, 补仓脚)
+        FEET = {"BTC": (82474.08, 76441.91), "SOL": (106.31, 93.89), "UNI": (8.0167, 6.9749), "SUI": (0.9645, 0.8792), "ADA": (0.2209, 0.1994)}
+        for sym, (tp, foot) in FEET.items():
+            h = summary["heatmap"].get(sym); px = h["price"] if h else None
+            if not px: continue
+            for name, lvl in (("减仓脚", tp), ("补仓脚", foot)):
+                if lvl and abs(px/lvl-1) <= 0.005:
+                    fire(f"foot_{sym}_{name}", f"🎯 {sym} {px:.4g} 距主账户{name} {lvl:.4g} 仅 {(lvl/px-1)*100:+.2f}%", 2)
+        # 4) funding extremes
+        try:
+            fr = (summary.get("cg") or {}).get("funding_oi_weighted")
+            if fr:
+                v = fr[-1]; rate = float(v.get("close", v.get("fundingRate", v.get("funding_rate", 0))))
+                if rate >= 0.0005 or rate <= -0.0002:
+                    fire(f"fund_{int(now//3600)}", f"💸 BTC 全网费率 {rate*100:.3f}%（{'多头过热' if rate>0 else '空头过热'}）", 4)
+        except Exception as e: summary["errors"].append(f"funding -> {e}")
+        # 5) Coinbase premium flip (negative -> positive, persisted)
+        try:
+            cbp = (summary.get("coinbase") or {}).get("premium_pct")
+            if cbp is not None:
+                hist = state.get("cbp_hist", []); hist = (hist + [cbp])[-4:]; state["cbp_hist"] = hist
+                if len(hist) == 4 and all(x > 0.02 for x in hist) and state.get("cbp_sign", -1) < 0:
+                    fire("cbp_flip_pos", f"🇺🇸 Coinbase 溢价转正并持续 1 小时（{cbp:+.3f}%）= 美国买盘回来", 6); state["cbp_sign"] = 1
+                if len(hist) == 4 and all(x < -0.02 for x in hist) and state.get("cbp_sign", 1) > 0:
+                    fire("cbp_flip_neg", f"🇺🇸 Coinbase 溢价转负并持续 1 小时（{cbp:+.3f}%）", 6); state["cbp_sign"] = -1
+        except Exception as e: summary["errors"].append(f"cbp -> {e}")
+        # 3) Deribit weekly expiry (Fri 08:00Z) reminder 2h before, with max pain
+        try:
+            utc = dt.datetime.utcnow()
+            if utc.weekday() == 4 and 5 <= utc.hour < 8:
+                mp = (summary.get("cg") or {}).get("opt_max_pain"); mptxt = ""
+                if mp:
+                    m0 = mp[0] if isinstance(mp, list) else mp
+                    mptxt = f"，最大痛点 {m0.get('max_pain_price', m0.get('maxPain', '?'))}"
+                fire(f"expiry_{utc.strftime('%Y%m%d')}", f"⏰ 周五 08:00Z Deribit 周交割{mptxt}，前后 15 分钟易出针", 24)
+        except Exception as e: summary["errors"].append(f"expiry -> {e}")
+        # 6) macro calendar (UTC): remind 30 min before
+        MACRO = [("2026-11-10 13:30", "美国 10 月 CPI"), ("2026-11-13 13:30", "美国 PPI"), ("2026-11-18 19:00", "FOMC 纪要"), ("2026-11-18 21:20", "英伟达财报"), ("2026-11-25 13:30", "美国 PCE"), ("2026-11-27 08:00", "Deribit 月度交割"), ("2026-12-04 13:30", "美国 11 月非农"), ("2026-12-10 19:00", "FOMC 利率决议")]
+        for when, what in MACRO:
+            t = dt.datetime.strptime(when, "%Y-%m-%d %H:%M"); delta = (t - dt.datetime.utcnow()).total_seconds()
+            if 0 < delta <= 35*60:
+                fire(f"macro_{when}", f"📅 30 分钟后 {t.strftime('%H:%M')}Z：{what}。数据前仓位保持锁定。", 12)
         # BTC 15m move via Deribit
         try:
             r = get("https://www.deribit.com/api/v2/public/get_tradingview_chart_data?instrument_name=BTC-PERPETUAL&resolution=15&start_timestamp=%d&end_timestamp=%d" % (int((now-1800)*1000), int(now*1000)))["result"]
