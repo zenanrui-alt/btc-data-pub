@@ -384,6 +384,20 @@ try:
                                     tag = "🚨" if dist < 10 else ("⚠️" if dist < 15 else "·")
                                     tips.append(f"{tag} {c} 加≈{add:,.0f}U→20%（强平{fp(v['liq'])}）")
                             if tips: L.append("  建议: " + "  ".join(tips))
+                            # reduce suggestions: only when far from liq, support band not within 3%, and not within 24h before a macro event
+                            macro_soon = any(0 < (dt.datetime.strptime(w, "%Y-%m-%d %H:%M") - dt.datetime.utcnow()).total_seconds() <= 24*3600 for w, _ in MACRO)
+                            cuts = []
+                            if not macro_soon:
+                                for c, v in iso:
+                                    dist = -v["liq_dist_pct"]; pp = (_priv_pos.get(label) or {}).get(c) or {}
+                                    h = summary["heatmap"].get(c); near = False
+                                    if h and h["below"]:
+                                        b = max(h["below"], key=lambda x: x["strength"]); near = (-b["dist_pct"]) <= 3.0 and b["strength"] >= 0.6
+                                    if dist > 30 and not near:
+                                        cut = max(0.0, pp.get("notional", 0) * (dist/100 - 0.25))
+                                        if cut >= 300: cuts.append(f"{c} 可减≈{cut:,.0f}U→25%")
+                            if cuts: L.append("  可挪: " + "  ".join(cuts) + "（挪给薄的仓，不要提走）")
+                            elif macro_soon: L.append("  可挪: 数据日前24h不建议减保证金")
                         cr = a.get("drop_to_liq_pct")
                         if cr is not None and cr < 20:
                             pv = _priv_acct.get(label) or {}
