@@ -163,6 +163,7 @@ def okx_get(path, key, sec, pwd):
     with urllib.request.urlopen(req, timeout=20) as r: return json.loads(r.read().decode())
 ACCTS = [("大神1", "OKX_1"), ("OKX2", "OKX_2"), ("OKX3", "OKX_3"), ("OKX4", "OKX_4")]
 summary["accounts"] = {}
+_priv_acct = {}
 for label, pre in ACCTS:
     k, sc, pw = (os.environ.get(pre+"_KEY","").strip(), os.environ.get(pre+"_SECRET","").strip(), os.environ.get(pre+"_PASS","").strip())
     if not (k and sc and pw): continue
@@ -190,6 +191,7 @@ for label, pre in ACCTS:
         # cushion: equity - maintenance margin, as % of notional = how far整体 can drop before liquidation
         mm = sum(float(p_.get("mmr") or 0) for p_ in pos) or (eq / mmr if mmr else 0)
         cushion_pct = round((eq - mm) / notional * 100, 2) if notional else None
+        _priv_acct[label] = {"eq": eq, "notional": notional, "mm": mm}
         summary["accounts"][label] = {"mgn_ratio_pct": round(mmr*100, 1), "leverage": round(notional/eq, 2) if eq else None, "drop_to_liq_pct": cushion_pct, "coins": coins, "avail_pct": round(avail/eq*100, 1) if eq else None}
     except Exception as e:
         summary["errors"].append(f"okx {label} -> {str(e)[:120]}")
@@ -268,9 +270,30 @@ try:
             t = dt.datetime.strptime(when, "%Y-%m-%d %H:%M"); delta = (t - dt.datetime.utcnow()).total_seconds()
             if 0 < delta <= 35*60:
                 fire(f"macro_{when}", f"📅 30 分钟后 {t.strftime('%H:%M')}Z：{what}。数据前仓位保持锁定。", 12)
-        # account thresholds
+        # account thresholds + margin-add advice (amounts only go to TG, never published)
         for label, a in (summary.get("accounts") or {}).items():
             r = a.get("mgn_ratio_pct"); d = a.get("drop_to_liq_pct")
+            pv = _priv_acct.get(label) or {}
+            def need_to(target_pct):
+                # equity needed so that (eq - mm)/notional = target
+                n = pv.get("notional") or 0; mm_ = pv.get("mm") or 0; eq_ = pv.get("eq") or 0
+                return max(0.0, target_pct/100*n + mm_ - eq_)
+            if d is not None:
+                if d < 10:
+                    fire(f"acct_{label}_d10", f"🚨 {label} 距强平仅 {d}%：立即加保证金 ≈{need_to(20):,.0f} USDT（回到 20% 余量），或减仓 ≈{max(0,(1-(d/20)))*100:.0f}%", 1)
+                elif d < 15:
+                    fire(f"acct_{label}_d15", f"⚠️ {label} 距强平 {d}%：建议准备保证金 ≈{need_to(20):,.0f} USDT，跌破下方支撑带前加入", 3)
+            # pre-warn: if the strongest support band of the largest position is broken, how much cushion remains?
+            try:
+                big = max((a.get("coins") or {}).items(), key=lambda kv: kv[1].get("notional_pct", 0))
+                sym = big[0]; h = summary["heatmap"].get(sym)
+                if h and h["below"] and d is not None:
+                    b = max(h["below"], key=lambda x: x["strength"]); drop = -b["dist_pct"]  # % drop to that band
+                    # approx: altcoin basket falls ~1.5x the band drop for the whole account
+                    after = d - drop*1.5
+                    if after < 12 and 0 < drop <= 3:
+                        fire(f"acct_{label}_pre_{sym}", f"🧭 {label}：{sym} 支撑带 {fp(b['price'])} 若跌破（−{drop:.1f}%），整体余量会从 {d}% 缩到 ≈{after:.0f}%，提前备好 ≈{need_to(20):,.0f} USDT", 6)
+            except Exception: pass
             if r is not None:
                 if r < 400: fire(f"acct_{label}_400", f"🚨 OKX {label}账户 维持保证金率 {r:.0f}% <400%，距强平≈{d}%", 2)
                 elif r < 600: fire(f"acct_{label}_600", f"⚠️ OKX {label}账户 维持保证金率 {r:.0f}% <600%，距强平≈{d}%", 4)
@@ -284,47 +307,58 @@ try:
                 if abs(chg) >= 1.0: fire(f"mv_{int(now//900)}", f"⚡ BTC 15m {chg:+.2f}% → {c:.0f}（量{r['volume'][-2]:.0f}）", 0)
         except Exception as e:
             summary["errors"].append(f"deribit -> {e}")
-        # periodic brief every 30 min
-        if now - state.get("brief", 0) >= 29 * 60:
+        # periodic brief every 30 min (multi-line)
+        force_brief = os.environ.get("FORCE_BRIEF") == "1"
+        if force_brief or now - state.get("brief", 0) >= 29 * 60:
             try:
-                parts = [f"📊 {dt.datetime.utcnow().strftime('%H:%M')}Z（支撑=下方最厚清算带，跌破加速；起飞=上方最厚清算带，站上加速）"]
+                L = [f"📊 {dt.datetime.utcnow().strftime('%H:%M')}Z", "━━━━━━━━━━"]
                 for sym, h in summary["heatmap"].items():
                     b = max(h["below"], key=lambda x: x["strength"]) if h["below"] else None
                     a = max(h["above"], key=lambda x: x["strength"]) if h["above"] else None
-                    parts.append(f"{sym} {fp(h['price'])}" + (f" 支撑{fp(b['price'])}({b['dist_pct']:+.1f}%)" if b else "") + (f" 起飞{fp(a['price'])}({a['dist_pct']:+.1f}%)" if a else ""))
+                    L.append(f"{sym} {fp(h['price'])}")
+                    L.append("  " + (f"支撑 {fp(b['price'])} ({b['dist_pct']:+.1f}%)" if b else "支撑 —") + "  " + (f"起飞 {fp(a['price'])} ({a['dist_pct']:+.1f}%)" if a else "起飞 —"))
+                L.append("━━━━━━━━━━")
                 cb = summary.get("coinbase") or {}
-                if cb.get("buy_ratio") is not None: parts.append(f"CB吃单买{cb['buy_ratio']}% 溢价{cb.get('premium_pct')}%")
+                if cb.get("buy_ratio") is not None: L.append(f"CB 吃单买 {cb['buy_ratio']}%  溢价 {cb.get('premium_pct')}%")
                 if summary.get("etf"):
-                    e = summary["etf"][-1]; parts.append(f"ETF {dt.datetime.utcfromtimestamp(e['timestamp']/1000).strftime('%m-%d')}:{e.get('flow_usd',0)/1e6:+.0f}M")
+                    e = summary["etf"][-1]; L.append(f"ETF {dt.datetime.utcfromtimestamp(e['timestamp']/1000).strftime('%m-%d')}: {e.get('flow_usd',0)/1e6:+.0f}M")
+                row = []
                 if cq.get("exch_netflow_day"):
-                    r0 = cq["exch_netflow_day"][0]; parts.append(f"链上{r0['date'][5:]}净流入{r0['netflow_total']:+.0f}")
-                if cq.get("miner_outflow"):
-                    parts.append(f"矿工{cq['miner_outflow'][0]['outflow_total']:.0f}")
+                    r0 = cq["exch_netflow_day"][0]; row.append(f"链上 {r0['date'][5:]} 净流入 {r0['netflow_total']:+,.0f}")
+                if cq.get("miner_outflow"): row.append(f"矿工 {cq['miner_outflow'][0]['outflow_total']:,.0f}")
+                if row: L.append(" | ".join(row))
+                row = []
                 cgx = summary.get("cg") or {}
                 try:
-                    if cgx.get("ls_global_1h"): parts.append(f"散户多空{float(cgx['ls_global_1h'][-1].get('global_account_long_short_ratio', cgx['ls_global_1h'][-1].get('longShortRatio', 0))):.2f}")
+                    if cgx.get("ls_global_1h"): row.append(f"散户多空 {float(cgx['ls_global_1h'][-1].get('global_account_long_short_ratio', cgx['ls_global_1h'][-1].get('longShortRatio', 0))):.2f}")
                 except Exception: pass
                 try:
-                    if cgx.get("ls_top_pos_1h"): parts.append(f"大户持仓比{float(cgx['ls_top_pos_1h'][-1].get('top_position_long_short_ratio', cgx['ls_top_pos_1h'][-1].get('longShortRatio', 0))):.2f}")
+                    if cgx.get("ls_top_pos_1h"): row.append(f"大户持仓比 {float(cgx['ls_top_pos_1h'][-1].get('top_position_long_short_ratio', cgx['ls_top_pos_1h'][-1].get('longShortRatio', 0))):.2f}")
                 except Exception: pass
                 try:
                     fr = cgx.get("funding_oi_weighted")
-                    if fr: parts.append(f"费率{float(fr[-1]['close']):.4f}%")
+                    if fr: row.append(f"费率 {float(fr[-1]['close']):.4f}%")
                 except Exception: pass
-                for label, a in (summary.get("accounts") or {}).items():
-                    parts.append(f"{label}户 {a.get('mgn_ratio_pct')}% 杠杆{a.get('leverage')}x 距强平{a.get('drop_to_liq_pct')}%")
-                alerts.append(" | ".join(parts)); state["brief"] = now
+                if row: L.append(" | ".join(row))
+                accts = summary.get("accounts") or {}
+                if accts:
+                    L.append("━━━━━━━━━━")
+                    for label, a in accts.items():
+                        L.append(f"{label}  {a.get('mgn_ratio_pct')}%  杠杆 {a.get('leverage')}x  距强平 {a.get('drop_to_liq_pct')}%")
+                alerts.append("\n".join(L)); state["brief"] = now
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
         if alerts:
-            text = "\n".join(alerts)
-            for cid in [c.strip() for c in TG_CHAT.split(",") if c.strip()]:
-                try:
-                    urllib.request.urlopen(urllib.request.Request(
-                        f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-                        data=urllib.parse.urlencode({"chat_id": cid, "text": text}).encode(), headers={"User-Agent": UA}), timeout=20).read()
-                except Exception as e:
-                    summary["errors"].append(f"tg {cid[:4]}.. -> {e}")
+            short = [x for x in alerts if not x.startswith("📊")]; briefs = [x for x in alerts if x.startswith("📊")]
+            msgs = ([ "\n".join(short) ] if short else []) + briefs
+            for text in msgs:
+                for cid in [c.strip() for c in TG_CHAT.split(",") if c.strip()]:
+                    try:
+                        urllib.request.urlopen(urllib.request.Request(
+                            f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+                            data=urllib.parse.urlencode({"chat_id": cid, "text": text}).encode(), headers={"User-Agent": UA}), timeout=20).read()
+                    except Exception as e:
+                        summary["errors"].append(f"tg {cid[:4]}.. -> {e}")
         json.dump(state, open("alerts_state.json", "w"))
         summary["alerts_sent"] = alerts
 except Exception as _e:
