@@ -192,6 +192,32 @@ try:
                 if abs(chg) >= 1.0: fire(f"mv_{int(now//900)}", f"⚡ BTC 15m {chg:+.2f}% → {c:.0f}（量{r['volume'][-2]:.0f}）", 0)
         except Exception as e:
             summary["errors"].append(f"deribit -> {e}")
+        # periodic brief every 30 min
+        if now - state.get("brief", 0) >= 29 * 60:
+            try:
+                parts = [f"📊 {dt.datetime.utcnow().strftime('%H:%M')}Z"]
+                for sym, h in summary["heatmap"].items():
+                    b = max(h["below"], key=lambda x: x["strength"]) if h["below"] else None
+                    a = max(h["above"], key=lambda x: x["strength"]) if h["above"] else None
+                    parts.append(f"{sym} {h['price']:.0f}" + (f" 下{b['price']:.0f}({b['dist_pct']:+.1f}%)" if b else "") + (f" 上{a['price']:.0f}({a['dist_pct']:+.1f}%)" if a else ""))
+                cb = summary.get("coinbase") or {}
+                if cb.get("buy_ratio") is not None: parts.append(f"CB吃单买{cb['buy_ratio']}% 溢价{cb.get('premium_pct')}%")
+                if summary.get("etf"):
+                    e = summary["etf"][-1]; parts.append(f"ETF {dt.datetime.utcfromtimestamp(e['timestamp']/1000).strftime('%m-%d')}:{e.get('flow_usd',0)/1e6:+.0f}M")
+                if cq.get("exch_netflow_day"):
+                    r0 = cq["exch_netflow_day"][0]; parts.append(f"链上{r0['date'][5:]}净流入{r0['netflow_total']:+.0f}")
+                if cq.get("miner_outflow"):
+                    parts.append(f"矿工{cq['miner_outflow'][0]['outflow_total']:.0f}")
+                cgx = summary.get("cg") or {}
+                try:
+                    if cgx.get("ls_global_1h"): parts.append(f"散户多空{float(cgx['ls_global_1h'][-1].get('global_account_long_short_ratio', cgx['ls_global_1h'][-1].get('longShortRatio', 0))):.2f}")
+                except Exception: pass
+                try:
+                    if cgx.get("ls_top_pos_1h"): parts.append(f"大户持仓比{float(cgx['ls_top_pos_1h'][-1].get('top_position_long_short_ratio', cgx['ls_top_pos_1h'][-1].get('longShortRatio', 0))):.2f}")
+                except Exception: pass
+                alerts.append(" | ".join(parts)); state["brief"] = now
+            except Exception as e:
+                summary["errors"].append(f"brief -> {e}")
         if alerts:
             text = "\n".join(alerts)
             try:
