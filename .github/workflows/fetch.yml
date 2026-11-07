@@ -22,6 +22,18 @@ jobs:
           CRYPTOQUANT_KEY: ${{ secrets.CRYPTOQUANT_KEY }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          OKX_1_KEY: ${{ secrets.OKX_1_KEY }}
+          OKX_1_SECRET: ${{ secrets.OKX_1_SECRET }}
+          OKX_1_PASS: ${{ secrets.OKX_1_PASS }}
+          OKX_2_KEY: ${{ secrets.OKX_2_KEY }}
+          OKX_2_SECRET: ${{ secrets.OKX_2_SECRET }}
+          OKX_2_PASS: ${{ secrets.OKX_2_PASS }}
+          OKX_3_KEY: ${{ secrets.OKX_3_KEY }}
+          OKX_3_SECRET: ${{ secrets.OKX_3_SECRET }}
+          OKX_3_PASS: ${{ secrets.OKX_3_PASS }}
+          OKX_4_KEY: ${{ secrets.OKX_4_KEY }}
+          OKX_4_SECRET: ${{ secrets.OKX_4_SECRET }}
+          OKX_4_PASS: ${{ secrets.OKX_4_PASS }}
         run: python fetch.py
       - name: commit
         run: |
