@@ -8,6 +8,8 @@ CG = os.environ.get("COINGLASS_KEY", "").strip()
 CQ = os.environ.get("CRYPTOQUANT_KEY", "").strip()
 SYMBOLS = [s.strip() for s in os.environ.get("SYMBOLS", "BTC,ETH,SOL,UNI,SUI,ADA,XRP,DOGE,LTC").split(",") if s.strip()]
 
+def fp(x):
+    return f"{x:.0f}" if x>=1000 else (f"{x:.2f}" if x>=10 else (f"{x:.3f}" if x>=1 else f"{x:.4f}"))
 summary = {"ts_utc": dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), "heatmap": {}, "coinbase": {}, "etf": None, "errors": [], "source": "github-actions"}
 
 def get(url, headers=None, timeout=30):
@@ -48,7 +50,7 @@ if CG:
             rows = [(ys[yi], v) for yi, v in acc.items() if yi < len(ys)]
             maxv = max((v for _, v in rows), default=1.0) or 1.0
             def pack(rs):
-                return [{"price": round(p, 2), "dist_pct": round((p / px - 1) * 100, 2), "strength": round(v / maxv, 2)} for p, v in rs]
+                return [{"price": round(p, 2 if p>=10 else 5), "dist_pct": round((p / px - 1) * 100, 2), "strength": round(v / maxv, 2)} for p, v in rs]
             below = sorted([r for r in rows if px * 0.94 < r[0] < px], key=lambda r: -r[1])[:5]
             above = sorted([r for r in rows if px < r[0] < px * 1.06], key=lambda r: -r[1])[:5]
             summary["heatmap"][sym] = {"price": px, "below": pack(below), "above": pack(above), "window": "24h", "levels": len(ys)}
@@ -120,8 +122,7 @@ if CG:
                             f"{B}/api/futures/global-long-short-account-ratio/history?symbol=BTCUSDT&exchange=Binance&interval=h1&limit=24"]),
         ("ls_top_acct_1h", [f"{B}/api/futures/top-long-short-account-ratio/history?exchange=Binance&symbol=BTCUSDT&interval=1h&limit=24"]),
         ("ls_top_pos_1h",  [f"{B}/api/futures/top-long-short-position-ratio/history?exchange=Binance&symbol=BTCUSDT&interval=1h&limit=24"]),
-        ("liq_agg_1h",     [f"{B}/api/futures/liquidation/aggregated-history?symbol=BTC&interval=1h&limit=24",
-                            f"{B}/api/futures/liquidation/aggregated-history?symbol=BTC&exchange_list=ALL&interval=1h&limit=24"]),
+        ("liq_agg_1h",     [f"{B}/api/futures/liquidation/aggregated-history?symbol=BTC&exchange_list=Binance,OKX,Bybit,Bitget,Gate&interval=1h&limit=24"]),
         ("liq_by_exch_24h",[f"{B}/api/futures/liquidation/exchange-list?symbol=BTC&range=24h",
                             f"{B}/api/futures/liquidation/exchange-list?symbol=BTC&range=1d"]),
         ("liq_map_agg",    [f"{B}/api/futures/liquidation/aggregated-map?symbol=BTC&range=1d",
@@ -170,8 +171,8 @@ try:
             for side, rows in (("下", h["below"]), ("上", h["above"])):
                 for b in rows[:2]:
                     if b["strength"] >= 0.8 and abs(b["dist_pct"]) <= 0.6:
-                        fire(f"hm_{sym}_{side}_{int(b['price']//(50 if sym=='BTC' else 1))}",
-                             f"🔥 {sym} {h['price']:.0f} 距{side}方厚带 {b['price']:.0f} 仅 {b['dist_pct']:+.2f}%（强度{b['strength']}）", 3)
+                        fire(f"hm_{sym}_{side}_{round(b['price'], 0 if b['price']>=100 else 3)}",
+                             f"🔥 {sym} {fp(h['price'])} 距{side}方厚带 {fp(b['price'])} 仅 {b['dist_pct']:+.2f}%（强度{b['strength']}）", 3)
         # ETF big flow (latest day)
         if summary.get("etf"):
             e = summary["etf"][-1]; fu = e.get("flow_usd")
@@ -192,14 +193,14 @@ try:
             if not px: continue
             for name, lvl in (("减仓脚", tp), ("补仓脚", foot)):
                 if lvl and abs(px/lvl-1) <= 0.005:
-                    fire(f"foot_{sym}_{name}", f"🎯 {sym} {px:.4g} 距主账户{name} {lvl:.4g} 仅 {(lvl/px-1)*100:+.2f}%", 2)
+                    fire(f"foot_{sym}_{name}", f"🎯 {sym} {fp(px)} 距主账户{name} {fp(lvl)} 仅 {(lvl/px-1)*100:+.2f}%", 2)
         # 4) funding extremes
         try:
             fr = (summary.get("cg") or {}).get("funding_oi_weighted")
             if fr:
                 v = fr[-1]; rate = float(v.get("close", v.get("fundingRate", v.get("funding_rate", 0))))
-                if rate >= 0.0005 or rate <= -0.0002:
-                    fire(f"fund_{int(now//3600)}", f"💸 BTC 全网费率 {rate*100:.3f}%（{'多头过热' if rate>0 else '空头过热'}）", 4)
+                if rate >= 0.05 or rate <= -0.02:
+                    fire(f"fund_{int(now//3600)}", f"💸 BTC 全网费率 {rate:.3f}%（{'多头过热' if rate>0 else '空头过热'}）", 4)
         except Exception as e: summary["errors"].append(f"funding -> {e}")
         # 5) Coinbase premium flip (negative -> positive, persisted)
         try:
@@ -242,7 +243,7 @@ try:
                 for sym, h in summary["heatmap"].items():
                     b = max(h["below"], key=lambda x: x["strength"]) if h["below"] else None
                     a = max(h["above"], key=lambda x: x["strength"]) if h["above"] else None
-                    parts.append(f"{sym} {h['price']:.0f}" + (f" 下{b['price']:.0f}({b['dist_pct']:+.1f}%)" if b else "") + (f" 上{a['price']:.0f}({a['dist_pct']:+.1f}%)" if a else ""))
+                    parts.append(f"{sym} {fp(h['price'])}" + (f" 下{fp(b['price'])}({b['dist_pct']:+.1f}%)" if b else "") + (f" 上{fp(a['price'])}({a['dist_pct']:+.1f}%)" if a else ""))
                 cb = summary.get("coinbase") or {}
                 if cb.get("buy_ratio") is not None: parts.append(f"CB吃单买{cb['buy_ratio']}% 溢价{cb.get('premium_pct')}%")
                 if summary.get("etf"):
@@ -257,6 +258,10 @@ try:
                 except Exception: pass
                 try:
                     if cgx.get("ls_top_pos_1h"): parts.append(f"大户持仓比{float(cgx['ls_top_pos_1h'][-1].get('top_position_long_short_ratio', cgx['ls_top_pos_1h'][-1].get('longShortRatio', 0))):.2f}")
+                except Exception: pass
+                try:
+                    fr = cgx.get("funding_oi_weighted")
+                    if fr: parts.append(f"费率{float(fr[-1]['close']):.4f}%")
                 except Exception: pass
                 alerts.append(" | ".join(parts)); state["brief"] = now
             except Exception as e:
