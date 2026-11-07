@@ -154,6 +154,35 @@ if CG:
                 summary["errors"].append(f"cg {key} -> {str(e)[:100]}")
         if not ok: summary["cg"][key] = None
 
+# 5b) OKX accounts (read-only API). Only ratios/distances are published; no balances.
+import hmac, hashlib, base64
+def okx_get(path, key, sec, pwd):
+    ts = dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.") + f"{dt.datetime.utcnow().microsecond//1000:03d}Z"
+    sign = base64.b64encode(hmac.new(sec.encode(), (ts + "GET" + path).encode(), hashlib.sha256).digest()).decode()
+    req = urllib.request.Request("https://www.okx.com" + path, headers={"OK-ACCESS-KEY": key, "OK-ACCESS-SIGN": sign, "OK-ACCESS-TIMESTAMP": ts, "OK-ACCESS-PASSPHRASE": pwd, "Content-Type": "application/json", "User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=20) as r: return json.loads(r.read().decode())
+ACCTS = [("OKX1", "OKX_1"), ("OKX2", "OKX_2"), ("OKX3", "OKX_3"), ("OKX4", "OKX_4")]
+summary["accounts"] = {}
+for label, pre in ACCTS:
+    k, sc, pw = (os.environ.get(pre+"_KEY","").strip(), os.environ.get(pre+"_SECRET","").strip(), os.environ.get(pre+"_PASS","").strip())
+    if not (k and sc and pw): continue
+    try:
+        bal = okx_get("/api/v5/account/balance", k, sc, pw)["data"][0]
+        pos = okx_get("/api/v5/account/positions?instType=SWAP", k, sc, pw)["data"]
+        eq = float(bal.get("totalEq") or 0); mmr = float(bal.get("mgnRatio") or 0)  # OKX cross: mgnRatio = 维持保证金率 (x100 = %)
+        notional = 0.0; coins = {}
+        for p_ in pos:
+            n = abs(float(p_.get("notionalUsd") or 0)); notional += n
+            c = p_["instId"].split("-")[0]
+            coins[c] = {"notional_pct": 0, "upl_pct": round(float(p_.get("uplRatio") or 0)*100, 2), "liq": float(p_.get("liqPx") or 0), "mark": float(p_.get("markPx") or 0), "avg": float(p_.get("avgPx") or 0)}
+        for c, v in coins.items(): v["notional_pct"] = round(abs(float([q for q in pos if q["instId"].split("-")[0]==c][0].get("notionalUsd") or 0)) / notional * 100, 1) if notional else 0
+        # cushion: equity - maintenance margin, as % of notional = how far整体 can drop before liquidation
+        mm = float(bal.get("mmr") or 0) if bal.get("mmr") else (eq / mmr if mmr else 0)
+        cushion_pct = round((eq - mm) / notional * 100, 2) if notional else None
+        summary["accounts"][label] = {"mgn_ratio_pct": round(mmr*100, 1), "leverage": round(notional/eq, 2) if eq else None, "drop_to_liq_pct": cushion_pct, "coins": coins, "avail_pct": round(float(bal.get("availEq") or 0)/eq*100, 1) if eq else None}
+    except Exception as e:
+        summary["errors"].append(f"okx {label} -> {str(e)[:120]}")
+
 # 6) Telegram alerts (market only). State kept in alerts_state.json to avoid repeats.
 try:
     TG_TOKEN = os.environ.get("TG_TOKEN", "").strip(); TG_CHAT = os.environ.get("TG_CHAT_ID", "").strip()
@@ -168,11 +197,11 @@ try:
                 alerts.append(text); state[key] = now
         # heatmap proximity: strongest band within 0.6%
         for sym, h in summary["heatmap"].items():
-            for side, rows in (("下", h["below"]), ("上", h["above"])):
+            for side, rows in (("支撑", h["below"]), ("起飞", h["above"])):
                 for b in rows[:2]:
                     if b["strength"] >= 0.8 and abs(b["dist_pct"]) <= 0.6:
                         fire(f"hm_{sym}_{side}_{round(b['price'], 0 if b['price']>=100 else 3)}",
-                             f"🔥 {sym} {fp(h['price'])} 距{side}方厚带 {fp(b['price'])} 仅 {b['dist_pct']:+.2f}%（强度{b['strength']}）", 3)
+                             (f"🔥 {sym} {fp(h['price'])} 逼近短期支撑 {fp(b['price'])}（{b['dist_pct']:+.2f}%，强度{b['strength']}）跌破=多头止损连锁" if side=="支撑" else f"🚀 {sym} {fp(h['price'])} 逼近突破起飞点 {fp(b['price'])}（{b['dist_pct']:+.2f}%，强度{b['strength']}）站上=空头止损连锁"), 3)
         # ETF big flow (latest day)
         if summary.get("etf"):
             e = summary["etf"][-1]; fu = e.get("flow_usd")
@@ -228,6 +257,14 @@ try:
             t = dt.datetime.strptime(when, "%Y-%m-%d %H:%M"); delta = (t - dt.datetime.utcnow()).total_seconds()
             if 0 < delta <= 35*60:
                 fire(f"macro_{when}", f"📅 30 分钟后 {t.strftime('%H:%M')}Z：{what}。数据前仓位保持锁定。", 12)
+        # account thresholds
+        for label, a in (summary.get("accounts") or {}).items():
+            r = a.get("mgn_ratio_pct"); d = a.get("drop_to_liq_pct")
+            if r is not None:
+                if r < 400: fire(f"acct_{label}_400", f"🚨 OKX {label}账户 维持保证金率 {r:.0f}% <400%，距强平≈{d}%", 2)
+                elif r < 600: fire(f"acct_{label}_600", f"⚠️ OKX {label}账户 维持保证金率 {r:.0f}% <600%，距强平≈{d}%", 4)
+            for c, v in (a.get("coins") or {}).items():
+                if v.get("upl_pct") is not None and v["upl_pct"] <= -20: fire(f"acct_{label}_{c}_20", f"📉 {label} {c} 浮亏 {v['upl_pct']}%", 12)
         # BTC 15m move via Deribit
         try:
             r = get("https://www.deribit.com/api/v2/public/get_tradingview_chart_data?instrument_name=BTC-PERPETUAL&resolution=15&start_timestamp=%d&end_timestamp=%d" % (int((now-1800)*1000), int(now*1000)))["result"]
@@ -239,11 +276,11 @@ try:
         # periodic brief every 30 min
         if now - state.get("brief", 0) >= 29 * 60:
             try:
-                parts = [f"📊 {dt.datetime.utcnow().strftime('%H:%M')}Z"]
+                parts = [f"📊 {dt.datetime.utcnow().strftime('%H:%M')}Z（支撑=下方最厚清算带，跌破加速；起飞=上方最厚清算带，站上加速）"]
                 for sym, h in summary["heatmap"].items():
                     b = max(h["below"], key=lambda x: x["strength"]) if h["below"] else None
                     a = max(h["above"], key=lambda x: x["strength"]) if h["above"] else None
-                    parts.append(f"{sym} {fp(h['price'])}" + (f" 下{fp(b['price'])}({b['dist_pct']:+.1f}%)" if b else "") + (f" 上{fp(a['price'])}({a['dist_pct']:+.1f}%)" if a else ""))
+                    parts.append(f"{sym} {fp(h['price'])}" + (f" 支撑{fp(b['price'])}({b['dist_pct']:+.1f}%)" if b else "") + (f" 起飞{fp(a['price'])}({a['dist_pct']:+.1f}%)" if a else ""))
                 cb = summary.get("coinbase") or {}
                 if cb.get("buy_ratio") is not None: parts.append(f"CB吃单买{cb['buy_ratio']}% 溢价{cb.get('premium_pct')}%")
                 if summary.get("etf"):
@@ -263,6 +300,8 @@ try:
                     fr = cgx.get("funding_oi_weighted")
                     if fr: parts.append(f"费率{float(fr[-1]['close']):.4f}%")
                 except Exception: pass
+                for label, a in (summary.get("accounts") or {}).items():
+                    parts.append(f"{label}户 {a.get('mgn_ratio_pct')}% 杠杆{a.get('leverage')}x 距强平{a.get('drop_to_liq_pct')}%")
                 alerts.append(" | ".join(parts)); state["brief"] = now
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
