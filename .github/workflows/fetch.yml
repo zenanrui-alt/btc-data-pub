@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch:
+    inputs:
+      force_brief:
+        description: "立刻发一条简报"
+        default: "1"
 permissions:
   contents: write
 concurrency:
@@ -22,6 +26,7 @@ jobs:
           CRYPTOQUANT_KEY: ${{ secrets.CRYPTOQUANT_KEY }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          FORCE_BRIEF: ${{ github.event.inputs.force_brief }}
           OKX_1_KEY: ${{ secrets.OKX_1_KEY }}
           OKX_1_SECRET: ${{ secrets.OKX_1_SECRET }}
           OKX_1_PASS: ${{ secrets.OKX_1_PASS }}
