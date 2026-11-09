@@ -210,6 +210,162 @@ for label, pre in ACCTS:
     except Exception as e:
         summary["errors"].append(f"okx {label} -> {str(e)[:120]}")
 
+# 5c) On-chain whale scan: Hyperliquid (via Coinglass) + Aave V3 (via The Graph). Builds an on-chain liquidation map.
+#     Addresses are public on-chain data; only truncated addresses are published.
+def _post(url, payload, headers=None, timeout=30):
+    req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers={"User-Agent": UA, "Content-Type": "application/json", **(headers or {})})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read().decode("utf-8"))
+WHALE_MIN = float(os.environ.get("WHALE_MIN_USD", "5000000"))
+_px_now = {}
+for _s in ("BTC", "ETH", "SOL"):
+    try:
+        _px_now[_s] = float(get(f"https://www.okx.com/api/v5/market/ticker?instId={_s}-USDT-SWAP")["data"][0]["last"])
+    except Exception:
+        h_ = summary["heatmap"].get(_s); _px_now[_s] = h_["price"] if h_ else None
+_whales = []   # {src, addr, sym, side, usd, liq, entry, lev, hf}
+def _f(v):
+    try: return float(v)
+    except Exception: return None
+# --- Hyperliquid whales (Coinglass) ---
+if CG:
+    hl_ok = False
+    for u in ("https://open-api-v4.coinglass.com/api/hyperliquid/whale-position",
+              "https://open-api-v4.coinglass.com/api/hyperliquid/whale-alert"):
+        try:
+            r = get(u, {"CG-API-KEY": CG})
+            if str(r.get("code")) != "0" or not r.get("data"):
+                summary["errors"].append(f"hl {u.rsplit('/',1)[1]} -> code={r.get('code')} msg={str(r.get('msg'))[:80]}"); continue
+            rows = r["data"] if isinstance(r["data"], list) else (r["data"].get("list") or [])
+            if rows: summary["hl_sample_keys"] = sorted(rows[0].keys())[:40]
+            for x in rows:
+                sym = str(x.get("symbol") or x.get("coin") or "").upper().replace("-USD", "").replace("USDT", "")
+                size = _f(x.get("position_size") or x.get("size") or x.get("szi"))
+                usd = abs(_f(x.get("position_value_usd") or x.get("position_value") or x.get("positionValue") or 0) or 0)
+                liq = _f(x.get("liq_price") or x.get("liquidation_price") or x.get("liquidationPx"))
+                entry = _f(x.get("entry_price") or x.get("entryPx"))
+                side = x.get("position_side") or x.get("side")
+                if size is not None and not side: side = "long" if size > 0 else "short"
+                side = "long" if str(side).lower() in ("long", "buy", "1") else "short"
+                addr = str(x.get("user") or x.get("address") or "")
+                if sym and usd >= WHALE_MIN and liq and liq > 0:
+                    _whales.append({"src": "HL", "addr": addr, "sym": sym, "side": side, "usd": usd, "liq": liq, "entry": entry, "lev": _f(x.get("leverage")), "hf": None})
+            hl_ok = True
+            break
+        except Exception as e:
+            summary["errors"].append(f"hl {u.rsplit('/',1)[1]} -> {str(e)[:100]}")
+# --- Aave V3 borrowers (The Graph) ---
+GRAPH = os.environ.get("GRAPH_KEY", "").strip()
+FAM = {"ETH": {"WETH", "WSTETH", "WEETH", "CBETH", "RETH", "OSETH", "ETHX", "RSETH", "EZETH", "ETH"},
+       "BTC": {"WBTC", "CBBTC", "TBTC", "LBTC", "FBTC", "BTC.B"}}
+STABLE = {"USDT", "USDC", "USDC.E", "USDBC", "DAI", "USDS", "GHO", "USDE", "SUSDE", "PYUSD", "FRAX", "LUSD", "CRVUSD", "RLUSD", "USDTB", "USDT0"}
+def _fam(s):
+    s = s.upper()
+    for k, v in FAM.items():
+        if s in v: return k
+    return "STABLE" if s in STABLE else "OTHER"
+if GRAPH:
+    SUBG = [x.split(":") for x in os.environ.get("AAVE_SUBGRAPHS",
+            "eth:Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g,arb:DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B,base:GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF").split(",")]
+    for chain, sid in SUBG:
+        url = f"https://gateway.thegraph.com/api/{GRAPH}/subgraphs/id/{sid}"
+        try:
+            res = _post(url, {"query": "{ reserves(first: 100) { id symbol decimals reserveLiquidationThreshold price { priceInEth } } }"})
+            if res.get("errors"): summary["errors"].append(f"aave {chain} reserves -> {str(res['errors'])[:120]}"); continue
+            reserves = res["data"]["reserves"]
+            usdc = [r for r in reserves if r["symbol"].upper() in ("USDC", "USDT")]
+            unit = float(usdc[0]["price"]["priceInEth"]) if usdc else 1e8
+            info = {r["id"]: {"sym": r["symbol"], "dec": int(r["decimals"]), "lt": int(r["reserveLiquidationThreshold"]) / 1e4,
+                               "usd": float(r["price"]["priceInEth"]) / unit} for r in reserves}
+            users = set()
+            for rid, ri in info.items():
+                if _fam(ri["sym"]) != "STABLE" and _fam(ri["sym"]) not in ("ETH", "BTC"): continue
+                thr = int(WHALE_MIN * 0.5 / max(ri["usd"], 1e-9) * 10 ** ri["dec"])
+                q = '{ userReserves(first: 60, orderBy: currentTotalDebt, orderDirection: desc, where: {reserve: "%s", currentTotalDebt_gt: "%d"}) { user { id } } }' % (rid, thr)
+                rr = _post(url, {"query": q})
+                for x in (rr.get("data") or {}).get("userReserves") or []: users.add(x["user"]["id"])
+            users = list(users)[:300]
+            for i in range(0, len(users), 100):
+                q = '{ userReserves(first: 1000, where: {user_in: %s}) { user { id } reserve { id } currentATokenBalance currentTotalDebt usageAsCollateralEnabledOnUser } }' % json.dumps(users[i:i+100])
+                rr = _post(url, {"query": q})
+                pos = {}
+                for x in (rr.get("data") or {}).get("userReserves") or []:
+                    ri = info.get(x["reserve"]["id"]);  u_ = x["user"]["id"]
+                    if not ri: continue
+                    p = pos.setdefault(u_, {"coll": {}, "debt": {}})
+                    f = _fam(ri["sym"])
+                    cv = int(x["currentATokenBalance"]) / 10 ** ri["dec"] * ri["usd"] if x.get("usageAsCollateralEnabledOnUser") else 0
+                    dv = int(x["currentTotalDebt"]) / 10 ** ri["dec"] * ri["usd"]
+                    if cv: p["coll"].setdefault(f, [0, 0]); p["coll"][f][0] += cv; p["coll"][f][1] += cv * ri["lt"]
+                    if dv: p["debt"][f] = p["debt"].get(f, 0) + dv
+                for u_, p in pos.items():
+                    debt = sum(p["debt"].values()); collv = sum(v[0] for v in p["coll"].values())
+                    if debt < WHALE_MIN or not collv: continue
+                    adj = sum(v[1] for v in p["coll"].values()); hf = adj / debt
+                    vol_c = {k: v for k, v in p["coll"].items() if k in ("ETH", "BTC")}
+                    other = p["coll"].get("OTHER", [0, 0])[0]
+                    if other > 0.1 * collv: continue
+                    st_adj = p["coll"].get("STABLE", [0, 0])[1]; st_debt = p["debt"].get("STABLE", 0)
+                    if len(vol_c) == 1 and st_debt >= 0.9 * debt:
+                        fam = list(vol_c)[0]; cadj = vol_c[fam][1]
+                        ratio = (st_debt - st_adj) / cadj if cadj else None
+                        if ratio and 0 < ratio < 1.5 and _px_now.get(fam):
+                            _whales.append({"src": f"Aave-{chain}", "addr": u_, "sym": fam, "side": "long", "usd": vol_c[fam][0],
+                                            "liq": _px_now[fam] * ratio, "entry": None, "lev": round(collv / (collv - debt), 1) if collv > debt else None, "hf": round(hf, 3)})
+                    elif st_adj and len(p["debt"]) == 1 and list(p["debt"])[0] in ("ETH", "BTC"):
+                        fam = list(p["debt"])[0]; ratio = st_adj / debt
+                        if 1 < ratio < 3 and _px_now.get(fam):
+                            _whales.append({"src": f"Aave-{chain}", "addr": u_, "sym": fam, "side": "short", "usd": debt,
+                                            "liq": _px_now[fam] * ratio, "entry": None, "lev": None, "hf": round(hf, 3)})
+        except Exception as e:
+            summary["errors"].append(f"aave {chain} -> {str(e)[:120]}")
+# --- build map ---
+try:
+    oc = {}
+    for sym in ("BTC", "ETH", "SOL"):
+        px = _px_now.get(sym)
+        ws = [w for w in _whales if w["sym"] == sym]
+        if not px or not ws: continue
+        for w in ws: w["dist_pct"] = round((w["liq"] / px - 1) * 100, 2)
+        step = px * 0.005; buckets = {}
+        for w in ws:
+            if abs(w["dist_pct"]) > 15: continue
+            k = round(w["liq"] / step) * step
+            b = buckets.setdefault(k, {"price": k, "usd": 0, "n": 0, "long": 0, "short": 0})
+            b["usd"] += w["usd"]; b["n"] += 1; b["long" if w["side"] == "long" else "short"] += w["usd"]
+        bl = sorted(buckets.values(), key=lambda b: -b["usd"])
+        for b in bl: b["dist_pct"] = round((b["price"] / px - 1) * 100, 2)
+        top = sorted(ws, key=lambda w: -w["usd"])[:15]
+        oc[sym] = {"price": px, "n_whales": len(ws), "total_usd": round(sum(w["usd"] for w in ws)),
+                   "below": [b for b in bl if b["price"] < px][:6], "above": [b for b in bl if b["price"] >= px][:6],
+                   "top": [{**{k: w[k] for k in ("src", "side", "usd", "liq", "lev", "hf", "dist_pct")}, "addr": (w["addr"][:6] + "…" + w["addr"][-4:]) if len(w["addr"]) > 12 else w["addr"]} for w in top]}
+    summary["onchain_liq"] = oc
+except Exception as e:
+    summary["errors"].append(f"onchain map -> {str(e)[:120]}")
+
+# 5d) Whale/liquidation news relay (余烬 / Lookonchain / Onchain Lens via Chinese newsflash feeds)
+_news = []
+import re as _re, hashlib as _hl
+NEWS_KW = _re.compile(r"余烬|Ember|Lookonchain|Onchain ?Lens|链上(数据|分析)|巨鲸.{0,20}(清算|爆仓|强平|补仓|抵押|借出|转入|抛售)")
+try:
+    r = get("https://api.theblockbeats.news/v1/open-api/open-flash?size=50&page=1&type=push&lang=cn")
+    for x in ((r.get("data") or {}).get("data") or []):
+        t = (x.get("title") or "") + " " + _re.sub("<[^>]+>", "", x.get("content") or "")
+        if NEWS_KW.search(t): _news.append({"src": "律动", "title": x.get("title") or "", "body": _re.sub("<[^>]+>", "", x.get("content") or "")[:220], "link": x.get("link") or x.get("url") or ""})
+except Exception as e:
+    summary["errors"].append(f"news blockbeats -> {str(e)[:100]}")
+try:
+    req = urllib.request.Request("https://rss.odaily.news/rss/newsflash", headers={"User-Agent": UA})
+    xml = urllib.request.urlopen(req, timeout=20).read().decode("utf-8", "ignore")
+    for item in _re.findall(r"<item>(.*?)</item>", xml, _re.S)[:50]:
+        g = lambda tag: (_re.search(rf"<{tag}>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</{tag}>", item, _re.S) or [None, ""])[1]
+        title, desc, link = g("title"), _re.sub("<[^>]+>", "", g("description")), g("link")
+        if NEWS_KW.search(title + " " + desc): _news.append({"src": "Odaily", "title": title, "body": desc[:220], "link": link})
+except Exception as e:
+    summary["errors"].append(f"news odaily -> {str(e)[:100]}")
+for n in _news: n["id"] = _hl.md5((n["title"][:40]).encode()).hexdigest()[:12]
+summary["whale_news"] = _news[:10]
+
 # 6) Telegram alerts (market only). State kept in alerts_state.json to avoid repeats.
 try:
     TG_TOKEN = os.environ.get("TG_TOKEN", "").strip(); TG_CHAT = os.environ.get("TG_CHAT_ID", "").strip()
@@ -332,6 +488,35 @@ try:
                 if abs(chg) >= 1.0: fire(f"mv_{int(now//900)}", f"⚡ BTC 15m {chg:+.2f}% → {c:.0f}（量{r['volume'][-2]:.0f}）", 0)
         except Exception as e:
             summary["errors"].append(f"deribit -> {e}")
+        # on-chain whale map alerts + news relay
+        try:
+            for sym, o in (summary.get("onchain_liq") or {}).items():
+                for b in (o.get("below", []) + o.get("above", [])):
+                    if b["usd"] >= 5e7 and abs(b["dist_pct"]) <= 5:
+                        fire(f"oc_{sym}_{round(b['price'])}", f"🐋 链上强平堆 {sym} {fp(b['price'])}（{b['dist_pct']:+.1f}%）≈{b['usd']/1e8:.2f}亿美元 / {b['n']}个大户{'多单' if b['long']>=b['short'] else '空单'}——明牌目标，易被打", 6)
+            prev = state.get("whales", {}); cur = {}
+            for w in _whales:
+                if w["usd"] < 3e7: continue
+                wid = f"{w['src']}|{w['addr']}|{w['sym']}|{w['side']}"; cur[wid] = [round(w["liq"], 2), round(w["usd"])]
+                tag = f"{w['sym']} {'多' if w['side']=='long' else '空'} {w['usd']/1e8:.2f}亿（{w['src']} {w['addr'][:6]}…）"
+                if prev and wid not in prev:
+                    fire(f"wnew_{wid}", f"🐋 新巨鲸 {tag} 强平 {fp(w['liq'])}（{w.get('dist_pct', 0):+.1f}%）", 12)
+                elif wid in prev and prev[wid][0] and abs(w["liq"]/prev[wid][0]-1) >= 0.03:
+                    fire(f"wmove_{wid}", f"🐋 巨鲸调仓 {tag} 强平 {fp(prev[wid][0])}→{fp(w['liq'])}（{'补保证金/减仓' if (w['liq']<prev[wid][0])==(w['side']=='long') else '加仓/提走保证金'}）", 6)
+            for wid, (lq, usd) in prev.items():
+                if wid not in cur and usd >= 3e7 and _whales:
+                    fire(f"wgone_{wid}", f"🐋 巨鲸消失 {wid.split('|')[2]} {'多' if wid.split('|')[3]=='long' else '空'} {usd/1e8:.2f}亿（原强平 {fp(lq)}）= 平仓或被清算", 12)
+            if _whales: state["whales"] = cur
+            seen = state.get("news_seen")
+            if seen is None:
+                state["news_seen"] = [n["id"] for n in _news]
+            else:
+                sent = 0
+                for n in _news:
+                    if n["id"] in seen or sent >= 4: continue
+                    alerts.append(f"📰 {n['src']}｜{n['title']}\n{n['body']}" + (f"\n{n['link']}" if n['link'] else "")); seen.append(n["id"]); sent += 1
+                state["news_seen"] = seen[-300:]
+        except Exception as e: summary["errors"].append(f"whale alerts -> {str(e)[:120]}")
         # periodic brief every 30 min (multi-line)
         force_brief = os.environ.get("FORCE_BRIEF") == "1"
         if force_brief or now - state.get("brief", 0) >= 29 * 60:
@@ -365,6 +550,13 @@ try:
                     if fr: row.append(f"费率 {float(fr[-1]['close']):.4f}%")
                 except Exception: pass
                 if row: L.append(" | ".join(row))
+                try:
+                    ocl = []
+                    for sym, o in (summary.get("onchain_liq") or {}).items():
+                        bs = sorted([b for b in o.get("below", []) + o.get("above", []) if abs(b["dist_pct"]) <= 10], key=lambda b: -b["usd"])[:2]
+                        if bs: ocl.append(f"{sym} " + " · ".join(f"{fp(b['price'])} {b['usd']/1e8:.1f}亿({b['dist_pct']:+.1f}%)" for b in bs))
+                    if ocl: L.append("链上强平: " + " | ".join(ocl))
+                except Exception: pass
                 accts = summary.get("accounts") or {}
                 if accts:
                     L.append("━━━━━━━━━━")
