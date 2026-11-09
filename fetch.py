@@ -618,7 +618,9 @@ try:
                         fire(f"oc_{sym}_{round(b['price'])}", f"🐋 链上强平堆 {sym} {fp(b['price'])}（{b['dist_pct']:+.1f}%）≈{b['usd']/1e8:.2f}亿美元 / {b['n']}个大户{'多单' if b['long']>=b['short'] else '空单'}——明牌目标，易被打", 6)
             prev = state.get("whales", {}); cur = {}
             for w in _whales:
-                if w["usd"] < 3e7: continue
+                if w["usd"] < 3e7 or w["sym"] not in ("BTC", "ETH", "SOL") or not _px_now.get(w["sym"]): continue
+                w["dist_pct"] = round((w["liq"] / _px_now[w["sym"]] - 1) * 100, 2)
+                if abs(w["dist_pct"]) > 15: continue
                 wid = f"{w['src']}|{w['addr']}|{w['sym']}|{w['side']}"; cur[wid] = [round(w["liq"], 2), round(w["usd"])]
                 tag = f"{w['sym']} {'多' if w['side']=='long' else '空'} {w['usd']/1e8:.2f}亿（{w['src']} {w['addr'][:6]}…）"
                 if prev and wid not in prev:
@@ -626,6 +628,8 @@ try:
                 elif wid in prev and prev[wid][0] and abs(w["liq"]/prev[wid][0]-1) >= 0.03:
                     fire(f"wmove_{wid}", f"🐋 巨鲸调仓 {tag} 强平 {fp(prev[wid][0])}→{fp(w['liq'])}（{'补保证金/减仓' if (w['liq']<prev[wid][0])==(w['side']=='long') else '加仓/提走保证金'}）", 6)
             for wid, (lq, usd) in prev.items():
+                _sy = wid.split("|")[2]
+                if _sy not in ("BTC", "ETH", "SOL") or not _px_now.get(_sy) or abs(lq / _px_now[_sy] - 1) > 0.15: continue
                 if wid not in cur and usd >= 3e7 and _whales:
                     fire(f"wgone_{wid}", f"🐋 巨鲸消失 {wid.split('|')[2]} {'多' if wid.split('|')[3]=='long' else '空'} {usd/1e8:.2f}亿（原强平 {fp(lq)}）= 平仓或被清算", 12)
             if _whales: state["whales"] = cur
