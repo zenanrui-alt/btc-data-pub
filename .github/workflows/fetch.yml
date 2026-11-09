@@ -10,11 +10,12 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: btc-data
+  group: btc-data-${{ github.event_name }}
   cancel-in-progress: false
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 140
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -40,15 +41,22 @@ jobs:
           OKX_4_SECRET: ${{ secrets.OKX_4_SECRET }}
           OKX_4_PASS: ${{ secrets.OKX_4_PASS }}
           GRAPH_KEY: ${{ secrets.GRAPH_KEY }}
-        run: python fetch.py
-      - name: commit
         run: |
           git config user.name "btc-data-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add summary.json
-          [ -f alerts_state.json ] && git add alerts_state.json || true
-          git commit -m "update $(date -u +%FT%TZ)" || echo "no change"
-          for i in 1 2 3; do
-            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null; git fetch origin main && git reset --soft origin/main && git add summary.json && ([ -f alerts_state.json ] && git add alerts_state.json || true) && git commit -m "update $(date -u +%FT%TZ)"; }
-            git push && break || sleep 5
+          # scheduled runs loop for ~110 min (one pass every 10 min) so GitHub cron delays don't leave gaps; manual runs do one pass
+          if [ "${{ github.event_name }}" = "schedule" ]; then LOOP_MIN=110; else LOOP_MIN=0; fi
+          end=$((SECONDS + LOOP_MIN*60)); first=1
+          while :; do
+            [ $first = 0 ] && export FORCE_BRIEF=""; first=0
+            timeout 1800 python fetch.py || echo "fetch failed"
+            git add summary.json
+            [ -f alerts_state.json ] && git add alerts_state.json || true
+            git commit -q -m "update $(date -u +%FT%TZ)" || echo "no change"
+            for i in 1 2 3; do
+              git pull -q --rebase -X theirs origin main || { git rebase --abort 2>/dev/null; git fetch -q origin main && git reset --soft origin/main && git add summary.json && ([ -f alerts_state.json ] && git add alerts_state.json || true) && git commit -q -m "update $(date -u +%FT%TZ)"; }
+              git push -q && break || sleep 5
+            done
+            [ $SECONDS -ge $end ] && break
+            sleep 600
           done
