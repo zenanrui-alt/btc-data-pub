@@ -366,7 +366,7 @@ try:
         t = _clean(x.get("title")) + " " + _clean(x.get("content"))
         if NEWS_KW.search(t): _news.append({"src": "律动", "title": _clean(x.get("title")), "body": _clean(x.get("content"))[:220], "link": x.get("link") or x.get("url") or ""})
 except Exception as e:
-    summary["errors"].append(f"news blockbeats -> {str(e)[:100]}")
+    pass  # blockbeats optional
 try:
     req = urllib.request.Request("https://rss.odaily.news/rss/newsflash", headers={"User-Agent": UA})
     xml = urllib.request.urlopen(req, timeout=20).read().decode("utf-8", "ignore")
@@ -376,8 +376,117 @@ try:
         if NEWS_KW.search(title + " " + desc): _news.append({"src": "Odaily", "title": title, "body": desc[:220], "link": link})
 except Exception as e:
     summary["errors"].append(f"news odaily -> {str(e)[:100]}")
+_news = [n for n in _news if not _re.search(r"HYPE|Hyperliquid 代币", n["title"])]
 for n in _news: n["id"] = _hl.md5((n["title"][:40]).encode()).hexdigest()[:12]
 summary["whale_news"] = _news[:10]
+
+# 5e) Moving averages, reversal checklist, Jin10 flash, CPI auto-readout
+def okx_candles(inst, bar, pages=3):
+    out = []; after = ""
+    for _ in range(pages):
+        d = get(f"https://www.okx.com/api/v5/market/history-candles?instId={inst}&bar={bar}&limit=100" + (f"&after={after}" if after else ""))["data"]
+        if not d: break
+        out += d; after = d[-1][0]
+    return out[::-1]
+def _ema(vals, n):
+    k = 2 / (n + 1); e = sum(vals[:n]) / n
+    for v in vals[n:]: e = v * k + e * (1 - k)
+    return e
+try:
+    dc = [float(x[4]) for x in okx_candles("BTC-USDT", "1Dutc", 10)]
+    wc = [float(x[4]) for x in okx_candles("BTC-USDT", "1Wutc", 5)]
+    summary["ma"] = {"d_ema200": round(_ema(dc, 200)) if len(dc) >= 250 else None, "d_sma200": round(sum(dc[-200:]) / 200) if len(dc) >= 200 else None,
+                     "d_sma50": round(sum(dc[-50:]) / 50) if len(dc) >= 50 else None, "w_ema200": round(_ema(wc, 200)) if len(wc) >= 220 else None, "n_d": len(dc), "n_w": len(wc)}
+except Exception as e:
+    summary["errors"].append(f"ma -> {str(e)[:100]}")
+REV_OI_BASE = float(os.environ.get("REV_OI_BASE", "38.3e8"))   # OKX BTC OI (USD) before the 11/08 knife
+try:
+    oi_now = float(get("https://www.okx.com/api/v5/rubik/stat/contracts/open-interest-volume?ccy=BTC&period=5m")["data"][0][1])
+    ls_now = float(get("https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy=BTC&period=5m")["data"][0][1])
+    c15 = get("https://www.okx.com/api/v5/market/candles?instId=BTC-USDT-SWAP&bar=15m&limit=8")["data"]
+    wick = None
+    for c in c15[1:5]:
+        o_, h_, l_, cl_, v_ = map(float, c[1:6]); body = abs(cl_ - o_); lw = min(o_, cl_) - l_
+        if v_ >= 1_000_000 and lw >= 2 * max(body, 1) and (h_ > l_ and lw / (h_ - l_) >= 0.5):
+            wick = {"ts": dt.datetime.utcfromtimestamp(int(c[0]) / 1000).strftime("%H:%M"), "low": l_, "vol": v_}; break
+    tk = get("https://www.okx.com/api/v5/rubik/stat/taker-volume?ccy=BTC&instType=SPOT&period=5m")["data"][:3]
+    tb = sum(float(x[2]) for x in tk); ts_ = sum(float(x[1]) for x in tk); spot_buy = tb / (tb + ts_) * 100 if (tb + ts_) else None
+    conds = {"oi": oi_now <= REV_OI_BASE - 2e8, "ls": ls_now < 2.3, "wick": bool(wick) and (spot_buy or 0) >= 60}
+    summary["reversal"] = {"oi_yi": round(oi_now / 1e8, 2), "oi_target_yi": round((REV_OI_BASE - 2e8) / 1e8, 2), "retail_ls": ls_now, "wick": wick,
+                           "spot_buy_15m": round(spot_buy, 1) if spot_buy is not None else None, "conds": conds, "n_ok": sum(conds.values())}
+except Exception as e:
+    summary["errors"].append(f"reversal -> {str(e)[:100]}")
+# Jin10 flash (unofficial web endpoint; may change)
+JIN_KW = _re.compile(r"CPI|PPI|非农|就业|失业|美联储|鲍威尔|FOMC|降息|加息|利率|伊朗|以色列|霍尔木兹|特朗普|关税|比特币|BTC|加密|ETF|MSCI|微策略|Strategy|贝森特|美债|停火|开战|袭击|制裁")
+try:
+    r = get("https://flash-api.jin10.com/get_flash_list?channel=-8200&vip=1",
+            {"x-app-id": "bVBF4FyRTn5NJF5n", "x-version": "1.0.0", "Referer": "https://www.jin10.com/", "Origin": "https://www.jin10.com"})
+    jin = []
+    for x in (r.get("data") or [])[:80]:
+        dd = x.get("data") or {}
+        txt = _clean(dd.get("content") or dd.get("title") or "")
+        if not txt and dd.get("name"):
+            txt = f"{dd.get('name')} 公布 {dd.get('actual')} 预期 {dd.get('consensus')} 前值 {dd.get('previous')}"
+        imp = int(x.get("important") or 0)
+        if txt and JIN_KW.search(txt) and (imp == 1 or x.get("type") == 1):
+            jin.append({"id": str(x.get("id")), "time": x.get("time"), "text": txt[:260], "imp": imp})
+    summary["jin10"] = jin[:15]
+except Exception as e:
+    summary["jin10"] = []; summary["errors"].append(f"jin10 -> {str(e)[:100]}")
+# CPI auto-readout (BLS official API) — polls inside the release window
+CPI_DAYS = {"2026-11-10": {"head": 0.3, "core": 0.3, "period": "October"}}   # consensus MoM (RBC 0.3/0.3; Cleveland nowcast 0.24/0.21)
+_cpi_msg = None
+def _bls():
+    r = _post("https://api.bls.gov/publicAPI/v2/timeseries/data/", {"seriesid": ["CUSR0000SA0", "CUSR0000SA0L1E"], "startyear": "2026", "endyear": "2026"})
+    out = {}
+    for s in r["Results"]["series"]:
+        d = [x for x in s["data"] if x.get("value") not in (None, "-", "")]
+        d.sort(key=lambda x: (x["year"], x["period"]), reverse=True)
+        out[s["seriesID"]] = (d[0]["periodName"], (float(d[0]["value"]) / float(d[1]["value"]) - 1) * 100)
+    return out
+def _yahoo_chg(sym, since_ts):
+    try:
+        r = get(f"https://query1.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(sym)}?range=1d&interval=1m")["chart"]["result"][0]
+        t = r["timestamp"]; c = r["indicators"]["quote"][0]["close"]
+        base = [cc for tt, cc in zip(t, c) if tt <= since_ts and cc is not None]; last = [cc for cc in c if cc is not None]
+        return (last[-1], (last[-1] / base[-1] - 1) * 100) if base and last else None
+    except Exception:
+        return None
+try:
+    _utc = dt.datetime.utcnow(); _day = _utc.strftime("%Y-%m-%d")
+    if _day in CPI_DAYS:
+        rel = _utc.replace(hour=13, minute=30, second=0, microsecond=0); exp = CPI_DAYS[_day]
+        if rel - dt.timedelta(minutes=20) <= _utc <= rel + dt.timedelta(minutes=75):
+            got = None; tries = 0
+            while tries < 18:
+                if dt.datetime.utcnow() >= rel:
+                    tries += 1
+                    try:
+                        b = _bls()
+                        if b.get("CUSR0000SA0L1E", ("",))[0] == exp["period"]: got = b; break
+                    except Exception as e:
+                        summary["errors"].append(f"bls -> {str(e)[:80]}")
+                if dt.datetime.utcnow() > rel + dt.timedelta(minutes=75): break
+                time.sleep(40 if dt.datetime.utcnow() >= rel else 20)
+            if got:
+                head = got["CUSR0000SA0"][1]; core = got["CUSR0000SA0L1E"][1]; cr = round(core, 1)
+                verdict = ("高于预期 → 偏鹰：留意 73.2k(SMA200) / 72k 链上强平堆" if cr >= exp["core"] + 0.1 else
+                           ("低于预期 → 偏鸽：看能否站上 75.4k(EMA200)，再看 76.7k 起飞带" if cr <= exp["core"] - 0.1 else "符合预期 → 方向交给资金面，区间 73.2k–76.7k"))
+                rts = int(rel.timestamp()) - 60; lines = [f"🔴 美国{exp['period']} CPI 已公布（BLS）",
+                         f"核心 CPI 环比 {core:.2f}% ≈ {cr:.1f}%（预期 {exp['core']}%）| 整体 {head:.2f}% ≈ {round(head,1):.1f}%（预期 {exp['head']}%）", verdict]
+                try:
+                    k = get("https://www.okx.com/api/v5/market/candles?instId=BTC-USDT-SWAP&bar=1m&limit=60")["data"]
+                    base = [float(c[1]) for c in k if int(c[0]) // 1000 <= rts + 60]; now_ = float(k[0][4])
+                    if base: lines.append(f"BTC {now_:,.0f}（公布后 {(now_/base[0]-1)*100:+.2f}%）")
+                except Exception: pass
+                mk = []
+                for nm, sy in (("纳指期货", "NQ=F"), ("美元指数", "DX-Y.NYB"), ("10年美债", "^TNX"), ("黄金", "GC=F"), ("原油", "CL=F")):
+                    v = _yahoo_chg(sy, rts)
+                    if v: mk.append(f"{nm} {v[1]:+.2f}%")
+                if mk: lines.append(" · ".join(mk))
+                _cpi_msg = "\n".join(lines); summary["cpi"] = {"head_mom": round(head, 3), "core_mom": round(core, 3), "verdict": verdict}
+except Exception as e:
+    summary["errors"].append(f"cpi -> {str(e)[:100]}")
 
 # 6) Telegram alerts (market only). State kept in alerts_state.json to avoid repeats.
 try:
@@ -448,7 +557,7 @@ try:
                 fire(f"expiry_{utc.strftime('%Y%m%d')}", f"⏰ 周五 08:00Z Deribit 周交割{mptxt}，前后 15 分钟易出针", 24)
         except Exception as e: summary["errors"].append(f"expiry -> {e}")
         # 6) macro calendar (UTC): remind 30 min before
-        MACRO = [("2026-11-10 13:30", "美国 10 月 CPI"), ("2026-11-13 13:30", "美国 PPI"), ("2026-11-18 19:00", "FOMC 纪要"), ("2026-11-18 21:20", "英伟达财报"), ("2026-11-25 13:30", "美国 PCE"), ("2026-11-27 08:00", "Deribit 月度交割"), ("2026-12-04 13:30", "美国 11 月非农"), ("2026-12-10 19:00", "FOMC 利率决议")]
+        MACRO = [("2026-11-10 13:30", "美国 10 月 CPI（只看环比；预期核心 0.3%）"), ("2026-11-13 13:30", "美国 PPI"), ("2026-11-18 19:00", "FOMC 纪要"), ("2026-11-18 21:20", "英伟达财报"), ("2026-11-25 13:30", "美国 PCE"), ("2026-11-27 08:00", "Deribit 月度交割"), ("2026-12-04 13:30", "美国 11 月非农"), ("2026-12-10 19:00", "FOMC 利率决议")]
         for when, what in MACRO:
             t = dt.datetime.strptime(when, "%Y-%m-%d %H:%M"); delta = (t - dt.datetime.utcnow()).total_seconds()
             if 0 < delta <= 35*60:
@@ -531,6 +640,30 @@ try:
                     alerts.append(f"📰 {n['src']}｜{n['title']}\n{n['body']}" + (f"\n{n['link']}" if n['link'] else "")); seen.append(n["id"]); sent += 1
                 state["news_seen"] = seen[-300:]
         except Exception as e: summary["errors"].append(f"whale alerts -> {str(e)[:120]}")
+        # reversal checklist, MA proximity, CPI readout, Jin10 relay
+        try:
+            if _cpi_msg: fire(f"cpi_{dt.datetime.utcnow().strftime('%Y%m%d')}", _cpi_msg, 20)
+            rv = summary.get("reversal") or {}
+            if rv.get("n_ok") == 3:
+                fire("rev_all", f"🟢 反转三条件同时满足：OI {rv['oi_yi']}亿≤{rv['oi_target_yi']} · 散户多空 {rv['retail_ls']:.2f}<2.3 · 放量长下影 {rv['wick']['ts']} 低点 {rv['wick']['low']:,.0f} + 现货买 {rv['spot_buy_15m']}% → 洗盘完成信号（现货第三批/新一轮机器人可开始考虑）", 12)
+            elif rv.get("n_ok") == 2:
+                fire("rev_two", "🟡 反转条件 2/3：" + " · ".join(f"{n}{'✅' if ok else '❌'}" for n, ok in (("OI", rv['conds']['oi']), ("散户<2.3", rv['conds']['ls']), ("长下影+现货买", rv['conds']['wick']))), 6)
+            ma = summary.get("ma") or {}; bpx = (summary["heatmap"].get("BTC") or {}).get("price")
+            if bpx:
+                for nm, key in (("日线EMA200", "d_ema200"), ("日线SMA200", "d_sma200"), ("周线EMA200", "w_ema200")):
+                    lv = ma.get(key)
+                    if lv and abs(bpx / lv - 1) <= 0.003:
+                        fire(f"ma_{key}_{lv}", f"📏 BTC {bpx:,.0f} 贴近{nm} {lv:,}（{(bpx/lv-1)*100:+.2f}%）", 6)
+            jseen = state.get("jin_seen")
+            if jseen is None:
+                state["jin_seen"] = [j["id"] for j in summary.get("jin10") or []]
+            else:
+                sent = 0
+                for j in reversed(summary.get("jin10") or []):
+                    if j["id"] in jseen or sent >= 4: continue
+                    alerts.append(f"⚡ 金十｜{j['text']}"); jseen.append(j["id"]); sent += 1
+                state["jin_seen"] = jseen[-400:]
+        except Exception as e: summary["errors"].append(f"rev/ma/jin alerts -> {str(e)[:120]}")
         # periodic brief every 30 min (multi-line)
         force_brief = os.environ.get("FORCE_BRIEF") == "1"
         if force_brief or now - state.get("brief", 0) >= 29 * 60:
@@ -570,6 +703,13 @@ try:
                         bs = sorted([b for b in o.get("below", []) + o.get("above", []) if abs(b["dist_pct"]) <= 10], key=lambda b: -b["usd"])[:2]
                         if bs: ocl.append(f"{sym} " + " · ".join(f"{fp(b['price'])} {b['usd']/1e8:.1f}亿({b['dist_pct']:+.1f}%)" for b in bs))
                     if ocl: L.append("链上强平: " + " | ".join(ocl))
+                except Exception: pass
+                try:
+                    ma = summary.get("ma") or {}
+                    mt = [f"{n} {ma[k]:,}" for n, k in (("日EMA200", "d_ema200"), ("日SMA200", "d_sma200"), ("周EMA200", "w_ema200")) if ma.get(k)]
+                    if mt: L.append("均线: " + " · ".join(mt))
+                    rv = summary.get("reversal") or {}
+                    if rv: L.append(f"反转: OI {rv['oi_yi']}/{rv['oi_target_yi']}{'✅' if rv['conds']['oi'] else '❌'} · 散户 {rv['retail_ls']:.2f}/2.3{'✅' if rv['conds']['ls'] else '❌'} · 长下影{'✅' if rv['conds']['wick'] else '❌'}")
                 except Exception: pass
                 accts = summary.get("accounts") or {}
                 if accts:
@@ -613,7 +753,7 @@ try:
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
         if alerts:
-            short = [x for x in alerts if not x.startswith("📊")]; briefs = [x for x in alerts if x.startswith("📊")]
+            short = [x for x in alerts if not x.startswith(("📊", "🔴 美国"))]; briefs = [x for x in alerts if x.startswith(("📊", "🔴 美国"))]
             msgs = ([ "\n".join(short) ] if short else []) + briefs
             for text in msgs:
                 for cid in [c.strip() for c in TG_CHAT.split(",") if c.strip()]:
