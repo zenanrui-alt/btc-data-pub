@@ -39,6 +39,7 @@ jobs:
           OKX_4_KEY: ${{ secrets.OKX_4_KEY }}
           OKX_4_SECRET: ${{ secrets.OKX_4_SECRET }}
           OKX_4_PASS: ${{ secrets.OKX_4_PASS }}
+          GRAPH_KEY: ${{ secrets.GRAPH_KEY }}
         run: python fetch.py
       - name: commit
         run: |
