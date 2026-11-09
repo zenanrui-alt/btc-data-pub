@@ -353,13 +353,18 @@ except Exception as e:
 
 # 5d) Whale/liquidation news relay (余烬 / Lookonchain / Onchain Lens via Chinese newsflash feeds)
 _news = []
-import re as _re, hashlib as _hl
+import re as _re, hashlib as _hl, html as _html
+_clean = lambda t: _re.sub(r"\s+", " ", _re.sub("<[^>]+>", "", _html.unescape(_html.unescape(t or "")))).strip()
 NEWS_KW = _re.compile(r"余烬|Ember|Lookonchain|Onchain ?Lens|链上(数据|分析)|巨鲸.{0,20}(清算|爆仓|强平|补仓|抵押|借出|转入|抛售)")
 try:
-    r = get("https://api.theblockbeats.news/v1/open-api/open-flash?size=50&page=1&type=push&lang=cn")
+    r = None
+    for _u in ("https://api.theblockbeats.info/v1/open-api/open-flash?size=50&page=1&type=push", "https://api.theblockbeats.news/v1/open-api/open-flash?size=50&page=1&type=push"):
+        try: r = get(_u); break
+        except Exception: r = None
+    if r is None: raise Exception("blockbeats unreachable")
     for x in ((r.get("data") or {}).get("data") or []):
-        t = (x.get("title") or "") + " " + _re.sub("<[^>]+>", "", x.get("content") or "")
-        if NEWS_KW.search(t): _news.append({"src": "律动", "title": x.get("title") or "", "body": _re.sub("<[^>]+>", "", x.get("content") or "")[:220], "link": x.get("link") or x.get("url") or ""})
+        t = _clean(x.get("title")) + " " + _clean(x.get("content"))
+        if NEWS_KW.search(t): _news.append({"src": "律动", "title": _clean(x.get("title")), "body": _clean(x.get("content"))[:220], "link": x.get("link") or x.get("url") or ""})
 except Exception as e:
     summary["errors"].append(f"news blockbeats -> {str(e)[:100]}")
 try:
@@ -367,7 +372,7 @@ try:
     xml = urllib.request.urlopen(req, timeout=20).read().decode("utf-8", "ignore")
     for item in _re.findall(r"<item>(.*?)</item>", xml, _re.S)[:50]:
         g = lambda tag: (_re.search(rf"<{tag}>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</{tag}>", item, _re.S) or [None, ""])[1]
-        title, desc, link = g("title"), _re.sub("<[^>]+>", "", g("description")), g("link")
+        title, desc, link = _clean(g("title")), _clean(g("description")), g("link")
         if NEWS_KW.search(title + " " + desc): _news.append({"src": "Odaily", "title": title, "body": desc[:220], "link": link})
 except Exception as e:
     summary["errors"].append(f"news odaily -> {str(e)[:100]}")
