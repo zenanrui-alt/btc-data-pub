@@ -752,11 +752,29 @@ try:
                 alerts.append("\n".join(L)); state["brief"] = now
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
+        # auto-subscribe: whitelisted Telegram usernames who press Start on the bot get added (no Secret edit needed)
+        TG_ALLOW = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_ALLOW_USERS", "U992026").split(",") if u.strip()}
+        subs = state.get("tg_subs", {})
+        try:
+            upd = get(f"https://api.telegram.org/bot{TG_TOKEN}/getUpdates?limit=100").get("result", [])
+            for u in upd:
+                m = u.get("message") or {}; fr = m.get("from") or {}; ch = m.get("chat") or {}
+                un = (fr.get("username") or "").lower(); cid = str(ch.get("id") or "")
+                if cid and un in TG_ALLOW and cid not in subs and cid not in TG_CHAT:
+                    subs[cid] = un
+                    alerts_new_sub = f"✅ 已加入行情提醒（@{fr.get('username')}）。之后的简报和提醒会同步发到这里。"
+                    try:
+                        urllib.request.urlopen(urllib.request.Request(f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+                            data=urllib.parse.urlencode({"chat_id": cid, "text": alerts_new_sub}).encode(), headers={"User-Agent": UA}), timeout=20).read()
+                    except Exception: pass
+                    alerts.append(f"👤 新成员已自动加入：@{fr.get('username')}")
+            state["tg_subs"] = subs
+        except Exception as e: summary["errors"].append(f"tg subs -> {str(e)[:80]}")
         if alerts:
             short = [x for x in alerts if not x.startswith(("📊", "🔴 美国"))]; briefs = [x for x in alerts if x.startswith(("📊", "🔴 美国"))]
             msgs = ([ "\n".join(short) ] if short else []) + briefs
             for text in msgs:
-                for cid in [c.strip() for c in TG_CHAT.split(",") if c.strip()]:
+                for cid in [c.strip() for c in TG_CHAT.split(",") if c.strip()] + [c for c in subs if c not in TG_CHAT]:
                     try:
                         urllib.request.urlopen(urllib.request.Request(
                             f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
