@@ -264,7 +264,14 @@ def _fam(s):
     for k, v in FAM.items():
         if s in v: return k
     return "STABLE" if s in STABLE else "OTHER"
-if GRAPH:
+_aave_scan = GRAPH and (dt.datetime.utcnow().minute < 15 or os.environ.get("FORCE_BRIEF") == "1")
+_aave_cache = []
+if GRAPH and not _aave_scan:
+    try:
+        _aave_cache = (json.load(open("alerts_state.json")) if os.path.exists("alerts_state.json") else {}).get("aave_cache", [])
+        _whales.extend(_aave_cache)
+    except Exception: pass
+if _aave_scan:
     SUBG = [x.split(":") for x in os.environ.get("AAVE_SUBGRAPHS",
             "eth:Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g,arb:DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B,base:GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF").split(",")]
     for chain, sid in SUBG:
@@ -319,6 +326,7 @@ if GRAPH:
                                             "liq": _px_now[fam] * ratio, "entry": None, "lev": None, "hf": round(hf, 3)})
         except Exception as e:
             summary["errors"].append(f"aave {chain} -> {str(e)[:120]}")
+if _aave_scan: _aave_cache = [w for w in _whales if w["src"].startswith("Aave")]
 # --- build map ---
 try:
     oc = {}
@@ -507,6 +515,7 @@ try:
                 if wid not in cur and usd >= 3e7 and _whales:
                     fire(f"wgone_{wid}", f"🐋 巨鲸消失 {wid.split('|')[2]} {'多' if wid.split('|')[3]=='long' else '空'} {usd/1e8:.2f}亿（原强平 {fp(lq)}）= 平仓或被清算", 12)
             if _whales: state["whales"] = cur
+            if _aave_scan: state["aave_cache"] = _aave_cache
             seen = state.get("news_seen")
             if seen is None:
                 state["news_seen"] = [n["id"] for n in _news]
