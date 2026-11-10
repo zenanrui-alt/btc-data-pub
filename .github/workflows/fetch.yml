@@ -41,6 +41,7 @@ jobs:
           OKX_4_SECRET: ${{ secrets.OKX_4_SECRET }}
           OKX_4_PASS: ${{ secrets.OKX_4_PASS }}
           GRAPH_KEY: ${{ secrets.GRAPH_KEY }}
+          WHALE_ALERT_KEY: ${{ secrets.WHALE_ALERT_KEY }}
         run: |
           git config user.name "btc-data-bot"
           git config user.email "bot@users.noreply.github.com"
