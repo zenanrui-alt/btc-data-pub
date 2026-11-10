@@ -520,10 +520,29 @@ def _yh(sym):
     return {"last": round(last, 3), "chg1h": round((last / h1[-1] - 1) * 100, 2) if h1 else None, "chg24h": round((last / base_d - 1) * 100, 2) if base_d else None}
 try:
     mk = {}
-    for nm, sy in (("NQ", "NQ=F"), ("DXY", "DX-Y.NYB"), ("US10Y", "^TNX"), ("GOLD", "GC=F"), ("OIL", "CL=F")):
-        try: mk[nm] = _yh(sy)
-        except Exception as e: summary["errors"].append(f"yahoo {nm} -> {str(e)[:60]}")
-    summary["macro_mkt"] = mk
+    try:
+        _st = json.load(open("alerts_state.json")) if os.path.exists("alerts_state.json") else {}
+    except Exception:
+        _st = {}
+    _hist = _st.get("mk_hist", {})
+    def _stooq(sym):
+        req = urllib.request.Request(f"https://stooq.com/q/d/l/?s={sym}&i=d", headers={"User-Agent": UA})
+        rows = [r.split(",") for r in urllib.request.urlopen(req, timeout=20).read().decode().strip().splitlines()[1:] if r.count(",") >= 4]
+        return float(rows[-1][4]), float(rows[-2][4])
+    srcs = (("NQ", "stooq", "nq.f"), ("DXY", "stooq", "dx.f"), ("US10Y", "stooq", "10usy.b"), ("GOLD", "okx", "XAU-USDT-SWAP"), ("OIL", "stooq", "cl.f"))
+    for nm, src, sy in srcs:
+        try:
+            if src == "okx":
+                t = get(f"https://www.okx.com/api/v5/market/ticker?instId={sy}")["data"][0]; last = float(t["last"]); prev = float(t["open24h"])
+            else:
+                try: last, prev = _stooq(sy)
+                except Exception: r_ = _yh(sy.upper().replace(".F", "=F")); mk[nm] = r_; continue
+            h = [x for x in _hist.get(nm, []) if time.time() - x[0] >= 3300]
+            mk[nm] = {"last": round(last, 3), "chg24h": round((last / prev - 1) * 100, 2) if prev else None, "chg1h": round((last / h[-1][1] - 1) * 100, 2) if h else None}
+            _hist[nm] = ([x for x in _hist.get(nm, []) if time.time() - x[0] < 7200] + [[time.time(), last]])[-30:]
+        except Exception as e:
+            summary["errors"].append(f"mkt {nm} -> {str(e)[:60]}")
+    summary["macro_mkt"] = mk; summary["_mk_hist"] = _hist
 except Exception as e:
     summary["errors"].append(f"macro_mkt -> {str(e)[:80]}")
 try:
@@ -946,6 +965,7 @@ try:
                             data=urllib.parse.urlencode({"chat_id": cid, "text": text}).encode(), headers={"User-Agent": UA}), timeout=20).read()
                     except Exception as e:
                         summary["errors"].append(f"tg {cid[:4]}.. -> {e}")
+        state["mk_hist"] = summary.pop("_mk_hist", state.get("mk_hist", {}))
         json.dump(state, open("alerts_state.json", "w"))
         summary["alerts_sent"] = alerts
 except Exception as _e:
