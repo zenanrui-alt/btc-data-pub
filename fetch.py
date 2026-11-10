@@ -111,6 +111,7 @@ if CQ:
         except Exception as e:
             summary["errors"].append(f"cq {k} -> {e}")
 
+_LIQMAP_RAW = None
 # 5) Coinglass extras: global OI / long-short / top traders / liquidations / liquidation map / orderbook / options / stablecoin
 if CG:
     summary["cg"] = {}
@@ -146,6 +147,7 @@ if CG:
                     if isinstance(d, list) and len(d) > 8:
                         d = d[-8:]
                     txt = json.dumps(d, ensure_ascii=False)
+                    if key == "liq_map_agg": _LIQMAP_RAW = d
                     summary["cg"][key] = d if len(txt) < 6000 else json.loads(txt[:0] or "null") or {"truncated_sample": txt[:3000]}
                     ok = True; break
                 else:
@@ -351,6 +353,37 @@ try:
 except Exception as e:
     summary["errors"].append(f"onchain map -> {str(e)[:120]}")
 
+# 5c2) High-leverage fuel within ±5%: exchange liquidation map (Coinglass) + on-chain whales near liquidation
+try:
+    def _find_map(o):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k == "liqMapV2" and isinstance(v, dict): return v
+                r_ = _find_map(v)
+                if r_: return r_
+        elif isinstance(o, list):
+            for v in o:
+                r_ = _find_map(v)
+                if r_: return r_
+        return None
+    pxb = _px_now.get("BTC")
+    fuel = {"ex_long": 0.0, "ex_short": 0.0, "oc_long": 0.0, "oc_short": 0.0}
+    lm = _find_map(_LIQMAP_RAW) if _LIQMAP_RAW else None
+    if lm and pxb:
+        for k, rows in lm.items():
+            for row in rows:
+                pr, usd = float(row[0]), float(row[1] or 0)
+                dpc = (pr / pxb - 1) * 100
+                if -5 <= dpc < 0: fuel["ex_long"] += usd
+                elif 0 <= dpc <= 5: fuel["ex_short"] += usd
+    for w in _whales:
+        if w["sym"] == "BTC" and pxb:
+            dpc = (w["liq"] / pxb - 1) * 100
+            if w["side"] == "long" and -5 <= dpc < 0: fuel["oc_long"] += w["usd"]
+            elif w["side"] == "short" and 0 <= dpc <= 5: fuel["oc_short"] += w["usd"]
+    summary["fuel5"] = {k: round(v) for k, v in fuel.items()}; summary["fuel5"]["has_exmap"] = bool(lm)
+except Exception as e:
+    summary["errors"].append(f"fuel5 -> {str(e)[:100]}")
 # 5d) Whale/liquidation news relay (余烬 / Lookonchain / Onchain Lens via Chinese newsflash feeds)
 _news = []
 import re as _re, hashlib as _hl, html as _html
@@ -865,6 +898,10 @@ try:
                         bs = sorted([b for b in o.get("below", []) + o.get("above", []) if abs(b["dist_pct"]) <= 10], key=lambda b: -b["usd"])[:2]
                         if bs: ocl.append(f"{sym} " + " · ".join(f"{fp(b['price'])} {b['usd']/1e8:.1f}亿({b['dist_pct']:+.1f}%)" for b in bs))
                     if ocl: L.append("链上强平: " + " | ".join(ocl))
+                    fu5 = summary.get("fuel5")
+                    if fu5:
+                        dl = fu5["ex_long"] + fu5["oc_long"]; up = fu5["ex_short"] + fu5["oc_short"]
+                        L.append(f"高杠杆燃料±5%: 下方多单≈{dl/1e8:.1f}亿(交易所{fu5['ex_long']/1e8:.1f}+链上{fu5['oc_long']/1e8:.1f}) | 上方空单≈{up/1e8:.1f}亿(交易所{fu5['ex_short']/1e8:.1f}+链上{fu5['oc_short']/1e8:.1f})")
                 except Exception: pass
                 try:
                     ma = summary.get("ma") or {}
