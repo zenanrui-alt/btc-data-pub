@@ -376,7 +376,7 @@ try:
         if NEWS_KW.search(title + " " + desc): _news.append({"src": "Odaily", "title": title, "body": desc[:220], "link": link})
 except Exception as e:
     summary["errors"].append(f"news odaily -> {str(e)[:100]}")
-_news = [n for n in _news if not _re.search(r"HYPE|Hyperliquid 代币", n["title"])]
+_news = [n for n in _news if not _re.search(r"HYPE|Hyperliquid 代币", n["title"]) and (_re.search(r"\d+(\.\d+)?\s*亿|\d{4,}(\.\d+)?\s*万|余烬", n["title"] + n["body"]))]
 for n in _news: n["id"] = _hl.md5((n["title"][:40]).encode()).hexdigest()[:12]
 summary["whale_news"] = _news[:10]
 
@@ -501,6 +501,107 @@ try:
 except Exception as e:
     summary["errors"].append(f"cpi -> {str(e)[:100]}")
 
+# 5f) Cross-asset panel (Yahoo), Deribit options (DVOL, 10% OTM skew, big trades), alt-coin positioning (OKX), Fear & Greed
+def _yh(sym):
+    r = None
+    for host in ("query1", "query2"):
+        try:
+            r = get(f"https://{host}.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(sym)}?range=2d&interval=5m")["chart"]["result"][0]; break
+        except Exception:
+            time.sleep(1)
+    if r is None: raise Exception("yahoo unavailable")
+    t = r["timestamp"]; c = r["indicators"]["quote"][0]["close"]
+    pts = [(tt, cc) for tt, cc in zip(t, c) if cc is not None]
+    last_t, last = pts[-1]
+    prev = r["meta"].get("chartPreviousClose") or r["meta"].get("previousClose")
+    h1 = [cc for tt, cc in pts if tt <= last_t - 3600]
+    day = [cc for tt, cc in pts if tt <= last_t - 86400]
+    base_d = day[-1] if day else prev
+    return {"last": round(last, 3), "chg1h": round((last / h1[-1] - 1) * 100, 2) if h1 else None, "chg24h": round((last / base_d - 1) * 100, 2) if base_d else None}
+try:
+    mk = {}
+    for nm, sy in (("NQ", "NQ=F"), ("DXY", "DX-Y.NYB"), ("US10Y", "^TNX"), ("GOLD", "GC=F"), ("OIL", "CL=F")):
+        try: mk[nm] = _yh(sy)
+        except Exception as e: summary["errors"].append(f"yahoo {nm} -> {str(e)[:60]}")
+    summary["macro_mkt"] = mk
+except Exception as e:
+    summary["errors"].append(f"macro_mkt -> {str(e)[:80]}")
+try:
+    opt = {}
+    nowms = int(time.time() * 1000)
+    dv = get(f"https://www.deribit.com/api/v2/public/get_volatility_index_data?currency=BTC&resolution=3600&start_timestamp={nowms-26*3600*1000}&end_timestamp={nowms}")["result"]["data"]
+    if dv: opt["dvol"] = round(dv[-1][4], 1); opt["dvol_24h"] = round(dv[-1][4] - dv[0][4], 1)
+    bs = get("https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency=BTC&kind=option")["result"]
+    spot = bs[0].get("underlying_price") or bs[0].get("estimated_delivery_price")
+    import collections as _co
+    exp = _co.defaultdict(list)
+    for x in bs:
+        p = x["instrument_name"].split("-")
+        if len(p) == 4 and x.get("mark_iv"): exp[p[1]].append((float(p[2]), p[3], float(x["mark_iv"]), float(x.get("open_interest") or 0)))
+    def _dte(s):
+        try: return (dt.datetime.strptime(s, "%d%b%y") - dt.datetime.utcnow()).days
+        except Exception: return 999
+    cand = sorted([e for e in exp if 6 <= _dte(e) <= 40], key=_dte)
+    if cand and spot:
+        rows = exp[cand[0]]
+        put = min([r for r in rows if r[1] == "P"], key=lambda r: abs(r[0] - spot * 0.9))
+        call = min([r for r in rows if r[1] == "C"], key=lambda r: abs(r[0] - spot * 1.1))
+        opt["skew_exp"] = cand[0]; opt["put10_iv"] = put[2]; opt["call10_iv"] = call[2]; opt["skew10"] = round(put[2] - call[2], 1)
+    tr = get("https://www.deribit.com/api/v2/public/get_last_trades_by_currency?currency=BTC&kind=option&count=1000&sorting=desc")["result"]["trades"]
+    big = []; pb = cb = 0.0
+    for t_ in tr:
+        if nowms - t_["timestamp"] > 3600 * 1000: continue
+        side = t_["instrument_name"][-1]; amt = float(t_["amount"])
+        if t_["direction"] == "buy":
+            if side == "P": pb += amt
+            else: cb += amt
+        if amt >= 100: big.append({"inst": t_["instrument_name"], "dir": t_["direction"], "amt": amt, "iv": t_.get("iv"), "block": bool(t_.get("block_trade_id"))})
+    opt["buy_puts_1h"] = round(pb); opt["buy_calls_1h"] = round(cb); opt["big_1h"] = big[:10]
+    summary["options"] = opt
+except Exception as e:
+    summary["errors"].append(f"options -> {str(e)[:100]}")
+try:
+    alts = {}
+    for c_ in ("ETH", "SOL", "XRP", "ADA", "DOGE", "UNI", "SUI", "LTC"):
+        try:
+            oi = get(f"https://www.okx.com/api/v5/rubik/stat/contracts/open-interest-volume?ccy={c_}&period=1H")["data"]
+            ls = get(f"https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?ccy={c_}&period=1H")["data"]
+            fr = get(f"https://www.okx.com/api/v5/public/funding-rate?instId={c_}-USDT-SWAP")["data"][0]
+            alts[c_] = {"oi_m": round(float(oi[0][1]) / 1e6, 1), "oi_chg24": round((float(oi[0][1]) / float(oi[24][1]) - 1) * 100, 1) if len(oi) > 24 else None,
+                        "ls": float(ls[0][1]), "fund": round(float(fr["fundingRate"]) * 100, 4)}
+        except Exception as e:
+            summary["errors"].append(f"alt {c_} -> {str(e)[:60]}")
+    summary["alts"] = alts
+except Exception as e:
+    summary["errors"].append(f"alts -> {str(e)[:80]}")
+try:
+    fg = get("https://api.alternative.me/fng/?limit=2")["data"]
+    summary["fear_greed"] = {"now": int(fg[0]["value"]), "label": fg[0]["value_classification"], "prev": int(fg[1]["value"])}
+except Exception as e:
+    summary["errors"].append(f"fng -> {str(e)[:60]}")
+
+# 5g) Whale Alert: large BTC exchange flows and stablecoin mints/burns (needs WHALE_ALERT_KEY)
+WA = os.environ.get("WHALE_ALERT_KEY", "").strip()
+if WA:
+    try:
+        r = get(f"https://api.whale-alert.io/v1/transactions?api_key={WA}&min_value=5000000&start={int(time.time())-3500}&limit=100")
+        txs = r.get("transactions") or []
+        agg = {"btc_to_ex": 0.0, "btc_from_ex": 0.0, "mint_usd": 0.0, "burn_usd": 0.0}; big = []
+        for t_ in txs:
+            sym = (t_.get("symbol") or "").upper(); typ = t_.get("transaction_type"); amt = float(t_.get("amount") or 0); usd = float(t_.get("amount_usd") or 0)
+            fr_ = t_.get("from") or {}; to_ = t_.get("to") or {}
+            if sym == "BTC" and typ == "transfer":
+                if to_.get("owner_type") == "exchange" and fr_.get("owner_type") != "exchange": agg["btc_to_ex"] += amt; dirn = "in"
+                elif fr_.get("owner_type") == "exchange" and to_.get("owner_type") != "exchange": agg["btc_from_ex"] += amt; dirn = "out"
+                else: dirn = "other"
+                if amt >= 500: big.append({"h": t_.get("hash", "")[:16], "sym": sym, "amt": round(amt), "usd": round(usd), "dir": dirn, "from": fr_.get("owner") or fr_.get("owner_type"), "to": to_.get("owner") or to_.get("owner_type")})
+            elif sym in ("USDT", "USDC") and typ in ("mint", "burn"):
+                agg["mint_usd" if typ == "mint" else "burn_usd"] += usd
+                if usd >= 5e7: big.append({"h": t_.get("hash", "")[:16], "sym": sym, "amt": round(amt), "usd": round(usd), "dir": typ, "from": fr_.get("owner"), "to": to_.get("owner")})
+        summary["whale_alert"] = {k: round(v) for k, v in agg.items()}; summary["whale_alert"]["big"] = big[:15]
+    except Exception as e:
+        summary["errors"].append(f"whale_alert -> {str(e)[:100]}")
+
 # 6) Telegram alerts (market only). State kept in alerts_state.json to avoid repeats.
 try:
     TG_TOKEN = os.environ.get("TG_TOKEN", "").strip(); TG_CHAT = os.environ.get("TG_CHAT_ID", "").strip()
@@ -515,11 +616,12 @@ try:
                 alerts.append(text); state[key] = now
         # heatmap proximity: strongest band within 0.6%
         for sym, h in summary["heatmap"].items():
+            if sym not in ("BTC", "ETH", "SOL"): continue
             for side, rows in (("支撑", h["below"]), ("起飞", h["above"])):
                 for b in rows[:2]:
-                    if b["strength"] >= 0.8 and abs(b["dist_pct"]) <= 0.6:
+                    if b["strength"] >= 0.9 and abs(b["dist_pct"]) <= 0.5:
                         fire(f"hm_{sym}_{side}_{round(b['price'], 0 if b['price']>=100 else 3)}",
-                             (f"🔥 {sym} {fp(h['price'])} 逼近短期支撑 {fp(b['price'])}（{b['dist_pct']:+.2f}%，强度{b['strength']}）跌破=多头止损连锁" if side=="支撑" else f"🚀 {sym} {fp(h['price'])} 逼近突破起飞点 {fp(b['price'])}（{b['dist_pct']:+.2f}%，强度{b['strength']}）站上=空头止损连锁"), 3)
+                             (f"🔥 {sym} {fp(h['price'])} 逼近短期支撑 {fp(b['price'])}（{b['dist_pct']:+.2f}%，强度{b['strength']}）" if side=="支撑" else f"🚀 {sym} {fp(h['price'])} 逼近突破起飞点 {fp(b['price'])}（{b['dist_pct']:+.2f}%，强度{b['strength']}）"), 3)
         # ETF big flow (latest day)
         if summary.get("etf"):
             e = summary["etf"][-1]; fu = e.get("flow_usd")
@@ -528,10 +630,10 @@ try:
                 fire(f"etf_{d}", f"🏦 ETF {d} 净{'流入' if fu>0 else '流出'} {abs(fu)/1e6:.0f}M", 20)
         cq = summary.get("cryptoquant") or {}
         if cq.get("exch_netflow_day"):
-            r = cq["exch_netflow_day"][0]
+            r = cq["exch_netflow_day"][1] if len(cq["exch_netflow_day"]) > 1 else cq["exch_netflow_day"][0]
             if r["netflow_total"] >= 5000: fire(f"nf_{r['date']}", f"⚠️ 链上 {r['date'][5:]} 交易所净流入 +{r['netflow_total']:.0f} BTC（进所抛压）", 20)
         if cq.get("miner_outflow"):
-            r = cq["miner_outflow"][0]
+            r = cq["miner_outflow"][1] if len(cq["miner_outflow"]) > 1 else cq["miner_outflow"][0]
             if r["outflow_total"] >= 8000: fire(f"mo_{r['date']}", f"⛏️ 矿工 {r['date'][5:]} 流出 {r['outflow_total']:.0f} BTC", 20)
         # 2) ladder feet proximity (main account): coin -> (减仓脚/止盈, 补仓脚)
         FEET = {"BTC": (82474.08, 76441.91), "SOL": (106.31, 93.89), "UNI": (8.0167, 6.9749), "SUI": (0.9645, 0.8792), "ADA": (0.2209, 0.1994)}
@@ -614,7 +716,7 @@ try:
                 if r < 400: fire(f"acct_{label}_400", f"🚨 OKX {label}账户 维持保证金率 {r:.0f}% <400%，距强平≈{d}%", 2)
                 elif r < 600: fire(f"acct_{label}_600", f"⚠️ OKX {label}账户 维持保证金率 {r:.0f}% <600%，距强平≈{d}%", 4)
             for c, v in (a.get("coins") or {}).items():
-                if v.get("vs_avg_pct") is not None and v["vs_avg_pct"] <= -20: fire(f"acct_{label}_{c}_20", f"📉 {label} {c} 标记价低于成本 {v['vs_avg_pct']}%", 12)
+                pass  # below-cost alerts removed (no action value)
         # BTC 15m move via Deribit
         try:
             r = get("https://www.deribit.com/api/v2/public/get_tradingview_chart_data?instrument_name=BTC-PERPETUAL&resolution=15&start_timestamp=%d&end_timestamp=%d" % (int((now-1800)*1000), int(now*1000)))["result"]
@@ -681,19 +783,43 @@ try:
                     alerts.append(f"⚡ 金十｜{j['text']}"); jseen.append(j["id"]); sent += 1
                 state["jin_seen"] = jseen[-400:]
         except Exception as e: summary["errors"].append(f"rev/ma/jin alerts -> {str(e)[:120]}")
+        # cross-asset shocks and big option trades
+        try:
+            mk = summary.get("macro_mkt") or {}
+            nq = mk.get("NQ") or {}; dx = mk.get("DXY") or {}
+            if nq.get("chg1h") is not None and nq["chg1h"] <= -1.2:
+                fire(f"nq_{int(now//3600)}", f"🌐 纳指期货 1 小时 {nq['chg1h']:+.2f}%（外部风险资产在跌，BTC 易被拖）", 3)
+            if dx.get("chg1h") is not None and dx["chg1h"] >= 0.4:
+                fire(f"dxy_{int(now//3600)}", f"🌐 美元指数 1 小时 {dx['chg1h']:+.2f}% → {dx['last']}（美元急升，压风险资产）", 3)
+            for b in (summary.get("options") or {}).get("big_1h", []):
+                if b["amt"] >= 300 and b["dir"] == "buy":
+                    fire(f"opt_{b['inst']}_{int(b['amt'])}", f"🎯 期权大单：买入 {b['inst']} {b['amt']:.0f} BTC" + ("（大宗）" if b["block"] else "") + ("——有人在买下跌保护" if b["inst"].endswith("P") else "——有人在押上涨"), 6)
+        except Exception as e: summary["errors"].append(f"xasset alerts -> {str(e)[:80]}")
+        # Whale Alert pushes
+        try:
+            for b in (summary.get("whale_alert") or {}).get("big", []):
+                if b["sym"] == "BTC" and b["amt"] >= 1000 and b["dir"] in ("in", "out"):
+                    fire(f"wa_{b['h']}", f"{'⬆️' if b['dir']=='in' else '⬇️'} {b['amt']:,} BTC（${b['usd']/1e6:.0f}M）{b['from']} → {b['to']}" + ("——转入交易所，可能要卖" if b["dir"] == "in" else "——从交易所提走，偏囤币"), 24)
+                elif b["sym"] in ("USDT", "USDC") and b["usd"] >= 1e8:
+                    fire(f"wa_{b['h']}", f"💵 {b['sym']} {'增发' if b['dir']=='mint' else '销毁'} ${b['usd']/1e6:.0f}M" + ("——新子弹进场" if b["dir"] == "mint" else "——资金离场"), 24)
+        except Exception as e: summary["errors"].append(f"wa alerts -> {str(e)[:80]}")
         # periodic brief every 30 min (multi-line)
         force_brief = os.environ.get("FORCE_BRIEF") == "1"
         if force_brief or now - state.get("brief", 0) >= 29 * 60:
             try:
                 L = [f"📊 {dt.datetime.utcnow().strftime('%H:%M')}Z", "━━━━━━━━━━"]
+                small = []
                 for sym, h in summary["heatmap"].items():
                     b = max(h["below"], key=lambda x: x["strength"]) if h["below"] else None
                     a = max(h["above"], key=lambda x: x["strength"]) if h["above"] else None
-                    L.append(f"{sym} {fp(h['price'])}")
-                    L.append("  " + (f"支撑 {fp(b['price'])} ({b['dist_pct']:+.1f}%)" if b else "支撑 —") + "  " + (f"起飞 {fp(a['price'])} ({a['dist_pct']:+.1f}%)" if a else "起飞 —"))
+                    if sym in ("BTC", "ETH", "SOL"):
+                        L.append(f"{sym} {fp(h['price'])}  " + (f"支撑 {fp(b['price'])} ({b['dist_pct']:+.1f}%)" if b else "支撑 —") + "  " + (f"起飞 {fp(a['price'])} ({a['dist_pct']:+.1f}%)" if a else "起飞 —"))
+                    else:
+                        small.append(f"{sym} {fp(h['price'])}({fp(b['price']) if b else '—'}/{fp(a['price']) if a else '—'})")
+                if small: L.append("山寨(支撑/起飞): " + " · ".join(small))
                 L.append("━━━━━━━━━━")
                 cb = summary.get("coinbase") or {}
-                if cb.get("buy_ratio") is not None: L.append(f"CB 吃单买 {cb['buy_ratio']}%  溢价 {cb.get('premium_pct')}%")
+                if cb.get("premium_pct") is not None: L.append(f"Coinbase 溢价 {cb.get('premium_pct')}%（正=美国在买）")
                 if summary.get("etf"):
                     e = summary["etf"][-1]; L.append(f"ETF {dt.datetime.utcfromtimestamp(e['timestamp']/1000).strftime('%m-%d')}: {e.get('flow_usd',0)/1e6:+.0f}M")
                 row = []
@@ -727,12 +853,24 @@ try:
                     if mt: L.append("均线: " + " · ".join(mt))
                     scb = (summary.get("stablecoins") or {}).get("USDT")
                     if scb: L.append(f"USDT 市值 {scb['now_b']:.0f}B | 7天 {scb['chg7_b']:+.1f}B · 30天 {scb['chg30_b']:+.1f}B · 60天 {scb['chg60_b']:+.1f}B")
+                    mk = summary.get("macro_mkt") or {}
+                    xs = [f"{n} {mk[k]['chg24h']:+.1f}%" for n, k in (("纳指", "NQ"), ("美元", "DXY"), ("黄金", "GOLD"), ("原油", "OIL")) if mk.get(k) and mk[k].get("chg24h") is not None]
+                    if mk.get("US10Y"): xs.append(f"10Y {mk['US10Y']['last']:.2f}%")
+                    if xs: L.append("外部24h: " + " · ".join(xs))
+                    op = summary.get("options") or {}
+                    if op.get("dvol") is not None: L.append(f"期权: DVOL {op['dvol']}({op.get('dvol_24h',0):+.1f}) · 10%看跌−看涨 IV {op.get('skew10','—')} · 1h 买看跌 {op.get('buy_puts_1h',0)} / 买看涨 {op.get('buy_calls_1h',0)} BTC")
+                    al = summary.get("alts") or {}
+                    if al: L.append("山寨 OI24h/散户/费率: " + " · ".join(f"{c} {v['oi_chg24']:+.0f}%/{v['ls']:.1f}/{v['fund']:.3f}%" for c, v in al.items() if c in ("ETH", "SOL", "XRP", "ADA") and v.get("oi_chg24") is not None))
+                    wa = summary.get("whale_alert")
+                    if wa: L.append(f"大额链上(1h): BTC 进所 {wa['btc_to_ex']:,} / 出所 {wa['btc_from_ex']:,} · 稳定币 增发 ${wa['mint_usd']/1e6:.0f}M / 销毁 ${wa['burn_usd']/1e6:.0f}M")
+                    fgv = summary.get("fear_greed")
+                    if fgv: L.append(f"恐慌贪婪 {fgv['now']}（{fgv['label']}，昨 {fgv['prev']}）")
                     rv = summary.get("reversal") or {}
                     if rv: L.append(f"反转: OI {rv['oi_yi']}/{rv['oi_target_yi']}{'✅' if rv['conds']['oi'] else '❌'} · 散户 {rv['retail_ls']:.2f}/2.3{'✅' if rv['conds']['ls'] else '❌'} · 长下影{'✅' if rv['conds']['wick'] else '❌'}")
                 except Exception: pass
                 accts = summary.get("accounts") or {}
                 if accts:
-                    L.append("━━━━━━━━━━")
+                    L.append("━━━ 账户 ━━━")
                     for label, a in accts.items():
                         cross_coins = [(c, v) for c, v in (a.get("coins") or {}).items() if v.get("mode") == "cross" and v.get("liq_dist_pct") is not None]
                         cr_txt = f"全仓距强平 {a.get('drop_to_liq_pct')}%" if a.get('drop_to_liq_pct') is not None else ("全仓 " + " ".join(f"{c} {-v['liq_dist_pct']:.0f}%" for c, v in cross_coins) if cross_coins else "")
@@ -772,7 +910,7 @@ try:
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
         # auto-subscribe: whitelisted Telegram usernames who press Start on the bot get added (no Secret edit needed)
-        TG_ALLOW = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_ALLOW_USERS", "U992026").split(",") if u.strip()}
+        TG_ALLOW = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_ALLOW_USERS", "U992026,AXG688").split(",") if u.strip()}
         subs = state.get("tg_subs", {})
         try:
             upd = get(f"https://api.telegram.org/bot{TG_TOKEN}/getUpdates?limit=100").get("result", [])
@@ -790,10 +928,18 @@ try:
             state["tg_subs"] = subs
         except Exception as e: summary["errors"].append(f"tg subs -> {str(e)[:80]}")
         if alerts:
+            MKT_ONLY = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_MARKET_ONLY_USERS", "AXG688").split(",") if u.strip()}
+            acct_labels = [lb for lb, _ in ACCTS] + ["OKX", "账户", "逐仓", "全仓"]
             short = [x for x in alerts if not x.startswith(("📊", "🔴 美国"))]; briefs = [x for x in alerts if x.startswith(("📊", "🔴 美国"))]
-            msgs = ([ "\n".join(short) ] if short else []) + briefs
-            for text in msgs:
-                for cid in [c.strip() for c in TG_CHAT.split(",") if c.strip()] + [c for c in subs if c not in TG_CHAT]:
+            def _msgs(market_only):
+                sh = [x for x in short if not (market_only and any(lb in x for lb in acct_labels))]
+                br = [(x.split("━━━ 账户 ━━━")[0].rstrip() if market_only else x) for x in briefs]
+                return (["\n".join(sh)] if sh else []) + br
+            full_msgs = _msgs(False); mkt_msgs = _msgs(True)
+            recips = [c.strip() for c in TG_CHAT.split(",") if c.strip()] + [c for c in subs if c not in TG_CHAT]
+            for cid in recips:
+                mo = (subs.get(cid) or "").lower() in MKT_ONLY
+                for text in (mkt_msgs if mo else full_msgs):
                     try:
                         urllib.request.urlopen(urllib.request.Request(
                             f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
