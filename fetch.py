@@ -382,6 +382,15 @@ try:
             if w["side"] == "long" and -5 <= dpc < 0: fuel["oc_long"] += w["usd"]
             elif w["side"] == "short" and 0 <= dpc <= 5: fuel["oc_short"] += w["usd"]
     summary["fuel5"] = {k: round(v) for k, v in fuel.items()}; summary["fuel5"]["has_exmap"] = bool(lm)
+    try:
+        summary["okx_top_pos"] = float(get("https://www.okx.com/api/v5/rubik/stat/contracts/long-short-position-ratio-contract-top-trader?instId=BTC-USDT-SWAP&period=1H")["data"][0][1])
+    except Exception: pass
+    ent = {}
+    for side in ("long", "short"):
+        ws = [w for w in _whales if w["sym"] == "BTC" and w["side"] == side and w.get("entry") and w["usd"] >= 2e7]
+        if ws:
+            tot = sum(w["usd"] for w in ws); ent[side] = {"avg": round(sum(w["entry"] * w["usd"] for w in ws) / tot), "usd": round(tot), "n": len(ws)}
+    summary["whale_entry"] = ent
 except Exception as e:
     summary["errors"].append(f"fuel5 -> {str(e)[:100]}")
 # 5d) Whale/liquidation news relay (余烬 / Lookonchain / Onchain Lens via Chinese newsflash feeds)
@@ -599,6 +608,13 @@ try:
         put = min([r for r in rows if r[1] == "P"], key=lambda r: abs(r[0] - spot * 0.9))
         call = min([r for r in rows if r[1] == "C"], key=lambda r: abs(r[0] - spot * 1.1))
         opt["skew_exp"] = cand[0]; opt["put10_iv"] = put[2]; opt["call10_iv"] = call[2]; opt["skew10"] = round(put[2] - call[2], 1)
+    try:
+        big_exp = max([e for e in exp if 0 <= _dte(e) <= 40], key=lambda e: sum(r[3] for r in exp[e]))
+        rows = exp[big_exp]
+        opt["key_exp"] = big_exp
+        opt["key_puts"] = [int(r[0]) for r in sorted([r for r in rows if r[1] == "P"], key=lambda r: -r[3])[:3]]
+        opt["key_calls"] = [int(r[0]) for r in sorted([r for r in rows if r[1] == "C"], key=lambda r: -r[3])[:3]]
+    except Exception: pass
     tr = get("https://www.deribit.com/api/v2/public/get_last_trades_by_currency?currency=BTC&kind=option&count=1000&sorting=desc")["result"]["trades"]
     big = []; pb = cb = 0.0
     for t_ in tr:
@@ -869,61 +885,67 @@ try:
                     else:
                         small.append(f"{sym} {fp(h['price'])}({fp(b['price']) if b else '—'}/{fp(a['price']) if a else '—'})")
                 if small: L.append("山寨(支撑/起飞): " + " · ".join(small))
-                L.append("━━━━━━━━━━")
-                cb = summary.get("coinbase") or {}
-                if cb.get("premium_pct") is not None: L.append(f"Coinbase 溢价 {cb.get('premium_pct')}%（正=美国在买）")
-                if summary.get("etf"):
-                    e = summary["etf"][-1]; L.append(f"ETF {dt.datetime.utcfromtimestamp(e['timestamp']/1000).strftime('%m-%d')}: {e.get('flow_usd',0)/1e6:+.0f}M")
-                row = []
-                if cq.get("exch_netflow_day"):
-                    r0 = cq["exch_netflow_day"][0]; row.append(f"链上 {r0['date'][5:]} 净流入 {r0['netflow_total']:+,.0f}")
-                if cq.get("miner_outflow"): row.append(f"矿工 {cq['miner_outflow'][0]['outflow_total']:,.0f}")
-                if row: L.append(" | ".join(row))
-                row = []
                 cgx = summary.get("cg") or {}
                 try:
-                    if cgx.get("ls_global_1h"): row.append(f"散户多空 {float(cgx['ls_global_1h'][-1].get('global_account_long_short_ratio', cgx['ls_global_1h'][-1].get('longShortRatio', 0))):.2f}")
-                except Exception: pass
-                try:
-                    if cgx.get("ls_top_pos_1h"): row.append(f"大户持仓比 {float(cgx['ls_top_pos_1h'][-1].get('top_position_long_short_ratio', cgx['ls_top_pos_1h'][-1].get('longShortRatio', 0))):.2f}")
-                except Exception: pass
-                try:
-                    fr = cgx.get("funding_oi_weighted")
-                    if fr: row.append(f"费率 {float(fr[-1]['close']):.4f}%")
-                except Exception: pass
-                if row: L.append(" | ".join(row))
-                try:
-                    ocl = []
-                    for sym, o in (summary.get("onchain_liq") or {}).items():
-                        bs = sorted([b for b in o.get("below", []) + o.get("above", []) if abs(b["dist_pct"]) <= 10], key=lambda b: -b["usd"])[:2]
-                        if bs: ocl.append(f"{sym} " + " · ".join(f"{fp(b['price'])} {b['usd']/1e8:.1f}亿({b['dist_pct']:+.1f}%)" for b in bs))
-                    if ocl: L.append("链上强平: " + " | ".join(ocl))
+                    # ---------- 机构 / 大户 ----------
+                    L.append("━━━ 机构/大户 ━━━")
+                    if summary.get("etf"):
+                        e = summary["etf"][-1]; L.append(f"ETF {dt.datetime.utcfromtimestamp(e['timestamp']/1000).strftime('%m-%d')}: {e.get('flow_usd',0)/1e6:+.0f}M")
+                    cb = summary.get("coinbase") or {}
+                    row = []
+                    if cb.get("premium_pct") is not None: row.append(f"Coinbase 溢价 {cb.get('premium_pct')}%")
+                    if summary.get("okx_top_pos") is not None: row.append(f"OKX大户持仓比 {summary['okx_top_pos']:.2f}(<1偏空)")
+                    if row: L.append(" | ".join(row))
+                    op = summary.get("options") or {}
+                    if op.get("key_puts"): L.append(f"期权({op.get('key_exp')}) 防守位 {'/'.join(f'{k//1000}k' for k in op['key_puts'])} · 押注位 {'/'.join(f'{k//1000}k' for k in op.get('key_calls', []))} · 看跌溢价 {op.get('skew10','—')}")
+                    we = summary.get("whale_entry") or {}
+                    if we: L.append("链上大户均价: " + " · ".join(f"{'多' if sd=='long' else '空'} {v['avg']:,}（{v['usd']/1e8:.1f}亿/{v['n']}个）" for sd, v in we.items()))
+                    wa = summary.get("whale_alert")
+                    if wa: L.append(f"大额转账1h: BTC 进所 {wa['btc_to_ex']:,} / 出所 {wa['btc_from_ex']:,} · 稳定币 增发 ${wa['mint_usd']/1e6:.0f}M / 销毁 ${wa['burn_usd']/1e6:.0f}M")
+                    row = []
+                    if cq.get("exch_netflow_day"):
+                        r0 = cq["exch_netflow_day"][0]; row.append(f"交易所净流 {r0['date'][5:]} {r0['netflow_total']:+,.0f}")
+                    if cq.get("miner_outflow"): row.append(f"矿工 {cq['miner_outflow'][0]['outflow_total']:,.0f}")
+                    scb = (summary.get("stablecoins") or {}).get("USDT")
+                    if scb: row.append(f"USDT 7天 {scb['chg7_b']:+.1f}B")
+                    if row: L.append(" | ".join(row))
+                    # ---------- 散户 / 高杠杆 ----------
+                    L.append("━━━ 散户/高杠杆 ━━━")
+                    row = []
+                    try:
+                        if cgx.get("ls_global_1h"): row.append(f"散户多空 {float(cgx['ls_global_1h'][-1].get('global_account_long_short_ratio', 0)):.2f}")
+                    except Exception: pass
+                    rv = summary.get("reversal") or {}
+                    if rv: row.append(f"OKX OI {rv['oi_yi']}亿")
+                    try:
+                        fr = cgx.get("funding_oi_weighted")
+                        if fr: row.append(f"费率 {float(fr[-1]['close']):.4f}%")
+                    except Exception: pass
+                    if row: L.append(" | ".join(row))
                     fu5 = summary.get("fuel5")
                     if fu5:
                         dl = fu5["ex_long"] + fu5["oc_long"]; up = fu5["ex_short"] + fu5["oc_short"]
-                        L.append(f"高杠杆燃料±5%: 下方多单≈{dl/1e8:.1f}亿(交易所{fu5['ex_long']/1e8:.1f}+链上{fu5['oc_long']/1e8:.1f}) | 上方空单≈{up/1e8:.1f}亿(交易所{fu5['ex_short']/1e8:.1f}+链上{fu5['oc_short']/1e8:.1f})")
-                except Exception: pass
-                try:
+                        L.append(f"燃料±5%: 下方多单≈{dl/1e8:.1f}亿 | 上方空单≈{up/1e8:.1f}亿")
+                    ocl = []
+                    for sym, o in (summary.get("onchain_liq") or {}).items():
+                        bs = sorted([b for b in o.get("below", []) + o.get("above", []) if abs(b["dist_pct"]) <= 6], key=lambda b: -b["usd"])[:2]
+                        if bs: ocl.append(f"{sym} " + " · ".join(f"{fp(b['price'])} {b['usd']/1e8:.1f}亿({b['dist_pct']:+.1f}%)" for b in bs))
+                    if ocl: L.append("链上强平(近): " + " | ".join(ocl))
+                    al = summary.get("alts") or {}
+                    if al: L.append("山寨 OI24h/散户/费率: " + " · ".join(f"{c} {v['oi_chg24']:+.0f}%/{v['ls']:.1f}/{v['fund']:.3f}%" for c, v in al.items() if c in ("ETH", "SOL", "XRP", "ADA") and v.get("oi_chg24") is not None))
+                    if rv: L.append(f"反转: OI {rv['oi_yi']}/{rv['oi_target_yi']}{'✅' if rv['conds']['oi'] else '❌'} · 散户 {rv['retail_ls']:.2f}/2.3{'✅' if rv['conds']['ls'] else '❌'} · 长下影{'✅' if rv['conds']['wick'] else '❌'}")
+                    # ---------- 宏观 / 技术 ----------
+                    L.append("━━━ 宏观/技术 ━━━")
                     ma = summary.get("ma") or {}
                     mt = [f"{n} {ma[k]:,}" for n, k in (("日EMA200", "d_ema200"), ("365日", "d_sma365"), ("日SMA200", "d_sma200"), ("周EMA200", "w_ema200")) if ma.get(k)]
                     if mt: L.append("均线: " + " · ".join(mt))
-                    scb = (summary.get("stablecoins") or {}).get("USDT")
-                    if scb: L.append(f"USDT 市值 {scb['now_b']:.0f}B | 7天 {scb['chg7_b']:+.1f}B · 30天 {scb['chg30_b']:+.1f}B · 60天 {scb['chg60_b']:+.1f}B")
                     mk = summary.get("macro_mkt") or {}
                     xs = [f"{n} {mk[k]['chg24h']:+.1f}%" for n, k in (("纳指", "NQ"), ("美元", "DXY"), ("黄金", "GOLD"), ("原油", "OIL")) if mk.get(k) and mk[k].get("chg24h") is not None]
                     if mk.get("US10Y"): xs.append(f"10Y {mk['US10Y']['last']:.2f}%")
                     if xs: L.append("外部24h: " + " · ".join(xs))
-                    op = summary.get("options") or {}
-                    if op.get("dvol") is not None: L.append(f"期权: DVOL {op['dvol']}({op.get('dvol_24h',0):+.1f}) · 10%看跌−看涨 IV {op.get('skew10','—')} · 1h 买看跌 {op.get('buy_puts_1h',0)} / 买看涨 {op.get('buy_calls_1h',0)} BTC")
-                    al = summary.get("alts") or {}
-                    if al: L.append("山寨 OI24h/散户/费率: " + " · ".join(f"{c} {v['oi_chg24']:+.0f}%/{v['ls']:.1f}/{v['fund']:.3f}%" for c, v in al.items() if c in ("ETH", "SOL", "XRP", "ADA") and v.get("oi_chg24") is not None))
-                    wa = summary.get("whale_alert")
-                    if wa: L.append(f"大额链上(1h): BTC 进所 {wa['btc_to_ex']:,} / 出所 {wa['btc_from_ex']:,} · 稳定币 增发 ${wa['mint_usd']/1e6:.0f}M / 销毁 ${wa['burn_usd']/1e6:.0f}M")
                     fgv = summary.get("fear_greed")
-                    if fgv: L.append(f"恐慌贪婪 {fgv['now']}（{fgv['label']}，昨 {fgv['prev']}）")
-                    rv = summary.get("reversal") or {}
-                    if rv: L.append(f"反转: OI {rv['oi_yi']}/{rv['oi_target_yi']}{'✅' if rv['conds']['oi'] else '❌'} · 散户 {rv['retail_ls']:.2f}/2.3{'✅' if rv['conds']['ls'] else '❌'} · 长下影{'✅' if rv['conds']['wick'] else '❌'}")
-                except Exception: pass
+                    if fgv: L.append(f"恐慌贪婪 {fgv['now']}（{fgv['label']}）")
+                except Exception as e: summary["errors"].append(f"brief body -> {str(e)[:80]}")
                 accts = summary.get("accounts") or {}
                 if accts:
                     L.append("━━━ 账户 ━━━")
