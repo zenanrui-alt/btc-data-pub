@@ -396,7 +396,7 @@ try:
     dc = [float(x[4]) for x in okx_candles("BTC-USDT", "1Dutc", 10)]
     wc = [float(x[4]) for x in okx_candles("BTC-USDT", "1Wutc", 5)]
     summary["ma"] = {"d_ema200": round(_ema(dc, 200)) if len(dc) >= 250 else None, "d_sma200": round(sum(dc[-200:]) / 200) if len(dc) >= 200 else None,
-                     "d_sma50": round(sum(dc[-50:]) / 50) if len(dc) >= 50 else None, "w_ema200": round(_ema(wc, 200)) if len(wc) >= 220 else None, "n_d": len(dc), "n_w": len(wc)}
+                     "d_sma50": round(sum(dc[-50:]) / 50) if len(dc) >= 50 else None, "d_sma365": round(sum(dc[-365:]) / 365) if len(dc) >= 365 else None, "w_ema200": round(_ema(wc, 200)) if len(wc) >= 220 else None, "n_d": len(dc), "n_w": len(wc)}
 except Exception as e:
     summary["errors"].append(f"ma -> {str(e)[:100]}")
 REV_OI_BASE = float(os.environ.get("REV_OI_BASE", "38.3e8"))   # OKX BTC OI (USD) before the 11/08 knife
@@ -433,6 +433,19 @@ try:
     summary["jin10"] = jin[:15]
 except Exception as e:
     summary["jin10"] = []; summary["errors"].append(f"jin10 -> {str(e)[:100]}")
+# Stablecoin supply (DefiLlama public API): USDT and all stablecoins, 7/30/60-day change
+try:
+    sc = {}
+    for nm, u in (("USDT", "https://stablecoins.llama.fi/stablecoincharts/all?stablecoin=1"), ("ALL", "https://stablecoins.llama.fi/stablecoincharts/all")):
+        arr = get(u)
+        vals = [(int(x["date"]), float((x.get("totalCirculatingUSD") or x.get("totalCirculating") or {}).get("peggedUSD") or 0)) for x in arr]
+        vals = [v for v in vals if v[1] > 0]
+        if len(vals) > 61:
+            now_v = vals[-1][1]
+            sc[nm] = {"now_b": round(now_v / 1e9, 2), "chg7_b": round((now_v - vals[-8][1]) / 1e9, 2), "chg30_b": round((now_v - vals[-31][1]) / 1e9, 2), "chg60_b": round((now_v - vals[-61][1]) / 1e9, 2)}
+    summary["stablecoins"] = sc
+except Exception as e:
+    summary["errors"].append(f"stablecoins -> {str(e)[:100]}")
 # CPI auto-readout (BLS official API) — polls inside the release window
 CPI_DAYS = {"2026-11-10": {"head": 0.3, "core": 0.3, "period": "October"}}   # consensus MoM (RBC 0.3/0.3; Cleveland nowcast 0.24/0.21)
 _cpi_msg = None
@@ -557,7 +570,7 @@ try:
                 fire(f"expiry_{utc.strftime('%Y%m%d')}", f"⏰ 周五 08:00Z Deribit 周交割{mptxt}，前后 15 分钟易出针", 24)
         except Exception as e: summary["errors"].append(f"expiry -> {e}")
         # 6) macro calendar (UTC): remind 30 min before
-        MACRO = [("2026-11-10 13:30", "美国 10 月 CPI（只看环比；预期核心 0.3%）"), ("2026-11-13 13:30", "美国 PPI"), ("2026-11-18 19:00", "FOMC 纪要"), ("2026-11-18 21:20", "英伟达财报"), ("2026-11-25 13:30", "美国 PCE"), ("2026-11-27 08:00", "Deribit 月度交割"), ("2026-12-04 13:30", "美国 11 月非农"), ("2026-12-10 19:00", "FOMC 利率决议")]
+        MACRO = [("2026-11-10 13:30", "美国 10 月 CPI（只看环比；预期核心 0.3%）"), ("2026-11-13 13:30", "美国 PPI"), ("2026-11-18 19:00", "FOMC 纪要"), ("2026-11-18 21:20", "英伟达财报"), ("2026-11-25 13:30", "美国 PCE"), ("2026-11-27 08:00", "Deribit 月度交割"), ("2026-12-04 13:30", "美国 11 月非农"), ("2026-12-09 19:00", "FOMC 利率决议（市场押加息）")]
         for when, what in MACRO:
             t = dt.datetime.strptime(when, "%Y-%m-%d %H:%M"); delta = (t - dt.datetime.utcnow()).total_seconds()
             if 0 < delta <= 35*60:
@@ -615,7 +628,7 @@ try:
             for sym, o in (summary.get("onchain_liq") or {}).items():
                 for b in (o.get("below", []) + o.get("above", [])):
                     if b["usd"] >= 5e7 and abs(b["dist_pct"]) <= 5:
-                        fire(f"oc_{sym}_{round(b['price'])}", f"🐋 链上强平堆 {sym} {fp(b['price'])}（{b['dist_pct']:+.1f}%）≈{b['usd']/1e8:.2f}亿美元 / {b['n']}个大户{'多单' if b['long']>=b['short'] else '空单'}——明牌目标，易被打", 6)
+                        fire(f"oc_{sym}_{round(b['price'])}", f"🐋 链上强平集中区 {sym} {fp(b['price'])}（{b['dist_pct']:+.1f}%）≈{b['usd']/1e8:.2f}亿美元 / {b['n']}个大户{'多单' if b['long']>=b['short'] else '空单'}", 6)
             prev = state.get("whales", {}); cur = {}
             for w in _whales:
                 if w["usd"] < 3e7 or w["sym"] not in ("BTC", "ETH", "SOL") or not _px_now.get(w["sym"]): continue
@@ -710,8 +723,10 @@ try:
                 except Exception: pass
                 try:
                     ma = summary.get("ma") or {}
-                    mt = [f"{n} {ma[k]:,}" for n, k in (("日EMA200", "d_ema200"), ("日SMA200", "d_sma200"), ("周EMA200", "w_ema200")) if ma.get(k)]
+                    mt = [f"{n} {ma[k]:,}" for n, k in (("日EMA200", "d_ema200"), ("365日", "d_sma365"), ("日SMA200", "d_sma200"), ("周EMA200", "w_ema200")) if ma.get(k)]
                     if mt: L.append("均线: " + " · ".join(mt))
+                    scb = (summary.get("stablecoins") or {}).get("USDT")
+                    if scb: L.append(f"USDT 市值 {scb['now_b']:.0f}B | 7天 {scb['chg7_b']:+.1f}B · 30天 {scb['chg30_b']:+.1f}B · 60天 {scb['chg60_b']:+.1f}B")
                     rv = summary.get("reversal") or {}
                     if rv: L.append(f"反转: OI {rv['oi_yi']}/{rv['oi_target_yi']}{'✅' if rv['conds']['oi'] else '❌'} · 散户 {rv['retail_ls']:.2f}/2.3{'✅' if rv['conds']['ls'] else '❌'} · 长下影{'✅' if rv['conds']['wick'] else '❌'}")
                 except Exception: pass
