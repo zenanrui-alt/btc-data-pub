@@ -1,940 +1,61 @@
 {
- "ts_utc": "2026-11-10T09:51:38Z",
- "heatmap": {
-  "BTC": {
-   "price": 74430.6,
-   "below": [
-    {
-     "price": 73855.82,
-     "dist_pct": -0.77,
-     "strength": 1.0
-    },
-    {
-     "price": 74079.66,
-     "dist_pct": -0.47,
-     "strength": 0.6
-    },
-    {
-     "price": 73464.1,
-     "dist_pct": -1.3,
-     "strength": 0.53
-    },
-    {
-     "price": 74191.58,
-     "dist_pct": -0.32,
-     "strength": 0.51
-    },
-    {
-     "price": 73072.38,
-     "dist_pct": -1.82,
-     "strength": 0.42
-    }
-   ],
-   "above": [
-    {
-     "price": 75702.5,
-     "dist_pct": 1.71,
-     "strength": 0.62
-    },
-    {
-     "price": 75590.58,
-     "dist_pct": 1.56,
-     "strength": 0.61
-    },
-    {
-     "price": 76094.22,
-     "dist_pct": 2.24,
-     "strength": 0.44
-    },
-    {
-     "price": 75758.46,
-     "dist_pct": 1.78,
-     "strength": 0.41
-    },
-    {
-     "price": 76150.18,
-     "dist_pct": 2.31,
-     "strength": 0.36
-    }
-   ],
-   "window": "24h",
-   "levels": 129
-  },
-  "ETH": {
-   "price": 2100.8,
-   "below": [
-    {
-     "price": 2081.26,
-     "dist_pct": -0.93,
-     "strength": 0.57
-    },
-    {
-     "price": 2084.59,
-     "dist_pct": -0.77,
-     "strength": 0.39
-    },
-    {
-     "price": 2039.61,
-     "dist_pct": -2.91,
-     "strength": 0.22
-    },
-    {
-     "price": 2097.92,
-     "dist_pct": -0.14,
-     "strength": 0.15
-    },
-    {
-     "price": 2062.93,
-     "dist_pct": -1.8,
-     "strength": 0.12
-    }
-   ],
-   "above": [
-    {
-     "price": 2102.92,
-     "dist_pct": 0.1,
-     "strength": 1.0
-    },
-    {
-     "price": 2166.23,
-     "dist_pct": 3.11,
-     "strength": 0.56
-    },
-    {
-     "price": 2104.58,
-     "dist_pct": 0.18,
-     "strength": 0.43
-    },
-    {
-     "price": 2169.56,
-     "dist_pct": 3.27,
-     "strength": 0.25
-    },
-    {
-     "price": 2147.9,
-     "dist_pct": 2.24,
-     "strength": 0.23
-    }
-   ],
-   "window": "24h",
-   "levels": 124
-  },
-  "SOL": {
-   "price": 85.53,
-   "below": [
-    {
-     "price": 85.39,
-     "dist_pct": -0.16,
-     "strength": 0.79
-    },
-    {
-     "price": 84.76,
-     "dist_pct": -0.9,
-     "strength": 0.73
-    },
-    {
-     "price": 84.83,
-     "dist_pct": -0.82,
-     "strength": 0.55
-    },
-    {
-     "price": 84.55,
-     "dist_pct": -1.15,
-     "strength": 0.46
-    },
-    {
-     "price": 85.18,
-     "dist_pct": -0.41,
-     "strength": 0.45
-    }
-   ],
-   "above": [
-    {
-     "price": 87.35,
-     "dist_pct": 2.13,
-     "strength": 1.0
-    },
-    {
-     "price": 88.33,
-     "dist_pct": 3.27,
-     "strength": 0.94
-    },
-    {
-     "price": 85.74,
-     "dist_pct": 0.25,
-     "strength": 0.81
-    },
-    {
-     "price": 85.67,
-     "dist_pct": 0.16,
-     "strength": 0.74
-    },
-    {
-     "price": 87.56,
-     "dist_pct": 2.37,
-     "strength": 0.7
-    }
-   ],
-   "window": "24h",
-   "levels": 134
-  },
-  "UNI": {
-   "price": 6.997,
-   "below": [
-    {
-     "price": 6.8207,
-     "dist_pct": -2.52,
-     "strength": 1.0
-    },
-    {
-     "price": 6.7577,
-     "dist_pct": -3.42,
-     "strength": 0.84
-    },
-    {
-     "price": 6.7262,
-     "dist_pct": -3.87,
-     "strength": 0.67
-    },
-    {
-     "price": 6.7388,
-     "dist_pct": -3.69,
-     "strength": 0.59
-    },
-    {
-     "price": 6.8522,
-     "dist_pct": -2.07,
-     "strength": 0.53
-    }
-   ],
-   "above": [
-    {
-     "price": 7.2428,
-     "dist_pct": 3.51,
-     "strength": 0.55
-    },
-    {
-     "price": 7.1483,
-     "dist_pct": 2.16,
-     "strength": 0.4
-    },
-    {
-     "price": 7.1672,
-     "dist_pct": 2.43,
-     "strength": 0.39
-    },
-    {
-     "price": 7.1294,
-     "dist_pct": 1.89,
-     "strength": 0.38
-    },
-    {
-     "price": 7.1042,
-     "dist_pct": 1.53,
-     "strength": 0.38
-    }
-   ],
-   "window": "24h",
-   "levels": 125
-  },
-  "SUI": {
-   "price": 0.8416,
-   "below": [
-    {
-     "price": 0.83632,
-     "dist_pct": -0.63,
-     "strength": 1.0
-    },
-    {
-     "price": 0.82477,
-     "dist_pct": -2.0,
-     "strength": 0.89
-    },
-    {
-     "price": 0.80475,
-     "dist_pct": -4.38,
-     "strength": 0.82
-    },
-    {
-     "price": 0.82169,
-     "dist_pct": -2.37,
-     "strength": 0.74
-    },
-    {
-     "price": 0.83093,
-     "dist_pct": -1.27,
-     "strength": 0.72
-    }
-   ],
-   "above": [
-    {
-     "price": 0.8702,
-     "dist_pct": 3.4,
-     "strength": 1.0
-    },
-    {
-     "price": 0.88329,
-     "dist_pct": 4.95,
-     "strength": 0.87
-    },
-    {
-     "price": 0.86481,
-     "dist_pct": 2.76,
-     "strength": 0.81
-    },
-    {
-     "price": 0.86712,
-     "dist_pct": 3.03,
-     "strength": 0.52
-    },
-    {
-     "price": 0.88714,
-     "dist_pct": 5.41,
-     "strength": 0.5
-    }
-   ],
-   "window": "24h",
-   "levels": 148
-  },
-  "ADA": {
-   "price": 0.1782,
-   "below": [
-    {
-     "price": 0.172,
-     "dist_pct": -3.48,
-     "strength": 1.0
-    },
-    {
-     "price": 0.1726,
-     "dist_pct": -3.14,
-     "strength": 0.94
-    },
-    {
-     "price": 0.17575,
-     "dist_pct": -1.37,
-     "strength": 0.92
-    },
-    {
-     "price": 0.17515,
-     "dist_pct": -1.71,
-     "strength": 0.91
-    },
-    {
-     "price": 0.1717,
-     "dist_pct": -3.65,
-     "strength": 0.83
-    }
-   ],
-   "above": [
-    {
-     "price": 0.18505,
-     "dist_pct": 3.84,
-     "strength": 0.82
-    },
-    {
-     "price": 0.1864,
-     "dist_pct": 4.6,
-     "strength": 0.59
-    },
-    {
-     "price": 0.18355,
-     "dist_pct": 3.0,
-     "strength": 0.53
-    },
-    {
-     "price": 0.18595,
-     "dist_pct": 4.35,
-     "strength": 0.46
-    },
-    {
-     "price": 0.18145,
-     "dist_pct": 1.82,
-     "strength": 0.4
-    }
-   ],
-   "window": "24h",
-   "levels": 139
-  },
-  "XRP": {
-   "price": 1.0887,
-   "below": [
-    {
-     "price": 1.06853,
-     "dist_pct": -1.85,
-     "strength": 1.0
-    },
-    {
-     "price": 1.07654,
-     "dist_pct": -1.12,
-     "strength": 0.71
-    },
-    {
-     "price": 1.07476,
-     "dist_pct": -1.28,
-     "strength": 0.66
-    },
-    {
-     "price": 1.08366,
-     "dist_pct": -0.46,
-     "strength": 0.63
-    },
-    {
-     "price": 1.08633,
-     "dist_pct": -0.22,
-     "strength": 0.61
-    }
-   ],
-   "above": [
-    {
-     "price": 1.11926,
-     "dist_pct": 2.81,
-     "strength": 0.95
-    },
-    {
-     "price": 1.11748,
-     "dist_pct": 2.64,
-     "strength": 0.58
-    },
-    {
-     "price": 1.10858,
-     "dist_pct": 1.83,
-     "strength": 0.53
-    },
-    {
-     "price": 1.11125,
-     "dist_pct": 2.07,
-     "strength": 0.52
-    },
-    {
-     "price": 1.12282,
-     "dist_pct": 3.13,
-     "strength": 0.49
-    }
-   ],
-   "window": "24h",
-   "levels": 133
-  },
-  "DOGE": {
-   "price": 0.06971,
-   "below": [
-    {
-     "price": 0.06835,
-     "dist_pct": -1.95,
-     "strength": 1.0
-    },
-    {
-     "price": 0.06824,
-     "dist_pct": -2.11,
-     "strength": 0.68
-    },
-    {
-     "price": 0.06774,
-     "dist_pct": -2.83,
-     "strength": 0.57
-    },
-    {
-     "price": 0.06891,
-     "dist_pct": -1.14,
-     "strength": 0.54
-    },
-    {
-     "price": 0.06869,
-     "dist_pct": -1.46,
-     "strength": 0.53
-    }
-   ],
-   "above": [
-    {
-     "price": 0.07115,
-     "dist_pct": 2.07,
-     "strength": 0.96
-    },
-    {
-     "price": 0.07104,
-     "dist_pct": 1.91,
-     "strength": 0.68
-    },
-    {
-     "price": 0.07177,
-     "dist_pct": 2.96,
-     "strength": 0.6
-    },
-    {
-     "price": 0.07149,
-     "dist_pct": 2.55,
-     "strength": 0.48
-    },
-    {
-     "price": 0.07255,
-     "dist_pct": 4.08,
-     "strength": 0.48
-    }
-   ],
-   "window": "24h",
-   "levels": 123
-  },
-  "LTC": {
-   "price": 51.42,
-   "below": [
-    {
-     "price": 50.09,
-     "dist_pct": -2.58,
-     "strength": 1.0
-    },
-    {
-     "price": 49.72,
-     "dist_pct": -3.31,
-     "strength": 0.78
-    },
-    {
-     "price": 49.88,
-     "dist_pct": -2.99,
-     "strength": 0.6
-    },
-    {
-     "price": 50.68,
-     "dist_pct": -1.44,
-     "strength": 0.58
-    },
-    {
-     "price": 49.84,
-     "dist_pct": -3.07,
-     "strength": 0.56
-    }
-   ],
-   "above": [
-    {
-     "price": 52.74,
-     "dist_pct": 2.57,
-     "strength": 0.58
-    },
-    {
-     "price": 52.57,
-     "dist_pct": 2.24,
-     "strength": 0.51
-    },
-    {
-     "price": 53.16,
-     "dist_pct": 3.38,
-     "strength": 0.5
-    },
-    {
-     "price": 52.53,
-     "dist_pct": 2.16,
-     "strength": 0.5
-    },
-    {
-     "price": 52.7,
-     "dist_pct": 2.49,
-     "strength": 0.48
-    }
-   ],
-   "window": "24h",
-   "levels": 123
-  }
- },
+ "ts_utc": "2026-11-10T10:02:32Z",
+ "heatmap": {},
  "coinbase": {
-  "price": 74372.32,
+  "price": 74458.99,
   "ref": "okx",
-  "binance_price": 74454.0,
-  "premium_pct": -0.11,
-  "last1000_taker_buy_btc": 4.721,
-  "last1000_taker_sell_btc": 8.254,
-  "buy_ratio": 36.4,
-  "span_min": 3.3
+  "binance_price": 74562.5,
+  "premium_pct": -0.139,
+  "last1000_taker_buy_btc": 1.203,
+  "last1000_taker_sell_btc": 3.012,
+  "buy_ratio": 28.5,
+  "span_min": 3.9
  },
- "etf": [
-  {
-   "timestamp": 1793318400000,
-   "flow_usd": -643200000.0,
-   "price_usd": 77962.7,
-   "etf_flows": [
-    {
-     "etf_ticker": "IBIT",
-     "flow_usd": -233700000.0
-    },
-    {
-     "etf_ticker": "FBTC",
-     "flow_usd": -201000000.0
-    },
-    {
-     "etf_ticker": "BITB",
-     "flow_usd": -25700000.0
-    },
-    {
-     "etf_ticker": "ARKB",
-     "flow_usd": -129500000.0
-    },
-    {
-     "etf_ticker": "BTCO",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "EZBC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BRRR",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "HODL",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCW",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "MSBT",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "GBTC",
-     "flow_usd": -53300000.0
-    },
-    {
-     "etf_ticker": "BTC",
-     "flow_usd": 0.0
-    }
-   ]
-  },
-  {
-   "timestamp": 1793577600000,
-   "flow_usd": -398600000.0,
-   "price_usd": 78313.1,
-   "etf_flows": [
-    {
-     "etf_ticker": "IBIT",
-     "flow_usd": -405300000.0
-    },
-    {
-     "etf_ticker": "FBTC",
-     "flow_usd": 6700000.0
-    },
-    {
-     "etf_ticker": "BITB",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "ARKB",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCO",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "EZBC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BRRR",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "HODL",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCW",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "MSBT",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "GBTC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTC",
-     "flow_usd": 0.0
-    }
-   ]
-  },
-  {
-   "timestamp": 1793664000000,
-   "flow_usd": -115600000.0,
-   "price_usd": 76791.3,
-   "etf_flows": [
-    {
-     "etf_ticker": "IBIT",
-     "flow_usd": -95000000.0
-    },
-    {
-     "etf_ticker": "FBTC",
-     "flow_usd": 6800000.0
-    },
-    {
-     "etf_ticker": "BITB",
-     "flow_usd": 21900000.0
-    },
-    {
-     "etf_ticker": "ARKB",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCO",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "EZBC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BRRR",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "HODL",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCW",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "MSBT",
-     "flow_usd": 3300000.0
-    },
-    {
-     "etf_ticker": "GBTC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTC",
-     "flow_usd": -52600000.0
-    }
-   ]
-  },
-  {
-   "timestamp": 1793750400000,
-   "flow_usd": 74600000.0,
-   "price_usd": 77441.6,
-   "etf_flows": [
-    {
-     "etf_ticker": "IBIT",
-     "flow_usd": -201200000.0
-    },
-    {
-     "etf_ticker": "FBTC",
-     "flow_usd": 236700000.0
-    },
-    {
-     "etf_ticker": "BITB",
-     "flow_usd": 15200000.0
-    },
-    {
-     "etf_ticker": "ARKB",
-     "flow_usd": 19900000.0
-    },
-    {
-     "etf_ticker": "BTCO",
-     "flow_usd": 4000000.0
-    },
-    {
-     "etf_ticker": "EZBC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BRRR",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "HODL",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCW",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "MSBT",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "GBTC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTC",
-     "flow_usd": 0.0
-    }
-   ]
-  },
-  {
-   "timestamp": 1793836800000,
-   "flow_usd": -430200000.0,
-   "price_usd": 80466.4,
-   "etf_flows": [
-    {
-     "etf_ticker": "IBIT",
-     "flow_usd": -105000000.0
-    },
-    {
-     "etf_ticker": "FBTC",
-     "flow_usd": -199900000.0
-    },
-    {
-     "etf_ticker": "BITB",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "ARKB",
-     "flow_usd": -18900000.0
-    },
-    {
-     "etf_ticker": "BTCO",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "EZBC",
-     "flow_usd": -32900000.0
-    },
-    {
-     "etf_ticker": "BRRR",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "HODL",
-     "flow_usd": -23600000.0
-    },
-    {
-     "etf_ticker": "BTCW",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "MSBT",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "GBTC",
-     "flow_usd": -49900000.0
-    },
-    {
-     "etf_ticker": "BTC",
-     "flow_usd": 0.0
-    }
-   ]
-  },
-  {
-   "timestamp": 1793923200000,
-   "flow_usd": -411900000.0,
-   "price_usd": 76050,
-   "etf_flows": [
-    {
-     "etf_ticker": "IBIT",
-     "flow_usd": -403000000.0
-    },
-    {
-     "etf_ticker": "FBTC",
-     "flow_usd": 42800000.0
-    },
-    {
-     "etf_ticker": "BITB",
-     "flow_usd": -20500000.0
-    },
-    {
-     "etf_ticker": "ARKB",
-     "flow_usd": -20100000.0
-    },
-    {
-     "etf_ticker": "BTCO",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "EZBC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BRRR",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "HODL",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCW",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "MSBT",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "GBTC",
-     "flow_usd": -11100000.0
-    },
-    {
-     "etf_ticker": "BTC",
-     "flow_usd": 0.0
-    }
-   ]
-  },
-  {
-   "timestamp": 1794182400000,
-   "flow_usd": -201000000.0,
-   "price_usd": 74823.4,
-   "etf_flows": [
-    {
-     "etf_ticker": "IBIT",
-     "flow_usd": -213200000.0
-    },
-    {
-     "etf_ticker": "FBTC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BITB",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "ARKB",
-     "flow_usd": -9900000.0
-    },
-    {
-     "etf_ticker": "BTCO",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "EZBC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BRRR",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "HODL",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTCW",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "MSBT",
-     "flow_usd": 22100000.0
-    },
-    {
-     "etf_ticker": "GBTC",
-     "flow_usd": 0.0
-    },
-    {
-     "etf_ticker": "BTC",
-     "flow_usd": 0.0
-    }
-   ]
-  }
- ],
+ "etf": null,
  "errors": [
-  "okx 大神3 -> HTTP Error 401: Unauthorized"
+  "coinglass BTC https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=BTC&range=24h -> code=500 msg=Server Error",
+  "coinglass BTC https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=BTCUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass ETH https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=ETH&range=24h -> code=500 msg=Server Error",
+  "coinglass ETH https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=ETHUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass SOL https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=SOL&range=24h -> code=500 msg=Server Error",
+  "coinglass SOL https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=SOLUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass UNI https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=UNI&range=24h -> code=500 msg=Server Error",
+  "coinglass UNI https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=UNIUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass SUI https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=SUI&range=24h -> code=500 msg=Server Error",
+  "coinglass SUI https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=SUIUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass ADA https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=ADA&range=24h -> code=500 msg=Server Error",
+  "coinglass ADA https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=ADAUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass XRP https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=XRP&range=24h -> code=500 msg=Server Error",
+  "coinglass XRP https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=XRPUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass DOGE https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=DOGE&range=24h -> code=500 msg=Server Error",
+  "coinglass DOGE https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=DOGEUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass LTC https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol=LTC&range=24h -> code=500 msg=Server Error",
+  "coinglass LTC https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol=LTCUSDT&range=24h -> code=500 msg=Server Error",
+  "coinglass etf -> code=500 msg=Server Error",
+  "cg oi_agg_1h futures/open-interest/aggregated-history -> code=500 msg=Server Error",
+  "cg oi_agg_1h futures/open-interest/aggregated-history -> code=500 msg=Server Error",
+  "cg ls_global_1h futures/global-long-short-account-ratio/history -> code=500 msg=Server Error",
+  "cg ls_global_1h futures/global-long-short-account-ratio/history -> code=500 msg=Server Error",
+  "cg ls_top_acct_1h futures/top-long-short-account-ratio/history -> code=500 msg=Server Error",
+  "cg ls_top_pos_1h futures/top-long-short-position-ratio/history -> code=500 msg=Server Error",
+  "cg liq_agg_1h futures/liquidation/aggregated-history -> code=500 msg=Server Error",
+  "cg liq_by_exch_24h futures/liquidation/exchange-list -> code=500 msg=Server Error",
+  "cg liq_by_exch_24h futures/liquidation/exchange-list -> code=500 msg=Server Error",
+  "cg liq_map_agg futures/liquidation/aggregated-map -> code=500 msg=Server Error",
+  "cg liq_map_agg futures/liquidation/aggregated-map -> code=500 msg=Server Error",
+  "cg orderbook_hist spot/orderbook/history -> code=500 msg=Server Error",
+  "cg orderbook_hist spot/orderbook/history -> code=500 msg=Server Error",
+  "cg opt_max_pain option/max-pain -> code=500 msg=Server Error",
+  "cg opt_max_pain option/max-pain -> code=500 msg=Server Error",
+  "cg opt_info option/info -> code=500 msg=Server Error",
+  "cg funding_oi_weighted futures/funding-rate/oi-weight-history -> code=500 msg=Server Error",
+  "cg stablecoin_mcap index/stableCoin-marketCap-history -> code=500 msg=Server Error",
+  "cg stablecoin_mcap index/stableCoin-marketCap-history -> code=500 msg=Server Error",
+  "okx 大神3 -> HTTP Error 401: Unauthorized",
+  "hl whale-position -> code=500 msg=Server Error",
+  "hl whale-alert -> code=500 msg=Server Error"
  ],
  "source": "github-actions",
- "etf_source": "coinglass",
  "cryptoquant": {
   "exch_netflow_day": [
    {
@@ -1029,560 +150,86 @@
   ]
  },
  "cg": {
-  "oi_agg_1h": [
-   {
-    "time": 1794276000000,
-    "open": "51963559810",
-    "high": "51972283641",
-    "low": "51790199132",
-    "close": "51830013625"
-   },
-   {
-    "time": 1794279600000,
-    "open": "51830013625",
-    "high": "51848432566",
-    "low": "51481336685",
-    "close": "51582423176"
-   },
-   {
-    "time": 1794283200000,
-    "open": "51582423176",
-    "high": "51719434656",
-    "low": "51534476673",
-    "close": "51719434656"
-   },
-   {
-    "time": 1794286800000,
-    "open": "51719434656",
-    "high": "51812451290",
-    "low": "51681490313",
-    "close": "51771670407"
-   },
-   {
-    "time": 1794290400000,
-    "open": "51771670407",
-    "high": "51983437259",
-    "low": "51659331797",
-    "close": "51946354679"
-   },
-   {
-    "time": 1794294000000,
-    "open": "51946354679",
-    "high": "52016730007",
-    "low": "51886032895",
-    "close": "51886032895"
-   },
-   {
-    "time": 1794297600000,
-    "open": "51886032895",
-    "high": "51928221912",
-    "low": "51740961949",
-    "close": "51895974815"
-   },
-   {
-    "time": 1794301200000,
-    "open": "51895974815",
-    "high": "51935142418",
-    "low": "51611298209",
-    "close": 51895872098.4777
-   }
-  ],
-  "ls_global_1h": [
-   {
-    "time": 1794276000000,
-    "global_account_long_percent": 73.11,
-    "global_account_short_percent": 26.89,
-    "global_account_long_short_ratio": 2.72
-   },
-   {
-    "time": 1794279600000,
-    "global_account_long_percent": 73.1,
-    "global_account_short_percent": 26.9,
-    "global_account_long_short_ratio": 2.72
-   },
-   {
-    "time": 1794283200000,
-    "global_account_long_percent": 73.55,
-    "global_account_short_percent": 26.45,
-    "global_account_long_short_ratio": 2.78
-   },
-   {
-    "time": 1794286800000,
-    "global_account_long_percent": 73.7,
-    "global_account_short_percent": 26.3,
-    "global_account_long_short_ratio": 2.8
-   },
-   {
-    "time": 1794290400000,
-    "global_account_long_percent": 73.82,
-    "global_account_short_percent": 26.18,
-    "global_account_long_short_ratio": 2.82
-   },
-   {
-    "time": 1794294000000,
-    "global_account_long_percent": 73.87,
-    "global_account_short_percent": 26.13,
-    "global_account_long_short_ratio": 2.83
-   },
-   {
-    "time": 1794297600000,
-    "global_account_long_percent": 73.81,
-    "global_account_short_percent": 26.19,
-    "global_account_long_short_ratio": 2.82
-   },
-   {
-    "time": 1794301200000,
-    "global_account_long_percent": 74.49,
-    "global_account_short_percent": 25.51,
-    "global_account_long_short_ratio": 2.92
-   }
-  ],
-  "ls_top_acct_1h": [
-   {
-    "time": 1794276000000,
-    "top_account_long_percent": 75.27,
-    "top_account_short_percent": 24.73,
-    "top_account_long_short_ratio": 3.04
-   },
-   {
-    "time": 1794279600000,
-    "top_account_long_percent": 75.3,
-    "top_account_short_percent": 24.7,
-    "top_account_long_short_ratio": 3.05
-   },
-   {
-    "time": 1794283200000,
-    "top_account_long_percent": 75.8,
-    "top_account_short_percent": 24.2,
-    "top_account_long_short_ratio": 3.13
-   },
-   {
-    "time": 1794286800000,
-    "top_account_long_percent": 75.89,
-    "top_account_short_percent": 24.11,
-    "top_account_long_short_ratio": 3.15
-   },
-   {
-    "time": 1794290400000,
-    "top_account_long_percent": 75.98,
-    "top_account_short_percent": 24.02,
-    "top_account_long_short_ratio": 3.16
-   },
-   {
-    "time": 1794294000000,
-    "top_account_long_percent": 76.07,
-    "top_account_short_percent": 23.93,
-    "top_account_long_short_ratio": 3.18
-   },
-   {
-    "time": 1794297600000,
-    "top_account_long_percent": 76.07,
-    "top_account_short_percent": 23.93,
-    "top_account_long_short_ratio": 3.18
-   },
-   {
-    "time": 1794301200000,
-    "top_account_long_percent": 76.82,
-    "top_account_short_percent": 23.18,
-    "top_account_long_short_ratio": 3.31
-   }
-  ],
-  "ls_top_pos_1h": [
-   {
-    "time": 1794276000000,
-    "top_position_long_percent": 69.79,
-    "top_position_short_percent": 30.21,
-    "top_position_long_short_ratio": 2.31
-   },
-   {
-    "time": 1794279600000,
-    "top_position_long_percent": 69.82,
-    "top_position_short_percent": 30.18,
-    "top_position_long_short_ratio": 2.31
-   },
-   {
-    "time": 1794283200000,
-    "top_position_long_percent": 69.91,
-    "top_position_short_percent": 30.09,
-    "top_position_long_short_ratio": 2.32
-   },
-   {
-    "time": 1794286800000,
-    "top_position_long_percent": 70.05,
-    "top_position_short_percent": 29.95,
-    "top_position_long_short_ratio": 2.34
-   },
-   {
-    "time": 1794290400000,
-    "top_position_long_percent": 70.13,
-    "top_position_short_percent": 29.87,
-    "top_position_long_short_ratio": 2.35
-   },
-   {
-    "time": 1794294000000,
-    "top_position_long_percent": 70.18,
-    "top_position_short_percent": 29.82,
-    "top_position_long_short_ratio": 2.35
-   },
-   {
-    "time": 1794297600000,
-    "top_position_long_percent": 70.02,
-    "top_position_short_percent": 29.98,
-    "top_position_long_short_ratio": 2.34
-   },
-   {
-    "time": 1794301200000,
-    "top_position_long_percent": 70.22,
-    "top_position_short_percent": 29.78,
-    "top_position_long_short_ratio": 2.36
-   }
-  ],
-  "liq_agg_1h": [
-   {
-    "time": 1794276000000,
-    "aggregated_long_liquidation_usd": 443682.09,
-    "aggregated_short_liquidation_usd": 503193.05
-   },
-   {
-    "time": 1794279600000,
-    "aggregated_long_liquidation_usd": 2339110.34,
-    "aggregated_short_liquidation_usd": 10957.89
-   },
-   {
-    "time": 1794283200000,
-    "aggregated_long_liquidation_usd": 999.3,
-    "aggregated_short_liquidation_usd": 218093.63
-   },
-   {
-    "time": 1794286800000,
-    "aggregated_long_liquidation_usd": 179.59,
-    "aggregated_short_liquidation_usd": 353572.46
-   },
-   {
-    "time": 1794290400000,
-    "aggregated_long_liquidation_usd": 307151.93,
-    "aggregated_short_liquidation_usd": 562.59
-   },
-   {
-    "time": 1794294000000,
-    "aggregated_long_liquidation_usd": 4627.39,
-    "aggregated_short_liquidation_usd": 277349.64
-   },
-   {
-    "time": 1794297600000,
-    "aggregated_long_liquidation_usd": 912258.26,
-    "aggregated_short_liquidation_usd": 19200.93
-   },
-   {
-    "time": 1794301200000,
-    "aggregated_long_liquidation_usd": 4460752.03,
-    "aggregated_short_liquidation_usd": 50316.41
-   }
-  ],
-  "liq_by_exch_24h": [
-   {
-    "exchange": "OKX",
-    "liquidation_usd": 6348412.44964,
-    "longLiquidation_usd": 2417769.19306,
-    "shortLiquidation_usd": 3930643.25658
-   },
-   {
-    "exchange": "Bybit",
-    "liquidation_usd": 5213760.26,
-    "longLiquidation_usd": 2895857.3107,
-    "shortLiquidation_usd": 2317902.9493
-   },
-   {
-    "exchange": "Bitget",
-    "liquidation_usd": 2698537.56841414,
-    "longLiquidation_usd": 1397693.12466565,
-    "shortLiquidation_usd": 1300844.44374849
-   },
-   {
-    "exchange": "Gate",
-    "liquidation_usd": 2229354.07833,
-    "longLiquidation_usd": 929567.37118,
-    "shortLiquidation_usd": 1299786.70715
-   },
-   {
-    "exchange": "HTX",
-    "liquidation_usd": 966356.8457,
-    "longLiquidation_usd": 344220.3285,
-    "shortLiquidation_usd": 622136.5172
-   },
-   {
-    "exchange": "Aster",
-    "liquidation_usd": 448294.6053,
-    "longLiquidation_usd": 102495.0658,
-    "shortLiquidation_usd": 345799.5395
-   },
-   {
-    "exchange": "Lighter",
-    "liquidation_usd": 34822.795589,
-    "longLiquidation_usd": 22536.127844,
-    "shortLiquidation_usd": 12286.667745
-   },
-   {
-    "exchange": "Bitfinex",
-    "liquidation_usd": 112.76268347,
-    "longLiquidation_usd": 112.76268347,
-    "shortLiquidation_usd": 0
-   }
-  ],
-  "liq_map_agg": {
-   "truncated_sample": "{\"data\": [{\"liqMapV2\": {\"66971\": [[66971, 1394398.63, null, null]], \"72731\": [[72731, 8352263.4, null, null]], \"72971\": [[72971, 14953061.38, null, null]], \"66731\": [[66731, 261922.67, null, null]], \"72331\": [[72331, 1637555.9, null, null]], \"72571\": [[72571, 218243.5, null, null]], \"72171\": [[72171, 2180634.56, null, null]], \"81611\": [[81611, 440780.72, null, null]], \"81851\": [[81851, 1394398.63, null, null]], \"81691\": [[81691, 853156.94, null, null]], \"81451\": [[81451, 26275.5, null, null]], \"82091\": [[82091, 2687934.58, null, null]], \"71931\": [[71931, 8861547.31, null, null]], \"75611\": [[75611, 42452240.64, null, null]], \"71531\": [[71531, 7445243.03, null, null]], \"76091\": [[76091, 25647644.03, null, null]], \"75851\": [[75851, 16562831.57, null, null]], \"71771\": [[71771, 4705962.93, null, null]], \"75211\": [[75211, 6310681.58, null, null]], \"71131\": [[71131, 337180.79, null, null]], \"76491\": [[76491, 17055591.58, null, null]], \"75451\": [[75451, 31321895.09, null, null]], \"71371\": [[71371, 2778718.36, null, null]], \"76251\": [[76251, 19877552.97, null, null]], \"75691\": [[75691, 37206280.58, null, null]], \"76011\": [[76011, 38939493.89, null, null]], \"76891\": [[76891, 5889376.64, null, null]], \"75051\": [[75051, 3048863.52, null, null]], \"76651\": [[76651, 4401940.02, null, null]], \"75291\": [[75291, 13635898.68, null, null]], \"76411\": [[76411, 11435312.28, null, null]], \"82411\": [[82411, 1360911.27, null, null]], \"82251\": [[82251, 346282.44, null, null]], \"76811\": [[76811, 8719090.28, null, null]], \"82011\": [[82011, 2022920.77, null, null]], \"74011\": [[74011, 18823851.74, null, null]], \"74891\": [[74891, 528100.0, null, null]], \"77371\": [[77371, 3659330.86, null, null]], \"77131\": [[77131, 1077492.0, null, null]], \"77771\": [[77771, 3578212.32, null, null]], \"77531\": [[77531, 6327465.15, null, null]], \"74091\": [[74091, 34216520.23, null, null]], \"77931\": [[77931, 7458282.61, null, null]], \"67851\": [[67851, 1177875.33, null, null]], \"67211\": [[67211, 3485570.81, null, null]], \"73611\": [[73611, 15956681.11, null, null]], \"67611\": [[67611, 566222.2, null, null]], \"73851\": [[73851, 37045861.84, null, null]], \"73211\": [[73211, 23297788.29, null, null]], \"73451\": [[73451, 29437229.38, null, null]], \"78171\": [[78171, 2840384.28, null, null]], \"73691\": [[73691, 31729621.49, null, null]], \"73051\": [[73051, 13303896.02, null, null]], \"73291\": [[73291, 11306717.78, null, null]], \"78331\": [[78331, 3009282.61, null, null]], \"67051\": [[67051, 2293100.28, null, null]], \"67291\": [[67291, 897643.77, null, null]], \"67451\": [[67451, 2359629.54, null, null]], \"67691\": [[67691, 1022223.61, null, null]], \"66891\": [[66891, 958864.35, null, null]], \"72811\": [[72811, 3347743.35, null, null]], \"72411\": [[72411, 4958633.2, null, null]], \"72651\": [[72651, 1665986.92, null, null]], \"66811\": [[66811, 1076103.97, null, null]], \"72011\": [[72011, 8319166.04, null, null]], \"72891\": [[72891, 6947254.58, null, null]], \"72251\": [[72251, 6228836.86, null, null]], \"81931\": [[81931, 1822441.81"
-  },
-  "orderbook_hist": {
-   "truncated_sample": "[[1794276000, [[37770, 1.06782], [37800, 1.97673], [37990, 1.38188], [38000, 38.48304], [38100, 39.66941], [38110, 1.51274], [38200, 3.06856], [38400, 9.66448], [38500, 14.61332], [38700, 1.43879], [38800, 5.77676], [38880, 5.38229], [39000, 10.44258], [39100, 2.14533], [39280, 1.25069], [39360, 1.75264], [39500, 3.11959], [39680, 2.0], [39800, 11.50276], [39860, 2.61781], [39880, 2.54633], [39990, 2.55899], [40000, 108.1871], [40030, 21.50767], [40100, 14.69319], [40180, 2.4883], [40200, 1.30455], [40500, 11.18872], [40600, 1.36685], [40800, 2.68366], [40830, 1.11211], [41000, 28.53408], [41010, 1.58789], [41110, 1.46087], [41500, 7.39778], [41800, 1.04449], [41880, 13.6753], [42000, 45.08121], [42110, 1.03261], [42220, 1.01724], [42330, 1.11633], [42500, 6.23822], [42800, 1.64723], [43000, 31.55495], [43050, 1.01786], [43500, 6.15406], [43730, 5.0], [43800, 13.67391], [44000, 13.22105], [44440, 8.47914], [45000, 101.43075], [45100, 1.13906], [45500, 4.82573], [45550, 1.25881], [45670, 3.66758], [45800, 1.45759], [45880, 1.37601], [46000, 20.30504], [46100, 1.4384], [46190, 2.94012], [46200, 1.20103], [46500, 2.79711], [46600, 1.27463], [46660, 3.48905], [46880, 1.69007], [47000, 4.52434], [47200, 1.34659], [47400, 1.02466], [47500, 10.82474], [47650, 1.02942], [47900, 1.62736], [48000, 51.09951], [48100, 1.73303], [48140, 1.86954], [48200, 1.09401], [48240, 6.23549], [48400, 1.26135], [48500, 6.29576], [48590, 3.46211], [48880, 3.88507], [48900, 1.50702], [49000, 75.5221], [49010, 1.28831], [49100, 1.56479], [49110, 1.69412], [49500, 3.90257], [49800, 3.78514], [49880, 1.42866], [49990, 2.3994], [50000, 194.97823], [50010, 5.66498], [50050, 2.04883], [50100, 3.95172], [50150, 1.50788], [50200, 2.14398], [50220, 1.6237], [50400, 2.09054], [50500, 16.05196], [50550, 1.00905], [51000, 71.07545], [51010, 8.42265], [51110, 8.62292], [51150, 5.64894], [51200, 4.11628], [51310, 2.15848], [51330, 1.0996], [51400, 1.18336], [51500, 3.9461], [51700, 2.85598], [51800, 1.85871], [51880, 7.76709], [51900, 5.03467], [52000, 67.57124], [52100, 2.10486], [52250, 1.45849], [52500, 6.47323], [52700, 1.54463], [52770, 1.15314], [52800, 1.52549], [52880, 2.96268], [52900, 2.17501], [53000, 43.24642], [53070, 1.36901], [53200, 3.49089], [53300, 5.10658], [53330, 1.70841], [53500, 53.04185], [53550, 5.50112], [53570, 1.15633], [53760, 1.15216], [53800, 1.46387], [53810, 1.22241], [53830, 5.10867], [54000, 45.7657], [54100, 2.64342], [54150, 4.41482], [54200, 1.07013], [54250, 5.42444], [54300, 1.35329], [54320, 1.78429], [54500, 5.83168], [54600, 1.10016], [54660, 1.01772], [54770, 2.3007], [54880, 8.26822], [54990, 1.14184], [55000, 197.36611], [55010, 1.78307], [55050, 1.38189], [55100, 5.61492], [55110, 2.39488], [55200, 2.14823], [55400, 3.49335], [55480, 5.01448], [55500, 17.65568], [55550, 19.66386], [55600, 1.26545], [55800, 2.76021], [55810, 2.46432], [55850, 1.6204], [55880, 8.15267], [55960, 1.15518], [56000, 58.12984], [56100, 8.63496], [56110, 5.40899], "
-  },
-  "opt_max_pain": [
-   {
-    "date": "261114",
-    "call_open_interest_market_value": 5683.64,
-    "put_open_interest": 1.1,
-    "put_open_interest_market_value": 91.35,
-    "max_pain_price": "71000",
-    "call_open_interest": 23.18,
-    "call_open_interest_notional": 1723432.04,
-    "put_open_interest_notional": 81823.6
-   },
-   {
-    "date": "261120",
-    "call_open_interest_market_value": 2087035.73,
-    "put_open_interest": 3302.82,
-    "put_open_interest_market_value": 4684164.77,
-    "max_pain_price": "76000",
-    "call_open_interest": 4190.3,
-    "call_open_interest_notional": 311728136.38,
-    "put_open_interest_notional": 245584125.78
-   },
-   {
-    "date": "261127",
-    "call_open_interest_market_value": 10102587.69,
-    "put_open_interest": 37918.55,
-    "put_open_interest_market_value": 69814695.26,
-    "max_pain_price": "79000",
-    "call_open_interest": 41321.38,
-    "call_open_interest_notional": 3073321521.07,
-    "put_open_interest_notional": 2820061997.01
-   },
-   {
-    "date": "261225",
-    "call_open_interest_market_value": 156324321.97,
-    "put_open_interest": 58401.25,
-    "put_open_interest_market_value": 138674893.54,
-    "max_pain_price": "76000",
-    "call_open_interest": 84399.79,
-    "call_open_interest_notional": 6277070130.76,
-    "put_open_interest_notional": 4343439767.99
-   },
-   {
-    "date": "270129",
-    "call_open_interest_market_value": 5892519.57,
-    "put_open_interest": 3533.6,
-    "put_open_interest_market_value": 11988302.07,
-    "max_pain_price": "78000",
-    "call_open_interest": 3194.5,
-    "call_open_interest_notional": 237542435.9,
-    "put_open_interest_notional": 262830653.33
-   },
-   {
-    "date": "270326",
-    "call_open_interest_market_value": 86574548.04,
-    "put_open_interest": 18578.79,
-    "put_open_interest_market_value": 98490399.01,
-    "max_pain_price": "76000",
-    "call_open_interest": 27974.47,
-    "call_open_interest_notional": 2080747780.77,
-    "put_open_interest_notional": 1381933554.03
-   },
-   {
-    "date": "270625",
-    "call_open_interest_market_value": 58209451.12,
-    "put_open_interest": 6633.1,
-    "put_open_interest_market_value": 32613775.17,
-    "max_pain_price": "78000",
-    "call_open_interest": 10550.0,
-    "call_open_interest_notional": 784652259.69,
-    "put_open_interest_notional": 493325095.13
-   },
-   {
-    "date": "270924",
-    "call_open_interest_market_value": 16994939.66,
-    "put_open_interest": 3843.8,
-    "put_open_interest_market_value": 23315173.04,
-    "max_pain_price": "84000",
-    "call_open_interest": 5025.9,
-    "call_open_interest_notional": 373783763.04,
-    "put_open_interest_notional": 285872352.79
-   }
-  ],
-  "opt_info": [
-   {
-    "exchange_name": "All",
-    "open_interest": 432143.08,
-    "oi_market_share": 100,
-    "open_interest_change_24h": 0.86,
-    "open_interest_usd": 32142800367.70436,
-    "volume_usd_24h": 3373902814.468885,
-    "volume_change_percent_24h": 3.11
-   },
-   {
-    "exchange_name": "Deribit",
-    "open_interest": 346077.13,
-    "oi_market_share": 80.08,
-    "open_interest_change_24h": 0.9,
-    "open_interest_usd": 25739330577.2218,
-    "volume_usd_24h": 2091058903.2785
-   },
-   {
-    "exchange_name": "OKX",
-    "open_interest": 42822.56,
-    "oi_market_share": 9.9,
-    "open_interest_change_24h": -0.09,
-    "open_interest_usd": 3183698892.528,
-    "volume_usd_24h": 413791432.299
-   },
-   {
-    "exchange_name": "Binance",
-    "open_interest": 19447.1,
-    "oi_market_share": 4.5,
-    "open_interest_change_24h": 0.62,
-    "open_interest_usd": 1448021237.780712,
-    "volume_usd_24h": 355853273.40953904
-   },
-   {
-    "exchange_name": "Bybit",
-    "open_interest": 17136.99,
-    "oi_market_share": 3.96,
-    "open_interest_change_24h": 1.35,
-    "open_interest_usd": 1276051346.0738497,
-    "volume_usd_24h": 484756827.7818457
-   },
-   {
-    "exchange_name": "CME",
-    "open_interest": 6659.3,
-    "oi_market_share": 1.54,
-    "open_interest_change_24h": 4.24,
-    "open_interest_usd": 495698314.1,
-    "volume_usd_24h": 28442377.7
-   }
-  ],
-  "funding_oi_weighted": [
-   {
-    "time": 1794283200000,
-    "open": "0.008117",
-    "high": "0.00915",
-    "low": "0.008117",
-    "close": "0.00915"
-   },
-   {
-    "time": 1794286800000,
-    "open": "0.00915",
-    "high": "0.009577",
-    "low": "0.00915",
-    "close": "0.009568"
-   },
-   {
-    "time": 1794290400000,
-    "open": "0.009568",
-    "high": "0.009739",
-    "low": "0.009528",
-    "close": "0.009739"
-   },
-   {
-    "time": 1794294000000,
-    "open": "0.009739",
-    "high": "0.009849",
-    "low": "0.009738",
-    "close": "0.009842"
-   },
-   {
-    "time": 1794297600000,
-    "open": "0.009842",
-    "high": "0.009842",
-    "low": "0.005251",
-    "close": "0.008114"
-   },
-   {
-    "time": 1794301200000,
-    "open": "0.007928",
-    "high": 0.008431,
-    "low": "0.007928",
-    "close": "0.008431"
-   }
-  ],
-  "stablecoin_mcap": {
-   "truncated_sample": "{\"data_list\": [{\"USDT\": 304712.76}, {\"USDT\": 303364.18}, {\"USDT\": 152595.9}, {\"USDT\": 152527.22}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 251600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\"USDT\": 451600.0}, {\""
-  }
+  "oi_agg_1h": null,
+  "ls_global_1h": null,
+  "ls_top_acct_1h": null,
+  "ls_top_pos_1h": null,
+  "liq_agg_1h": null,
+  "liq_by_exch_24h": null,
+  "liq_map_agg": null,
+  "orderbook_hist": null,
+  "opt_max_pain": null,
+  "opt_info": null,
+  "funding_oi_weighted": null,
+  "stablecoin_mcap": null
  },
  "accounts": {
   "大神1": {
    "n_isolated": 5,
    "n_cross": 1,
-   "mgn_ratio_pct": 2989.4,
-   "leverage": 4.31,
+   "mgn_ratio_pct": 2985.6,
+   "leverage": 4.3,
    "drop_to_liq_pct": null,
    "coins": {
     "ADA": {
      "notional_pct": 10.5,
      "mode": "cross",
-     "vs_avg_pct": -9.05,
+     "vs_avg_pct": -9.15,
      "liq": 0.1247541936500458,
-     "mark": 0.1782,
+     "mark": 0.178,
      "avg": 0.1959365245663785,
-     "liq_dist_pct": -29.99,
+     "liq_dist_pct": -29.91,
      "iso_mgn_ratio_pct": null
     },
     "SOL": {
      "notional_pct": 33.9,
      "mode": "isolated",
-     "vs_avg_pct": -15.35,
+     "vs_avg_pct": -15.23,
      "liq": 71.05385003133503,
-     "mark": 85.49,
+     "mark": 85.62,
      "avg": 100.99755222416407,
-     "liq_dist_pct": -16.89,
-     "iso_mgn_ratio_pct": 4049.8
+     "liq_dist_pct": -17.01,
+     "iso_mgn_ratio_pct": 4079.3
     },
     "XRP": {
      "notional_pct": 18.1,
      "mode": "isolated",
-     "vs_avg_pct": -15.25,
+     "vs_avg_pct": -15.2,
      "liq": 0.8951610447664013,
-     "mark": 1.0879,
+     "mark": 1.0886,
      "avg": 1.2837174535645197,
-     "liq_dist_pct": -17.72,
-     "iso_mgn_ratio_pct": 4243.3
+     "liq_dist_pct": -17.77,
+     "iso_mgn_ratio_pct": 4255.6
     },
     "LTC": {
-     "notional_pct": 15.8,
+     "notional_pct": 15.9,
      "mode": "isolated",
-     "vs_avg_pct": -11.05,
+     "vs_avg_pct": -10.95,
      "liq": 39.91716843137884,
-     "mark": 51.41,
+     "mark": 51.47,
      "avg": 57.79621697680416,
-     "liq_dist_pct": -22.36,
-     "iso_mgn_ratio_pct": 2258.4
+     "liq_dist_pct": -22.45,
+     "iso_mgn_ratio_pct": 2267.1
     },
     "UNI": {
      "notional_pct": 9.7,
      "mode": "isolated",
-     "vs_avg_pct": -11.28,
+     "vs_avg_pct": -11.26,
      "liq": 5.245988044883186,
-     "mark": 6.995,
+     "mark": 6.997,
      "avg": 7.884721112284512,
-     "liq_dist_pct": -25.0,
-     "iso_mgn_ratio_pct": 3775.9
+     "liq_dist_pct": -25.03,
+     "iso_mgn_ratio_pct": 3779.0
     },
     "DOGE": {
      "notional_pct": 11.9,
      "mode": "isolated",
-     "vs_avg_pct": -56.58,
+     "vs_avg_pct": -56.57,
      "liq": 0.0495453699644737,
-     "mark": 0.06969,
+     "mark": 0.0697,
      "avg": 0.1604900230946898,
-     "liq_dist_pct": -28.91,
-     "iso_mgn_ratio_pct": 4349.2
+     "liq_dist_pct": -28.92,
+     "iso_mgn_ratio_pct": 4350.7
     }
    },
    "avail_pct": 9.4
@@ -1590,686 +237,374 @@
   "大神2": {
    "n_isolated": 4,
    "n_cross": 0,
-   "mgn_ratio_pct": 2940.5,
-   "leverage": 7.61,
+   "mgn_ratio_pct": 2969.8,
+   "leverage": 7.55,
    "drop_to_liq_pct": null,
    "coins": {
     "SOL": {
      "notional_pct": 53.8,
      "mode": "isolated",
-     "vs_avg_pct": -15.47,
+     "vs_avg_pct": -15.34,
      "liq": 74.52295054085201,
-     "mark": 85.49,
+     "mark": 85.62,
      "avg": 101.13341362145393,
-     "liq_dist_pct": -12.83,
-     "iso_mgn_ratio_pct": 2940.5
+     "liq_dist_pct": -12.96,
+     "iso_mgn_ratio_pct": 2969.8
     },
     "ETH": {
      "notional_pct": 12.5,
      "mode": "isolated",
-     "vs_avg_pct": -17.28,
+     "vs_avg_pct": -17.08,
      "liq": 1895.7615874900455,
-     "mark": 2100.28,
+     "mark": 2105.48,
      "avg": 2539.0713548262265,
-     "liq_dist_pct": -9.74,
-     "iso_mgn_ratio_pct": 2254.3
+     "liq_dist_pct": -9.96,
+     "iso_mgn_ratio_pct": 2303.6
     },
     "DOGE": {
      "notional_pct": 25.2,
      "mode": "isolated",
-     "vs_avg_pct": -17.12,
+     "vs_avg_pct": -17.11,
      "liq": 0.0592586944888779,
-     "mark": 0.06969,
+     "mark": 0.0697,
      "avg": 0.0840857347999958,
-     "liq_dist_pct": -14.97,
-     "iso_mgn_ratio_pct": 2225.4
+     "liq_dist_pct": -14.98,
+     "iso_mgn_ratio_pct": 2227.1
     },
     "BCH": {
      "notional_pct": 8.5,
      "mode": "isolated",
-     "vs_avg_pct": -18.92,
+     "vs_avg_pct": -18.98,
      "liq": 215.2005607470163,
-     "mark": 236.89,
+     "mark": 236.73,
      "avg": 292.17346852692054,
-     "liq_dist_pct": -9.16,
-     "iso_mgn_ratio_pct": 1399.4
+     "liq_dist_pct": -9.09,
+     "iso_mgn_ratio_pct": 1390.7
     }
    },
    "avail_pct": 0.0
   }
  },
- "hl_sample_keys": [
-  "create_time",
-  "entry_price",
-  "funding_fee",
-  "leverage",
-  "liq_price",
-  "margin_balance",
-  "margin_mode",
-  "mark_price",
-  "position_size",
-  "position_value_usd",
-  "symbol",
-  "unrealized_pnl",
-  "update_time",
-  "user"
- ],
  "onchain_liq": {
   "BTC": {
-   "price": 74420.0,
-   "n_whales": 101,
-   "total_usd": 3290128156,
-   "below": [
-    {
-     "price": 70699.0,
-     "usd": 76542088.2305,
-     "n": 2,
-     "long": 76542088.2305,
-     "short": 0,
-     "dist_pct": -5.0
-    },
-    {
-     "price": 66605.90000000001,
-     "usd": 67960333.83,
-     "n": 1,
-     "long": 67960333.83,
-     "short": 0,
-     "dist_pct": -10.5
-    },
-    {
-     "price": 71815.3,
-     "usd": 50928663.500300005,
-     "n": 2,
-     "long": 50928663.500300005,
-     "short": 0,
-     "dist_pct": -3.5
-    },
-    {
-     "price": 69954.8,
-     "usd": 29776000.0,
-     "n": 1,
-     "long": 29776000.0,
-     "short": 0,
-     "dist_pct": -6.0
-    },
-    {
-     "price": 72931.6,
-     "usd": 26007645.5996,
-     "n": 2,
-     "long": 26007645.5996,
-     "short": 0,
-     "dist_pct": -2.0
-    },
-    {
-     "price": 69210.6,
-     "usd": 22690435.3542,
-     "n": 1,
-     "long": 22690435.3542,
-     "short": 0,
-     "dist_pct": -7.0
-    }
-   ],
-   "above": [
-    {
-     "price": 85210.90000000001,
-     "usd": 89474975.6935,
-     "n": 2,
-     "long": 0,
-     "short": 89474975.6935,
-     "dist_pct": 14.5
-    },
-    {
-     "price": 80373.6,
-     "usd": 44664074.44,
-     "n": 1,
-     "long": 0,
-     "short": 44664074.44,
-     "dist_pct": 8.0
-    },
-    {
-     "price": 79629.40000000001,
-     "usd": 19060737.922,
-     "n": 1,
-     "long": 0,
-     "short": 19060737.922,
-     "dist_pct": 7.0
-    },
-    {
-     "price": 81862.0,
-     "usd": 14889200.0,
-     "n": 1,
-     "long": 0,
-     "short": 14889200.0,
-     "dist_pct": 10.0
-    },
-    {
-     "price": 83350.40000000001,
-     "usd": 8565135.3066,
-     "n": 1,
-     "long": 0,
-     "short": 8565135.3066,
-     "dist_pct": 12.0
-    },
-    {
-     "price": 81489.90000000001,
-     "usd": 6280746.4737,
-     "n": 1,
-     "long": 0,
-     "short": 6280746.4737,
-     "dist_pct": 9.5
-    }
-   ],
+   "price": 74525.0,
+   "n_whales": 12,
+   "total_usd": 1384588772,
+   "below": [],
+   "above": [],
    "top": [
     {
      "src": "Aave-eth",
      "side": "long",
      "usd": 543343422.9502648,
-     "liq": 35719.86126115528,
+     "liq": 35797.29196850614,
      "lev": 1.7,
      "hf": 2.082,
-     "dist_pct": -52.0,
+     "dist_pct": -51.97,
      "addr": "0xabdb…f8d6"
     },
     {
      "src": "Aave-eth",
      "side": "long",
      "usd": 542274072.8733003,
-     "liq": 29488.756162850805,
+     "liq": 29552.679570388496,
      "lev": 1.5,
      "hf": 2.486,
-     "dist_pct": -60.38,
+     "dist_pct": -60.35,
      "addr": "0x7cd0…c912"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 175259699.8927,
-     "liq": 121421.7101,
-     "lev": 5.0,
-     "hf": null,
-     "dist_pct": 63.16,
-     "addr": "0x5b5d…c060"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 155607128.6564,
-     "liq": 118213.5701,
-     "lev": 5.0,
-     "hf": null,
-     "dist_pct": 58.85,
-     "addr": "0xb83d…6e36"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 96483083.6705,
-     "liq": 93773.6253,
-     "lev": 25.0,
-     "hf": null,
-     "dist_pct": 26.01,
-     "addr": "0xfc27…9d9d"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 94788147.7539,
-     "liq": 89507.1353,
-     "lev": 13.0,
-     "hf": null,
-     "dist_pct": 20.27,
-     "addr": "0x3ff5…f705"
     },
     {
      "src": "Aave-eth",
      "side": "long",
      "usd": 75942625.99643388,
-     "liq": 30210.412797604225,
+     "liq": 30275.900555666263,
      "lev": 1.5,
      "hf": 2.462,
-     "dist_pct": -59.41,
+     "dist_pct": -59.37,
      "addr": "0x834b…8389"
-    },
-    {
-     "src": "HL",
-     "side": "long",
-     "usd": 74440000.0,
-     "liq": 51717.9172,
-     "lev": 3.0,
-     "hf": null,
-     "dist_pct": -30.51,
-     "addr": "0x8ea8…edbc"
-    },
-    {
-     "src": "HL",
-     "side": "long",
-     "usd": 67960333.83,
-     "liq": 66559.1923,
-     "lev": 18.0,
-     "hf": null,
-     "dist_pct": -10.56,
-     "addr": "0xefe4…194b"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 62675495.6935,
-     "liq": 85074.2254,
-     "lev": 8.0,
-     "hf": null,
-     "dist_pct": 14.32,
-     "addr": "0x218a…7da2"
     },
     {
      "src": "Aave-eth",
      "side": "long",
      "usd": 59493784.64474104,
-     "liq": 38809.02037349403,
+     "liq": 38893.147517133904,
      "lev": 1.6,
      "hf": 1.916,
-     "dist_pct": -47.85,
+     "dist_pct": -47.81,
      "addr": "0x9d8f…b9ea"
     },
     {
-     "src": "HL",
-     "side": "short",
-     "usd": 58131434.7103,
-     "liq": 103995.5492,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": 39.74,
-     "addr": "0xb695…a92d"
-    },
-    {
-     "src": "HL",
+     "src": "Aave-eth",
      "side": "long",
-     "usd": 49960359.9941,
-     "liq": 70605.4226,
-     "lev": 12.0,
-     "hf": null,
-     "dist_pct": -5.13,
-     "addr": "0x6046…b21d"
+     "usd": 36225229.415843554,
+     "liq": 34602.824158864925,
+     "lev": 1.5,
+     "hf": 2.154,
+     "dist_pct": -53.57,
+     "addr": "0x3290…e4fb"
     },
     {
-     "src": "HL",
-     "side": "short",
-     "usd": 46715842.5985,
-     "liq": 147559.8859,
-     "lev": 40.0,
-     "hf": null,
-     "dist_pct": 98.28,
-     "addr": "0xdf95…7d72"
-    },
-    {
-     "src": "HL",
+     "src": "Aave-eth",
      "side": "long",
-     "usd": 44665800.0,
-     "liq": 60033.812,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": -19.33,
-     "addr": "0x93ab…11f8"
+     "usd": 33549573.34900647,
+     "liq": 36420.865216639926,
+     "lev": 1.7,
+     "hf": 2.077,
+     "dist_pct": -51.13,
+     "addr": "0x219d…ded1"
+    },
+    {
+     "src": "Aave-eth",
+     "side": "long",
+     "usd": 33245426.143999368,
+     "liq": 27580.9231519017,
+     "lev": 1.5,
+     "hf": 2.702,
+     "dist_pct": -62.99,
+     "addr": "0x8559…36c0"
+    },
+    {
+     "src": "Aave-eth",
+     "side": "long",
+     "usd": 13461742.53089497,
+     "liq": 54210.87760646206,
+     "lev": 2.6,
+     "hf": 1.375,
+     "dist_pct": -27.26,
+     "addr": "0x4deb…2453"
+    },
+    {
+     "src": "Aave-eth",
+     "side": "long",
+     "usd": 13095745.370081425,
+     "liq": 49395.407757176596,
+     "lev": 2.4,
+     "hf": 1.427,
+     "dist_pct": -33.72,
+     "addr": "0xee7c…2954"
+    },
+    {
+     "src": "Aave-eth",
+     "side": "long",
+     "usd": 12492242.002970548,
+     "liq": 38393.66268747013,
+     "lev": 1.7,
+     "hf": 1.941,
+     "dist_pct": -48.48,
+     "addr": "0x965c…a1ce"
+    },
+    {
+     "src": "Aave-eth",
+     "side": "long",
+     "usd": 11036835.87082016,
+     "liq": 50084.717800054575,
+     "lev": 2.3,
+     "hf": 1.488,
+     "dist_pct": -32.79,
+     "addr": "0x3b6b…617a"
+    },
+    {
+     "src": "Aave-eth",
+     "side": "long",
+     "usd": 10428071.062232908,
+     "liq": 56665.327732846716,
+     "lev": 2.5,
+     "hf": 1.315,
+     "dist_pct": -23.96,
+     "addr": "0x9dc8…a175"
     }
    ]
   },
   "ETH": {
-   "price": 2100.27,
-   "n_whales": 108,
-   "total_usd": 3378878977,
+   "price": 2105.45,
+   "n_whales": 40,
+   "total_usd": 2219201421,
    "below": [
     {
-     "price": 1879.7416500000002,
-     "usd": 163259667.92389962,
+     "price": 1873.8504999999998,
+     "usd": 163858179.04517522,
      "n": 1,
-     "long": 163259667.92389962,
+     "long": 163858179.04517522,
      "short": 0,
-     "dist_pct": -10.5
+     "dist_pct": -11.0
     },
     {
-     "price": 1942.7497500000002,
-     "usd": 45015080.4418,
-     "n": 2,
-     "long": 45015080.4418,
+     "price": 1947.5412499999998,
+     "usd": 27406772.121838376,
+     "n": 1,
+     "long": 27406772.121838376,
      "short": 0,
      "dist_pct": -7.5
     },
     {
-     "price": 1921.7470500000002,
-     "usd": 32562715.260700002,
-     "n": 2,
-     "long": 32562715.260700002,
-     "short": 0,
-     "dist_pct": -8.5
-    },
-    {
-     "price": 1953.2511000000002,
-     "usd": 27306665.68828242,
+     "price": 1852.7959999999998,
+     "usd": 12272048.33875796,
      "n": 1,
-     "long": 27306665.68828242,
+     "long": 12272048.33875796,
      "short": 0,
-     "dist_pct": -7.0
-    },
-    {
-     "price": 2016.2592,
-     "usd": 19102059.8433,
-     "n": 1,
-     "long": 19102059.8433,
-     "short": 0,
-     "dist_pct": -4.0
-    },
-    {
-     "price": 1858.7389500000002,
-     "usd": 12227223.250047842,
-     "n": 1,
-     "long": 12227223.250047842,
-     "short": 0,
-     "dist_pct": -11.5
+     "dist_pct": -12.0
     }
    ],
    "above": [
     {
-     "price": 2173.77945,
-     "usd": 30994816.59986446,
-     "n": 2,
-     "long": 22877527.04676446,
-     "short": 8117289.5531,
-     "dist_pct": 3.5
-    },
-    {
-     "price": 2341.80105,
-     "usd": 24310495.927699998,
-     "n": 2,
-     "long": 0,
-     "short": 24310495.927699998,
-     "dist_pct": 11.5
-    },
-    {
-     "price": 2352.3024,
-     "usd": 6439036.086,
+     "price": 2168.6135,
+     "usd": 22961396.226084083,
      "n": 1,
-     "long": 0,
-     "short": 6439036.086,
-     "dist_pct": 12.0
+     "long": 22961396.226084083,
+     "short": 0,
+     "dist_pct": 3.0
     }
    ],
    "top": [
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 287916356.92605543,
-     "liq": 1063.4534081798972,
+     "usd": 288971860.3691821,
+     "liq": 1060.7983767143426,
      "lev": 1.7,
-     "hf": 1.978,
-     "dist_pct": -49.37,
+     "hf": 1.985,
+     "dist_pct": -49.62,
      "addr": "0x741a…31f3"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 270359269.7224521,
-     "liq": 837.8021942653273,
+     "usd": 271350408.75713557,
+     "liq": 835.7105265245729,
      "lev": 1.5,
-     "hf": 2.51,
-     "dist_pct": -60.11,
+     "hf": 2.519,
+     "dist_pct": -60.31,
      "addr": "0x28a5…a6b0"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 264558950.06682184,
-     "liq": 1344.2477165487562,
+     "usd": 265528825.0877719,
+     "liq": 1340.8916503990922,
      "lev": 2.2,
-     "hf": 1.564,
-     "dist_pct": -36.0,
+     "hf": 1.57,
+     "dist_pct": -36.31,
      "addr": "0xc70a…3810"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 199431940.18531263,
-     "liq": 839.3178108863416,
+     "usd": 200163059.11784726,
+     "liq": 837.2223592376249,
      "lev": 1.5,
-     "hf": 2.506,
-     "dist_pct": -60.04,
+     "hf": 2.515,
+     "dist_pct": -60.24,
      "addr": "0x3478…ddcf"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 163259667.92389962,
-     "liq": 1879.7099534463027,
+     "usd": 163858179.04517522,
+     "liq": 1875.0170453845772,
      "lev": 4.0,
-     "hf": 1.119,
-     "dist_pct": -10.5,
+     "hf": 1.123,
+     "dist_pct": -10.94,
      "addr": "0x9992…f242"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 116934374.4925,
-     "liq": 4071.7026,
-     "lev": 5.0,
-     "hf": null,
-     "dist_pct": 93.87,
-     "addr": "0x5b5d…c060"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 99829138.58757445,
-     "liq": 1691.4504693333108,
+     "usd": 100195112.93036117,
+     "liq": 1687.2275723225302,
      "lev": 3.1,
-     "hf": 1.243,
-     "dist_pct": -19.47,
+     "hf": 1.248,
+     "dist_pct": -19.86,
      "addr": "0xabbd…e7f1"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 97484692.38807411,
-     "liq": 1368.1311242736563,
+     "usd": 97842071.97416754,
+     "liq": 1364.7154305008864,
      "lev": 2.2,
-     "hf": 1.537,
-     "dist_pct": -34.86,
+     "hf": 1.543,
+     "dist_pct": -35.18,
      "addr": "0xdc3a…1a95"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 86414036.01130138,
-     "liq": 1345.22182544014,
+     "usd": 86730830.49119204,
+     "liq": 1341.8633273176813,
      "lev": 2.2,
-     "hf": 1.563,
-     "dist_pct": -35.95,
+     "hf": 1.569,
+     "dist_pct": -36.27,
      "addr": "0x2bd7…fb82"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 86281120.15446806,
-     "liq": 1460.9469785142126,
+     "usd": 86597427.36386797,
+     "liq": 1457.2995594852011,
      "lev": 2.4,
-     "hf": 1.439,
-     "dist_pct": -30.44,
+     "hf": 1.445,
+     "dist_pct": -30.78,
      "addr": "0xc3fe…31e4"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 66097315.87288916,
-     "liq": 1447.6936582604144,
+     "usd": 66339629.11007418,
+     "liq": 1444.0793276413192,
      "lev": 2.4,
-     "hf": 1.453,
-     "dist_pct": -31.07,
+     "hf": 1.458,
+     "dist_pct": -31.41,
      "addr": "0x34d1…4ac1"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 63030000.0,
-     "liq": 2911.7137,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": 38.64,
-     "addr": "0x15a4…dfdb"
     },
     {
      "src": "Aave-eth",
      "side": "long",
-     "usd": 60166572.52081219,
-     "liq": 1391.3099764881256,
-     "lev": 2.3,
-     "hf": 1.512,
-     "dist_pct": -33.76,
+     "usd": 60387143.610051006,
+     "liq": 1387.8364140946037,
+     "lev": 2.2,
+     "hf": 1.517,
+     "dist_pct": -34.08,
      "addr": "0x2269…3588"
     },
     {
-     "src": "HL",
-     "side": "short",
-     "usd": 52978641.3154,
-     "liq": 3907.163,
-     "lev": 25.0,
-     "hf": null,
-     "dist_pct": 86.03,
-     "addr": "0xdf95…7d72"
-    },
-    {
-     "src": "HL",
+     "src": "Aave-eth",
      "side": "long",
-     "usd": 51465726.7733,
-     "liq": 1311.1514,
-     "lev": 25.0,
-     "hf": null,
-     "dist_pct": -37.57,
-     "addr": "0xe813…6d74"
-    }
-   ]
-  },
-  "SOL": {
-   "price": 85.49,
-   "n_whales": 11,
-   "total_usd": 160676841,
-   "below": [
-    {
-     "price": 76.0861,
-     "usd": 16247280.0,
-     "n": 1,
-     "long": 16247280.0,
-     "short": 0,
-     "dist_pct": -11.0
-    }
-   ],
-   "above": [],
-   "top": [
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 51080869.9163,
-     "liq": 267.0879,
-     "lev": 7.0,
-     "hf": null,
-     "dist_pct": 212.42,
-     "addr": "0x5b5d…c060"
+     "usd": 43769346.89479778,
+     "liq": 1381.2003478941592,
+     "lev": 2.2,
+     "hf": 1.524,
+     "dist_pct": -34.4,
+     "addr": "0xa028…5bb4"
     },
     {
-     "src": "HL",
-     "side": "short",
-     "usd": 18811116.2459,
-     "liq": 195.1818,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": 128.31,
-     "addr": "0x3dc9…54b0"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 18226855.042,
-     "liq": 510.4294,
-     "lev": 5.0,
-     "hf": null,
-     "dist_pct": 497.06,
-     "addr": "0xb83d…6e36"
-    },
-    {
-     "src": "HL",
+     "src": "Aave-eth",
      "side": "long",
-     "usd": 16247280.0,
-     "liq": 75.9754,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": -11.13,
-     "addr": "0x4a20…3c26"
+     "usd": 42738670.69610119,
+     "liq": 786.0875134800843,
+     "lev": 1.5,
+     "hf": 2.678,
+     "dist_pct": -62.66,
+     "addr": "0xbf7e…35ee"
     },
     {
-     "src": "HL",
+     "src": "Aave-eth",
      "side": "long",
-     "usd": 16202740.8375,
-     "liq": 35.4296,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": -58.56,
-     "addr": "0x9c89…600e"
+     "usd": 31846789.75645821,
+     "liq": 1033.50074136754,
+     "lev": 1.7,
+     "hf": 2.037,
+     "dist_pct": -50.91,
+     "addr": "0x3289…9d97"
     },
     {
-     "src": "HL",
-     "side": "short",
-     "usd": 7764839.0888,
-     "liq": 151.1013,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": 76.75,
-     "addr": "0xf517…c032"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 7533130.1026,
-     "liq": 402.672,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": 371.02,
-     "addr": "0xecb6…2b00"
-    },
-    {
-     "src": "HL",
+     "src": "Aave-eth",
      "side": "long",
-     "usd": 6669780.0,
-     "liq": 39.1345,
-     "lev": 3.0,
-     "hf": null,
-     "dist_pct": -54.22,
-     "addr": "0xe927…98ef"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 6322904.4095,
-     "liq": 279.3403,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": 226.75,
-     "addr": "0xca49…53c8"
-    },
-    {
-     "src": "HL",
-     "side": "long",
-     "usd": 6172476.9758,
-     "liq": 29.4072,
-     "lev": 10.0,
-     "hf": null,
-     "dist_pct": -65.6,
-     "addr": "0x8ae4…3d60"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 5644848.0,
-     "liq": 199.3451,
-     "lev": 2.0,
-     "hf": null,
-     "dist_pct": 133.18,
-     "addr": "0xa0b7…6165"
+     "usd": 27443910.84331489,
+     "liq": 1736.1212044389308,
+     "lev": 3.3,
+     "hf": 1.213,
+     "dist_pct": -17.54,
+     "addr": "0x51ab…4eaf"
     }
    ]
   }
@@ -2277,33 +612,33 @@
  "whale_news": [
   {
    "src": "Odaily",
+   "title": "价值约80.8亿美元，14家上市公司2026年累计出售10.8247万枚BTC",
+   "body": "Odaily星球日报讯 Lookonchain 在 X 平台发文表示，14 家上市公司在 2026 年累计出售 10.8247 万枚 BTC，价值约 80.8 亿美元。其中，Riot Platforms 出售 2.0264 万枚 BTC，价值约 15.1 亿美元，均价为 73,231 美元。",
+   "link": "https://www.odaily.news/zh-CN/newsflash/532874",
+   "id": "795638e2066d"
+  },
+  {
+   "src": "Odaily",
    "title": "某地址单笔买入价值540万美元的ETH，成本价2113.46美元",
    "body": "Odaily星球日报讯 据链上分析师 Ai 姨监测，沉睡一年的某地址于 5 小时前单笔买入价值 540 万美元的 ETH，成本价为 2113.46 美元。该地址于昨日收到用于抄底的 540 万枚 USDT。这笔资金三年前从多家交易所提出后一直存放在钱包中，当时 ETH 价格约为 1500 美元。",
    "link": "https://www.odaily.news/zh-CN/newsflash/532864",
    "id": "46546f3b3093"
-  },
-  {
-   "src": "Odaily",
-   "title": "亏损110.6万美元，UXLINK黑客关联地址通过TWAP清仓近3万枚ETH多单",
-   "body": "Odaily星球日报讯 据链上分析师 Ai 姨监测，UXLINK 黑客关联地址 (0xde8d...9524) 于 11 小时前通过 TWAP 清仓持有近三个月的约 3 万枚 ETH 多单，平仓均价为 2135.2 美元，仓位价值约 6466 万美元，最终亏损 110.6 万美元。该仓位巅峰时期一度浮盈近 1680 万美元。",
-   "link": "https://www.odaily.news/zh-CN/newsflash/532855",
-   "id": "040592bcdbb8"
   }
  ],
  "ma": {
   "d_ema200": 76481,
   "d_sma200": 73194,
-  "d_sma50": 81460,
+  "d_sma50": 81459,
   "w_ema200": 69438,
   "n_d": 1000,
   "n_w": 462
  },
  "reversal": {
-  "oi_yi": 38.08,
+  "oi_yi": 38.09,
   "oi_target_yi": 36.3,
-  "retail_ls": 2.92,
+  "retail_ls": 2.94,
   "wick": null,
-  "spot_buy_15m": 50.0,
+  "spot_buy_15m": 65.8,
   "conds": {
    "oi": false,
    "ls": false,
@@ -2313,15 +648,22 @@
  },
  "jin10": [
   {
-   "id": "20261110174648576800",
-   "time": "2026-11-10 17:46:48",
-   "text": "美联储理事沃勒表示，其倾向于12月加息25个基点，但若最新通胀数据继续偏高，应考虑加息50个基点，免得市场质疑美联储控制通胀的决心。点击查看...",
+   "id": "20261110175202465800",
+   "time": "2026-11-10 17:52:02",
+   "text": "1. 美以正就军援事宜讨论新文件——鲁比奥9日说，美国和以色列正就美对以军事援助事宜讨论新的谅解备忘录。2. 中期选举不公正——美国总统特朗普：中期选举结果看起来不公正。真的有人相信这场“选举”是公正的吗？民调怎么可能出现如此巨大的偏差？3. 同意伊拉克总理提出的停战建议——消息人士透露，伊拉克总理在与美国总统特朗普的电话会谈中，提出了结束伊朗战争的建议。特朗普对伊拉克总理在电话会谈中提出的建议表示赞同。4. 希望与伊朗达成协议——一名了解会晤详情的外交官表示，美国总统特朗普向卡塔尔首相穆罕默德·本·阿卜杜勒拉赫曼",
    "imp": 1
   }
  ],
  "alerts_sent": [
-  "🐋 链上强平堆 BTC 70699（-5.0%）≈0.77亿美元 / 2个大户多单——明牌目标，易被打",
-  "🐋 链上强平堆 BTC 71815（-3.5%）≈0.51亿美元 / 2个大户多单——明牌目标，易被打",
-  "⚡ 金十｜美联储理事沃勒表示，其倾向于12月加息25个基点，但若最新通胀数据继续偏高，应考虑加息50个基点，免得市场质疑美联储控制通胀的决心。点击查看..."
+  "⚠️ 大神2 ETH[逐仓] 距强平 10.0%（强平价 1896），建议给该仓加 ≈1,639 USDT",
+  "⚠️ 大神2 BCH[逐仓] 距强平 9.1%（强平价 215.20），建议给该仓加 ≈1,210 USDT",
+  "🐋 巨鲸消失 BTC 多 0.68亿（原强平 66559）= 平仓或被清算",
+  "🐋 巨鲸消失 BTC 空 0.63亿（原强平 85074）= 平仓或被清算",
+  "🐋 巨鲸消失 BTC 多 0.50亿（原强平 70605）= 平仓或被清算",
+  "🐋 巨鲸消失 BTC 空 0.45亿（原强平 80536）= 平仓或被清算",
+  "🐋 巨鲸消失 BTC 多 0.36亿（原强平 71772）= 平仓或被清算",
+  "🐋 巨鲸消失 ETH 多 0.33亿（原强平 1938）= 平仓或被清算",
+  "📰 Odaily｜价值约80.8亿美元，14家上市公司2026年累计出售10.8247万枚BTC\nOdaily星球日报讯 Lookonchain 在 X 平台发文表示，14 家上市公司在 2026 年累计出售 10.8247 万枚 BTC，价值约 80.8 亿美元。其中，Riot Platforms 出售 2.0264 万枚 BTC，价值约 15.1 亿美元，均价为 73,231 美元。\nhttps://www.odaily.news/zh-CN/newsflash/532874",
+  "⚡ 金十｜1. 美以正就军援事宜讨论新文件——鲁比奥9日说，美国和以色列正就美对以军事援助事宜讨论新的谅解备忘录。2. 中期选举不公正——美国总统特朗普：中期选举结果看起来不公正。真的有人相信这场“选举”是公正的吗？民调怎么可能出现如此巨大的偏差？3. 同意伊拉克总理提出的停战建议——消息人士透露，伊拉克总理在与美国总统特朗普的电话会谈中，提出了结束伊朗战争的建议。特朗普对伊拉克总理在电话会谈中提出的建议表示赞同。4. 希望与伊朗达成协议——一名了解会晤详情的外交官表示，美国总统特朗普向卡塔尔首相穆罕默德·本·阿卜杜勒拉赫曼"
  ]
 }
