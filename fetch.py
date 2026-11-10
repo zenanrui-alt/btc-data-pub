@@ -571,14 +571,13 @@ try:
         req = urllib.request.Request(f"https://stooq.com/q/d/l/?s={sym}&i=d", headers={"User-Agent": UA})
         rows = [r.split(",") for r in urllib.request.urlopen(req, timeout=20).read().decode().strip().splitlines()[1:] if r.count(",") >= 4]
         return float(rows[-1][4]), float(rows[-2][4])
-    srcs = (("NQ", "stooq", "nq.f"), ("DXY", "stooq", "dx.f"), ("US10Y", "stooq", "10usy.b"), ("GOLD", "okx", "XAU-USDT-SWAP"), ("OIL", "stooq", "cl.f"))
+    srcs = (("NQ", "okx", "US100-USDT-SWAP"), ("NVDA", "okx", "NVDA-USDT-SWAP"), ("GOLD", "okx", "XAU-USDT-SWAP"), ("OIL", "okx", "CL-USDT-SWAP"), ("DXY", "stooq", "dx.f"), ("US10Y", "stooq", "10usy.b"))
     for nm, src, sy in srcs:
         try:
             if src == "okx":
                 t = get(f"https://www.okx.com/api/v5/market/ticker?instId={sy}")["data"][0]; last = float(t["last"]); prev = float(t["open24h"])
             else:
-                try: last, prev = _stooq(sy)
-                except Exception: r_ = _yh(sy.upper().replace(".F", "=F")); mk[nm] = r_; continue
+                last, prev = _stooq(sy)
             h = [x for x in _hist.get(nm, []) if time.time() - x[0] >= 3300]
             mk[nm] = {"last": round(last, 3), "chg24h": round((last / prev - 1) * 100, 2) if prev else None, "chg1h": round((last / h[-1][1] - 1) * 100, 2) if h else None}
             _hist[nm] = ([x for x in _hist.get(nm, []) if time.time() - x[0] < 7200] + [[time.time(), last]])[-30:]
@@ -940,7 +939,7 @@ try:
                     mt = [f"{n} {ma[k]:,}" for n, k in (("日EMA200", "d_ema200"), ("365日", "d_sma365"), ("日SMA200", "d_sma200"), ("周EMA200", "w_ema200")) if ma.get(k)]
                     if mt: L.append("均线: " + " · ".join(mt))
                     mk = summary.get("macro_mkt") or {}
-                    xs = [f"{n} {mk[k]['chg24h']:+.1f}%" for n, k in (("纳指", "NQ"), ("美元", "DXY"), ("黄金", "GOLD"), ("原油", "OIL")) if mk.get(k) and mk[k].get("chg24h") is not None]
+                    xs = [f"{n} {mk[k]['chg24h']:+.1f}%" for n, k in (("纳指", "NQ"), ("英伟达", "NVDA"), ("美元", "DXY"), ("黄金", "GOLD"), ("原油", "OIL")) if mk.get(k) and mk[k].get("chg24h") is not None]
                     if mk.get("US10Y"): xs.append(f"10Y {mk['US10Y']['last']:.2f}%")
                     if xs: L.append("外部24h: " + " · ".join(xs))
                     fgv = summary.get("fear_greed")
