@@ -990,7 +990,7 @@ try:
         TG_ALLOW = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_ALLOW_USERS", "U992026,AXG688,YKs666").split(",") if u.strip()}
         subs = state.get("tg_subs", {})
         try:
-            upd = get(f"https://api.telegram.org/bot{TG_TOKEN}/getUpdates?limit=100").get("result", [])
+            upd = get(f"https://api.telegram.org/bot{TG_TOKEN}/getUpdates?offset=-100&limit=100").get("result", [])
             for u in upd:
                 m = u.get("message") or {}; fr = m.get("from") or {}; ch = m.get("chat") or {}
                 un = (fr.get("username") or "").lower(); cid = str(ch.get("id") or "")
