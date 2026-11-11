@@ -987,7 +987,7 @@ try:
             except Exception as e:
                 summary["errors"].append(f"brief -> {e}")
         # auto-subscribe: whitelisted Telegram usernames who press Start on the bot get added (no Secret edit needed)
-        TG_ALLOW = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_ALLOW_USERS", "U992026,AXG688").split(",") if u.strip()}
+        TG_ALLOW = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_ALLOW_USERS", "U992026,AXG688,YKs666").split(",") if u.strip()}
         subs = state.get("tg_subs", {})
         try:
             upd = get(f"https://api.telegram.org/bot{TG_TOKEN}/getUpdates?limit=100").get("result", [])
@@ -1005,7 +1005,7 @@ try:
             state["tg_subs"] = subs
         except Exception as e: summary["errors"].append(f"tg subs -> {str(e)[:80]}")
         if alerts:
-            MKT_ONLY = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_MARKET_ONLY_USERS", "AXG688").split(",") if u.strip()}
+            MKT_ONLY = {u.strip().lstrip("@").lower() for u in os.environ.get("TG_MARKET_ONLY_USERS", "AXG688,YKs666").split(",") if u.strip()}
             acct_labels = [lb for lb, _ in ACCTS] + ["OKX", "账户", "逐仓", "全仓"]
             short = [x for x in alerts if not x.startswith(("📊", "🔴 美国"))]; briefs = [x for x in alerts if x.startswith(("📊", "🔴 美国"))]
             def _msgs(market_only):
