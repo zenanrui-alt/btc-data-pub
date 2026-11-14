@@ -156,6 +156,26 @@ if CG:
                 summary["errors"].append(f"cg {key} -> {str(e)[:100]}")
         if not ok: summary["cg"][key] = None
 
+    # 5a-2) Daily liquidations (last 8 days) per coin, for weekly totals
+    summary["cg"]["liq_daily"] = {}
+    for _c in ("BTC", "ETH", "SOL", "UNI", "ADA", "DOGE"):
+        _ok = False
+        for _u in (f"{B}/api/futures/liquidation/aggregated-history?symbol={_c}&exchange_list=Binance,OKX,Bybit,Bitget,Gate&interval=1d&limit=8",
+                   f"{B}/api/futures/liquidation/aggregated-history?symbol={_c}&exchange_list=Binance,OKX,Bybit&interval=1d&limit=8"):
+            try:
+                time.sleep(1.2)
+                r = get(_u, {"CG-API-KEY": CG})
+                if str(r.get("code")) == "0" and isinstance(r.get("data"), list) and r["data"]:
+                    summary["cg"]["liq_daily"][_c] = [{"t": x.get("time"),
+                                                       "L": round(float(x.get("aggregated_long_liquidation_usd") or 0)),
+                                                       "S": round(float(x.get("aggregated_short_liquidation_usd") or 0))} for x in r["data"][-8:]]
+                    _ok = True; break
+                else:
+                    summary["errors"].append(f"cg liq_daily {_c} -> code={r.get('code')} msg={str(r.get('msg'))[:80]}")
+            except Exception as e:
+                summary["errors"].append(f"cg liq_daily {_c} -> {str(e)[:100]}")
+        if not _ok: summary["cg"]["liq_daily"][_c] = None
+
 # 5b) OKX accounts (read-only API). Only ratios/distances are published; no balances.
 import hmac, hashlib, base64
 def okx_get(path, key, sec, pwd):
