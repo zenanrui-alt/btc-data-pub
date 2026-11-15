@@ -679,6 +679,89 @@ try:
     summary["macro_mkt"] = mk; summary["_mk_hist"] = _hist
 except Exception as e:
     summary["errors"].append(f"macro_mkt -> {str(e)[:80]}")
+
+# 5g) Gold (traditional venues): COMEX futures + GVZ (Yahoo), GLD option chain (CBOE delayed quotes), CFTC COT (gold futures)
+_WUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+def _wget(url, timeout=30):
+    _rq = urllib.request.Request(url, headers={"User-Agent": _WUA, "Accept": "*/*"})
+    with urllib.request.urlopen(_rq, timeout=timeout) as _rs: return json.loads(_rs.read().decode("utf-8"))
+gold = {}
+for _nm, _sy in (("GC", "GC=F"), ("GVZ", "^GVZ"), ("GLD", "GLD"), ("SI", "SI=F"), ("VIX", "^VIX")):
+    try:
+        _r = None
+        for _h in ("query1", "query2"):
+            try: _r = _wget(f"https://{_h}.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(_sy)}?interval=1d&range=1mo"); break
+            except Exception as e: _le = e
+        if _r is None: raise _le
+        _res = _r["chart"]["result"][0]; _cl = [c for c in _res["indicators"]["quote"][0]["close"] if c is not None]
+        _last = float(_res["meta"].get("regularMarketPrice") or _cl[-1])
+        gold[_nm] = {"last": round(_last, 3), "prev": round(float(_cl[-2]), 3) if len(_cl) >= 2 else None,
+                     "chg1d": round((_last / _cl[-2] - 1) * 100, 2) if len(_cl) >= 2 and _cl[-2] else None,
+                     "chg5d": round((_last / _cl[-6] - 1) * 100, 2) if len(_cl) >= 6 and _cl[-6] else None,
+                     "hi1m": round(max(_cl), 3), "lo1m": round(min(_cl), 3), "t": _res["meta"].get("regularMarketTime")}
+    except Exception as e:
+        summary["errors"].append(f"gold {_nm} -> {str(e)[:80]}")
+try:
+    _c = _wget("https://cdn.cboe.com/api/global/delayed_quotes/options/GLD.json", 40)
+    _d = _c.get("data") or {}; _ops = _d.get("options") or []
+    _spot = float(_d.get("current_price") or _d.get("close") or 0) or (gold.get("GLD") or {}).get("last")
+    _rows = []
+    for _o in _ops:
+        _m = _re.match(r"^GLD(\d{6})([CP])(\d{8})$", str(_o.get("option", "")))
+        if not _m: continue
+        _rows.append((_m.group(1), _m.group(2), int(_m.group(3)) / 1000.0, float(_o.get("open_interest") or 0), float(_o.get("volume") or 0),
+                      float(_o.get("iv") or 0), float(_o.get("delta") or 0)))
+    if not _rows: raise Exception(f"no option rows; keys={list(_d.keys())[:12]} sample={str(_ops[:1])[:160]}")
+    def _side(rs, t, i): return sum(r[i] for r in rs if r[1] == t)
+    go = {"ts": _c.get("timestamp"), "spot": _spot, "iv30": _d.get("iv30"), "n": len(_rows),
+          "call_oi": round(_side(_rows, "C", 3)), "put_oi": round(_side(_rows, "P", 3)), "call_vol": round(_side(_rows, "C", 4)), "put_vol": round(_side(_rows, "P", 4))}
+    go["pcr_oi"] = round(go["put_oi"] / go["call_oi"], 2) if go["call_oi"] else None
+    go["pcr_vol"] = round(go["put_vol"] / go["call_vol"], 2) if go["call_vol"] else None
+    _today = dt.datetime.utcnow().strftime("%y%m%d")
+    _exps = sorted({r[0] for r in _rows if r[0] >= _today})
+    _by = {e: [r for r in _rows if r[0] == e] for e in _exps}
+    _big = sorted(_exps, key=lambda e: -sum(r[3] for r in _by[e]))[:4]          # the 4 expiries with most open interest
+    go["expiries"] = []
+    for e in sorted(set(_exps[:2] + _big)):
+        rs = _by[e]; ks = sorted({r[2] for r in rs})
+        def _pain(K): return sum(r[3] * max(K - r[2], 0) for r in rs if r[1] == "C") + sum(r[3] * max(r[2] - K, 0) for r in rs if r[1] == "P")
+        coi, poi = _side(rs, "C", 3), _side(rs, "P", 3)
+        _near = lambda t, tgt: min((r for r in rs if r[1] == t and r[5] > 0 and r[6] != 0), key=lambda r: abs(abs(r[6]) - tgt), default=None)
+        p25, c25, atm = _near("P", 0.25), _near("C", 0.25), _near("C", 0.50)
+        go["expiries"].append({"exp": e, "call_oi": round(coi), "put_oi": round(poi), "pcr_oi": round(poi / coi, 2) if coi else None,
+                               "call_vol": round(_side(rs, "C", 4)), "put_vol": round(_side(rs, "P", 4)),
+                               "max_pain": min(ks, key=_pain) if ks else None,
+                               "top_calls": [[r[2], round(r[3])] for r in sorted([r for r in rs if r[1] == "C"], key=lambda r: -r[3])[:5]],
+                               "top_puts": [[r[2], round(r[3])] for r in sorted([r for r in rs if r[1] == "P"], key=lambda r: -r[3])[:5]],
+                               "atm_iv": round(atm[5] * (100 if atm[5] < 5 else 1), 1) if atm else None,
+                               "skew25": round((p25[5] - c25[5]) * (100 if p25[5] < 5 else 1), 1) if (p25 and c25) else None,
+                               "p25": [p25[2], round(p25[5] * (100 if p25[5] < 5 else 1), 1)] if p25 else None, "c25": [c25[2], round(c25[5] * (100 if c25[5] < 5 else 1), 1)] if c25 else None})
+    gold["gld_opt"] = go
+except Exception as e:
+    summary["errors"].append(f"gold gld_opt -> {str(e)[:200]}")
+try:
+    _q = urllib.parse.urlencode({"$where": "cftc_contract_market_code='088691'", "$order": "report_date_as_yyyy_mm_dd DESC", "$limit": "5"})
+    _ct = _wget("https://publicreporting.cftc.gov/resource/72hh-3qpy.json?" + _q, 40)
+    def _pick(x, *subs):
+        for k, v in x.items():
+            kl = k.lower()
+            if all(s_ in kl for s_ in subs) and "spread" not in kl and "change" not in kl and "pct" not in kl and "trader" not in kl:
+                try: return int(float(v))
+                except Exception: pass
+        return None
+    _cot = []
+    for x in _ct:
+        ml, ms = _pick(x, "m_money", "long"), _pick(x, "m_money", "short")
+        _cot.append({"date": str(x.get("report_date_as_yyyy_mm_dd", ""))[:10], "oi": _pick(x, "open_interest_all"),
+                     "mm_long": ml, "mm_short": ms, "mm_net": (ml - ms) if (ml is not None and ms is not None) else None,
+                     "prod_long": _pick(x, "prod_merc", "long"), "prod_short": _pick(x, "prod_merc", "short"),
+                     "swap_long": _pick(x, "swap", "long"), "swap_short": _pick(x, "swap", "short")})
+    if not _cot: raise Exception("empty")
+    gold["cot"] = _cot
+    if _cot[0].get("mm_long") is None: summary["errors"].append(f"gold cot keys -> {list(_ct[0].keys())[:40]}")
+except Exception as e:
+    summary["errors"].append(f"gold cot -> {str(e)[:160]}")
+summary["gold"] = gold
 try:
     opt = {}
     nowms = int(time.time() * 1000)
