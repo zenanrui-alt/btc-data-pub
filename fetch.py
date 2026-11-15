@@ -158,7 +158,7 @@ if CG:
 
     # 5a-2) Daily liquidations (last 8 days) per coin, for weekly totals
     summary["cg"]["liq_daily"] = {}
-    for _c in ("BTC", "ETH", "SOL", "UNI", "ADA", "DOGE"):
+    for _c in ("BTC", "ETH", "SOL", "UNI", "ADA", "DOGE", "XRP", "XLM", "SUI", "LTC", "LINK", "AAVE"):
         _ok = False
         for _u in (f"{B}/api/futures/liquidation/aggregated-history?symbol={_c}&exchange_list=Binance,OKX,Bybit,Bitget,Gate&interval=1d&limit=8",
                    f"{B}/api/futures/liquidation/aggregated-history?symbol={_c}&exchange_list=Binance,OKX,Bybit&interval=1d&limit=8"):
@@ -175,6 +175,29 @@ if CG:
             except Exception as e:
                 summary["errors"].append(f"cg liq_daily {_c} -> {str(e)[:100]}")
         if not _ok: summary["cg"]["liq_daily"][_c] = None
+
+    # 5a-3) Per-coin all-exchange OI + Binance long/short ratios (hourly, last 8) for ETH/SOL/alts
+    summary["cg"]["coin_agg"] = {}
+    def _cg_series(url, field, n=8):
+        time.sleep(2.1)
+        r = get(url, {"CG-API-KEY": CG})
+        if str(r.get("code")) == "0" and isinstance(r.get("data"), list) and r["data"]:
+            return [[x.get("time"), round(float(x.get(field) or 0), 4)] for x in r["data"][-n:]]
+        raise RuntimeError(f"code={r.get('code')} msg={str(r.get('msg'))[:60]}")
+    for _c in ("ETH", "SOL", "XRP", "XLM", "UNI", "SUI", "LTC", "LINK", "ADA", "DOGE", "AAVE"):
+        _row = {}
+        _specs = [("oi", f"{B}/api/futures/open-interest/aggregated-history?symbol={_c}&interval=1h&limit=8", "close"),
+                  ("ls", f"{B}/api/futures/global-long-short-account-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=8", "global_account_long_short_ratio"),
+                  ("top_pos", f"{B}/api/futures/top-long-short-position-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=8", "top_position_long_short_ratio")]
+        if _c in ("ETH", "SOL"):
+            _specs.append(("top_acct", f"{B}/api/futures/top-long-short-account-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=8", "top_account_long_short_ratio"))
+        for _k, _u, _f in _specs:
+            try:
+                _row[_k] = _cg_series(_u, _f)
+            except Exception as e:
+                _row[_k] = None
+                summary["errors"].append(f"cg coin_agg {_c} {_k} -> {str(e)[:100]}")
+        summary["cg"]["coin_agg"][_c] = _row
 
 # 5b) OKX accounts (read-only API). Only ratios/distances are published; no balances.
 import hmac, hashlib, base64
