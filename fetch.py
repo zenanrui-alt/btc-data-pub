@@ -7,10 +7,11 @@ UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124.0 Safari/537
 CG = os.environ.get("COINGLASS_KEY", "").strip()
 CQ = os.environ.get("CRYPTOQUANT_KEY", "").strip()
 SYMBOLS = [s.strip() for s in os.environ.get("SYMBOLS", "BTC,ETH,SOL,UNI,SUI,ADA,XRP,DOGE,LTC").split(",") if s.strip()]
+HEAT_EXTRA = [s.strip() for s in os.environ.get("HEAT_EXTRA", "XLM,LINK,AAVE").split(",") if s.strip() and s.strip() not in SYMBOLS]
 
 def fp(x):
     return f"{x:.0f}" if x>=1000 else (f"{x:.2f}" if x>=10 else (f"{x:.3f}" if x>=1 else f"{x:.4f}"))
-summary = {"ts_utc": dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), "heatmap": {}, "coinbase": {}, "etf": None, "errors": [], "source": "github-actions"}
+summary = {"ts_utc": dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"), "heatmap": {}, "heatmap_extra": {}, "coinbase": {}, "etf": None, "errors": [], "source": "github-actions"}
 
 def get(url, headers=None, timeout=30):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "accept": "application/json", **(headers or {})})
@@ -25,7 +26,7 @@ def cb_price(sym):
 
 # 1) Coinglass heatmap
 if CG:
-    for sym in SYMBOLS:
+    for sym in SYMBOLS + HEAT_EXTRA:
         got = None
         for u in [f"https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-heatmap/model1?symbol={sym}&range=24h",
                   f"https://open-api-v4.coinglass.com/api/futures/liquidation/heatmap/model1?exchange=Binance&symbol={sym}USDT&range=24h"]:
@@ -53,7 +54,7 @@ if CG:
                 return [{"price": round(p, 2 if p>=10 else 5), "dist_pct": round((p / px - 1) * 100, 2), "strength": round(v / maxv, 2)} for p, v in rs]
             below = sorted([r for r in rows if px * 0.94 < r[0] < px], key=lambda r: -r[1])[:5]
             above = sorted([r for r in rows if px < r[0] < px * 1.06], key=lambda r: -r[1])[:5]
-            summary["heatmap"][sym] = {"price": px, "below": pack(below), "above": pack(above), "window": "24h", "levels": len(ys)}
+            summary["heatmap" if sym in SYMBOLS else "heatmap_extra"][sym] = {"price": px, "below": pack(below), "above": pack(above), "window": "24h", "levels": len(ys)}
         except Exception as e:
             summary["errors"].append(f"heatmap parse {sym} -> {e}")
 else:
@@ -133,7 +134,7 @@ if CG:
         ("opt_max_pain",   [f"{B}/api/option/max-pain?symbol=BTC&exchange=Deribit",
                             f"{B}/api/option/max-pain?symbol=BTC"]),
         ("opt_info",       [f"{B}/api/option/info?symbol=BTC"]),
-        ("funding_oi_weighted", [f"{B}/api/futures/funding-rate/oi-weight-history?symbol=BTC&interval=1h&limit=6"]),
+        ("funding_oi_weighted", [f"{B}/api/futures/funding-rate/oi-weight-history?symbol=BTC&interval=1h&limit=24"]),
         ("stablecoin_mcap",[f"{B}/api/index/stableCoin-marketCap-history",
                             f"{B}/api/index/stableCoin-marketCap-history?interval=1d&limit=14"]),
     ]
@@ -144,11 +145,12 @@ if CG:
                 r = get(u, {"CG-API-KEY": CG})
                 if str(r.get("code")) == "0" and r.get("data") not in (None, [], {}):
                     d = r["data"]
-                    if isinstance(d, list) and len(d) > 8:
-                        d = d[-8:]
+                    _keep = 24 if key in ("oi_agg_1h", "ls_global_1h", "ls_top_acct_1h", "ls_top_pos_1h", "liq_agg_1h", "funding_oi_weighted") else 8
+                    if isinstance(d, list) and len(d) > _keep:
+                        d = d[-_keep:]
                     txt = json.dumps(d, ensure_ascii=False)
                     if key == "liq_map_agg": _LIQMAP_RAW = d
-                    summary["cg"][key] = d if len(txt) < 6000 else json.loads(txt[:0] or "null") or {"truncated_sample": txt[:3000]}
+                    summary["cg"][key] = d if len(txt) < (9000 if _keep == 24 else 6000) else json.loads(txt[:0] or "null") or {"truncated_sample": txt[:3000]}
                     ok = True; break
                 else:
                     summary["errors"].append(f"cg {key} {u.split('?')[0].split('/api/')[1]} -> code={r.get('code')} msg={str(r.get('msg'))[:80]}")
@@ -178,7 +180,7 @@ if CG:
 
     # 5a-3) Per-coin all-exchange OI + Binance long/short ratios (hourly, last 8) for ETH/SOL/alts
     summary["cg"]["coin_agg"] = {}
-    def _cg_series(url, field, n=8):
+    def _cg_series(url, field, n=24):
         time.sleep(2.1)
         r = get(url, {"CG-API-KEY": CG})
         if str(r.get("code")) == "0" and isinstance(r.get("data"), list) and r["data"]:
@@ -186,17 +188,28 @@ if CG:
         raise RuntimeError(f"code={r.get('code')} msg={str(r.get('msg'))[:60]}")
     for _c in ("ETH", "SOL", "XRP", "XLM", "UNI", "SUI", "LTC", "LINK", "ADA", "DOGE", "AAVE"):
         _row = {}
-        _specs = [("oi", f"{B}/api/futures/open-interest/aggregated-history?symbol={_c}&interval=1h&limit=8", "close"),
-                  ("ls", f"{B}/api/futures/global-long-short-account-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=8", "global_account_long_short_ratio"),
-                  ("top_pos", f"{B}/api/futures/top-long-short-position-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=8", "top_position_long_short_ratio")]
+        _specs = [("oi", f"{B}/api/futures/open-interest/aggregated-history?symbol={_c}&interval=1h&limit=24", "close"),
+                  ("ls", f"{B}/api/futures/global-long-short-account-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=24", "global_account_long_short_ratio"),
+                  ("top_pos", f"{B}/api/futures/top-long-short-position-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=24", "top_position_long_short_ratio")]
         if _c in ("ETH", "SOL"):
-            _specs.append(("top_acct", f"{B}/api/futures/top-long-short-account-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=8", "top_account_long_short_ratio"))
+            _specs.append(("top_acct", f"{B}/api/futures/top-long-short-account-ratio/history?exchange=Binance&symbol={_c}USDT&interval=1h&limit=24", "top_account_long_short_ratio"))
         for _k, _u, _f in _specs:
             try:
                 _row[_k] = _cg_series(_u, _f)
             except Exception as e:
                 _row[_k] = None
                 summary["errors"].append(f"cg coin_agg {_c} {_k} -> {str(e)[:100]}")
+        if _c in ("ETH", "SOL"):
+            # 5) hourly long/short liquidations (5 exchanges), last 24h
+            try:
+                time.sleep(2.1)
+                r = get(f"{B}/api/futures/liquidation/aggregated-history?symbol={_c}&exchange_list=Binance,OKX,Bybit,Bitget,Gate&interval=1h&limit=24", {"CG-API-KEY": CG})
+                if str(r.get("code")) == "0" and isinstance(r.get("data"), list) and r["data"]:
+                    _row["liq_1h"] = [[x.get("time"), round(float(x.get("aggregated_long_liquidation_usd") or 0)), round(float(x.get("aggregated_short_liquidation_usd") or 0))] for x in r["data"][-24:]]
+                else:
+                    _row["liq_1h"] = None; summary["errors"].append(f"cg coin_agg {_c} liq_1h -> code={r.get('code')} msg={str(r.get('msg'))[:60]}")
+            except Exception as e:
+                _row["liq_1h"] = None; summary["errors"].append(f"cg coin_agg {_c} liq_1h -> {str(e)[:100]}")
         summary["cg"]["coin_agg"][_c] = _row
 
 # 5b) OKX accounts (read-only API). Only ratios/distances are published; no balances.
@@ -425,6 +438,19 @@ try:
             if w["side"] == "long" and -5 <= dpc < 0: fuel["oc_long"] += w["usd"]
             elif w["side"] == "short" and 0 <= dpc <= 5: fuel["oc_short"] += w["usd"]
     summary["fuel5"] = {k: round(v) for k, v in fuel.items()}; summary["fuel5"]["has_exmap"] = bool(lm)
+    if lm and pxb:
+        try:
+            _bk = {}
+            for k, rows in lm.items():
+                for row in rows:
+                    pr, usd = float(row[0]), float(row[1] or 0)
+                    if abs(pr / pxb - 1) <= 0.10 and usd > 0:
+                        b_ = int(pr // 250) * 250; _bk[b_] = _bk.get(b_, 0.0) + usd
+            summary["liq_map_btc"] = {"px": pxb, "bucket": 250,
+                                      "below": [[b_, round(v)] for b_, v in sorted(_bk.items(), reverse=True) if b_ + 250 <= pxb],
+                                      "above": [[b_, round(v)] for b_, v in sorted(_bk.items()) if b_ >= pxb]}
+        except Exception as e:
+            summary["errors"].append(f"liq_map_btc -> {str(e)[:100]}")
     try:
         summary["okx_top_pos"] = float(get("https://www.okx.com/api/v5/rubik/stat/contracts/long-short-position-ratio-contract-top-trader?instId=BTC-USDT-SWAP&period=1H")["data"][0][1])
     except Exception: pass
@@ -496,8 +522,15 @@ try:
             wick = {"ts": dt.datetime.utcfromtimestamp(int(c[0]) / 1000).strftime("%H:%M"), "low": l_, "vol": v_}; break
     tk = get("https://www.okx.com/api/v5/rubik/stat/taker-volume?ccy=BTC&instType=SPOT&period=5m")["data"][:3]
     tb = sum(float(x[2]) for x in tk); ts_ = sum(float(x[1]) for x in tk); spot_buy = tb / (tb + ts_) * 100 if (tb + ts_) else None
-    conds = {"oi": oi_now <= REV_OI_BASE - 2e8, "ls": ls_now < 2.3, "wick": bool(wick) and (spot_buy or 0) >= 60}
-    summary["reversal"] = {"oi_yi": round(oi_now / 1e8, 2), "oi_target_yi": round((REV_OI_BASE - 2e8) / 1e8, 2), "retail_ls": ls_now, "wick": wick,
+    bn_ls = bn_hi = None
+    try:
+        _bn = [float(x.get("global_account_long_short_ratio") or 0) for x in ((summary.get("cg") or {}).get("ls_global_1h") or [])]
+        _bn = [v for v in _bn if v > 0]
+        if _bn: bn_ls, bn_hi = _bn[-1], max(_bn)
+    except Exception: pass
+    bn_ok = True if bn_ls is None else (bn_ls <= 0.85 * bn_hi)   # Binance retail down >=15% from its 24h high
+    conds = {"oi": oi_now <= REV_OI_BASE - 2e8, "ls": ls_now < 2.3 and bn_ok, "wick": bool(wick) and (spot_buy or 0) >= 60}
+    summary["reversal"] = {"oi_yi": round(oi_now / 1e8, 2), "oi_target_yi": round((REV_OI_BASE - 2e8) / 1e8, 2), "retail_ls": ls_now, "retail_ls_bn": bn_ls, "retail_ls_bn_24h_high": bn_hi, "bn_ok": bn_ok, "wick": wick,
                            "spot_buy_15m": round(spot_buy, 1) if spot_buy is not None else None, "conds": conds, "n_ok": sum(conds.values())}
 except Exception as e:
     summary["errors"].append(f"reversal -> {str(e)[:100]}")
@@ -614,11 +647,28 @@ try:
         req = urllib.request.Request(f"https://stooq.com/q/d/l/?s={sym}&i=d", headers={"User-Agent": UA})
         rows = [r.split(",") for r in urllib.request.urlopen(req, timeout=20).read().decode().strip().splitlines()[1:] if r.count(",") >= 4]
         return float(rows[-1][4]), float(rows[-2][4])
-    srcs = (("NQ", "okx", "US100-USDT-SWAP"), ("NVDA", "okx", "NVDA-USDT-SWAP"), ("GOLD", "okx", "XAU-USDT-SWAP"), ("OIL", "okx", "CL-USDT-SWAP"), ("DXY", "stooq", "dx.f"), ("US10Y", "stooq", "10usy.b"))
+    def _yahoo(sym):
+        last_err = None
+        for host, ua in (("query1", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"),
+                         ("query2", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"),
+                         ("query1", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Version/17.4 Safari/605.1.15")):
+            try:
+                _rq = urllib.request.Request(f"https://{host}.finance.yahoo.com/v8/finance/chart/{urllib.parse.quote(sym)}?interval=1d&range=10d", headers={"User-Agent": ua, "Accept": "*/*"})
+                with urllib.request.urlopen(_rq, timeout=20) as _rs: r = json.loads(_rs.read().decode("utf-8"))
+                res = r["chart"]["result"][0]; cl = [c for c in res["indicators"]["quote"][0]["close"] if c is not None]
+                last = float(res["meta"].get("regularMarketPrice") or cl[-1])
+                prev = float(cl[-2]) if len(cl) >= 2 else float(res["meta"]["chartPreviousClose"])
+                return last, prev
+            except Exception as e:
+                last_err = e
+        raise last_err
+    srcs = (("NQ", "okx", "US100-USDT-SWAP"), ("NVDA", "okx", "NVDA-USDT-SWAP"), ("GOLD", "okx", "XAU-USDT-SWAP"), ("OIL", "okx", "CL-USDT-SWAP"), ("DXY", "yahoo", "DX-Y.NYB"), ("US10Y", "yahoo", "^TNX"))
     for nm, src, sy in srcs:
         try:
             if src == "okx":
                 t = get(f"https://www.okx.com/api/v5/market/ticker?instId={sy}")["data"][0]; last = float(t["last"]); prev = float(t["open24h"])
+            elif src == "yahoo":
+                last, prev = _yahoo(sy)
             else:
                 last, prev = _stooq(sy)
             h = [x for x in _hist.get(nm, []) if time.time() - x[0] >= 3300]
@@ -975,7 +1025,7 @@ try:
                     if ocl: L.append("链上强平(近): " + " | ".join(ocl))
                     al = summary.get("alts") or {}
                     if al: L.append("山寨 OI24h/散户/费率: " + " · ".join(f"{c} {v['oi_chg24']:+.0f}%/{v['ls']:.1f}/{v['fund']:.3f}%" for c, v in al.items() if c in ("ETH", "SOL", "XRP", "ADA") and v.get("oi_chg24") is not None))
-                    if rv: L.append(f"反转: OI {rv['oi_yi']}/{rv['oi_target_yi']}{'✅' if rv['conds']['oi'] else '❌'} · 散户 {rv['retail_ls']:.2f}/2.3{'✅' if rv['conds']['ls'] else '❌'} · 长下影{'✅' if rv['conds']['wick'] else '❌'}")
+                    if rv: L.append(f"反转: OI {rv['oi_yi']}/{rv['oi_target_yi']}{'✅' if rv['conds']['oi'] else '❌'} · 散户 OKX {rv['retail_ls']:.2f}/2.3{(' 币安 %.2f(24h高 %.2f)' % (rv['retail_ls_bn'], rv['retail_ls_bn_24h_high'])) if rv.get('retail_ls_bn') else ''}{'✅' if rv['conds']['ls'] else '❌'} · 长下影{'✅' if rv['conds']['wick'] else '❌'}")
                     # ---------- 宏观 / 技术 ----------
                     L.append("━━━ 宏观/技术 ━━━")
                     ma = summary.get("ma") or {}
