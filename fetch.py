@@ -90,6 +90,26 @@ if CG:
         e = get("https://open-api-v4.coinglass.com/api/etf/bitcoin/flow-history", {"CG-API-KEY": CG})
         if str(e.get("code")) == "0" and e.get("data"):
             arr = e["data"]; summary["etf"] = arr[-7:]; summary["etf_source"] = "coinglass"
+            # 3b) Flow-implied cost basis per fund (average-cost method over the full daily flow history)
+            try:
+                _acc = {}
+                for _d in arr:
+                    _p = float(_d.get("price_usd") or 0)
+                    if _p <= 0: continue
+                    _fl = {str(x.get("etf_ticker")): float(x.get("flow_usd") or 0) for x in (_d.get("etf_flows") or []) if x.get("etf_ticker")}
+                    _fl["EX_GBTC"] = sum(v for k, v in _fl.items() if k not in ("GBTC", "BTC"))   # funds that started from zero in 2024
+                    for _t, _f in _fl.items():
+                        a = _acc.setdefault(_t, {"h": 0.0, "c": 0.0, "in_usd": 0.0, "in_btc": 0.0, "n": 0})
+                        if _f > 0:
+                            a["h"] += _f / _p; a["c"] += _f; a["in_usd"] += _f; a["in_btc"] += _f / _p; a["n"] += 1
+                        elif _f < 0 and a["h"] > 0:
+                            _sold = min(a["h"], -_f / _p); a["c"] -= a["c"] / a["h"] * _sold; a["h"] -= _sold; a["n"] += 1
+                summary["etf_cost"] = {"method": "avg-cost over daily flows x daily price; excludes pre-2024 holdings (GBTC not meaningful)",
+                                       "days": len(arr), "first": arr[0].get("timestamp"), "last": arr[-1].get("timestamp"),
+                                       "funds": {t: {"avg_cost": round(a["c"] / a["h"]) if a["h"] > 1 else None, "inflow_wavg": round(a["in_usd"] / a["in_btc"]) if a["in_btc"] > 1 else None,
+                                                     "btc_est": round(a["h"]), "n": a["n"]} for t, a in _acc.items() if t in ("IBIT", "FBTC", "ARKB", "BITB", "HODL", "EX_GBTC")}}
+            except Exception as ex:
+                summary["errors"].append(f"etf_cost -> {str(ex)[:120]}")
         else: summary["errors"].append(f"coinglass etf -> code={e.get('code')} msg={e.get('msg')}")
     except Exception as ex:
         summary["errors"].append(f"coinglass etf -> {ex}")
