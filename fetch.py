@@ -762,6 +762,69 @@ try:
 except Exception as e:
     summary["errors"].append(f"gold cot -> {str(e)[:160]}")
 summary["gold"] = gold
+
+# 5h) Spot-ETF bitcoin holdings (IBIT from iShares site: shares outstanding x basket; all funds from Coinglass ETF list). Daily history kept in alerts_state.json.
+etfh = {}
+try:
+    _hst = (json.load(open("alerts_state.json")) if os.path.exists("alerts_state.json") else {}).get("etf_hold_hist", {})
+except Exception:
+    _hst = {}
+try:
+    _rq = urllib.request.Request("https://www.ishares.com/us/products/333011/ishares-bitcoin-trust-etf", headers={"User-Agent": _WUA, "Accept": "text/html,*/*", "Accept-Language": "en-US,en;q=0.9"})
+    with urllib.request.urlopen(_rq, timeout=40) as _rs: _pg = _rs.read().decode("utf-8", "ignore")
+    _txt = _re.sub(r"\s+", " ", _re.sub(r"<[^>]+>", " ", _pg))
+    def _after(label, pat):
+        i = _txt.find(label)
+        if i < 0: return None
+        m = _re.search(pat, _txt[i + len(label): i + len(label) + 160])
+        return m.group(1) if m else None
+    _sh = _after("Shares Outstanding", r"([\d,]{9,})"); _bk = _after("Basket Bitcoin Amount", r"(\d+\.\d+)")
+    _na = _after("Net Assets", r"\$?\s?([\d,]{9,})"); _asof = _after("Shares Outstanding as of", r"([A-Z][a-z]{2} \d{1,2}, \d{4})") or _after("Basket Bitcoin Amount as of", r"([A-Z][a-z]{2} \d{1,2}, \d{4})")
+    if not (_sh and _bk): raise Exception(f"fields not found sh={_sh} bk={_bk} len={len(_pg)}")
+    _shares = float(_sh.replace(",", "")); _basket = float(_bk)
+    _btc = _shares / 40000.0 * _basket            # IBIT creation unit = 40,000 shares
+    etfh["IBIT"] = {"btc": round(_btc), "shares": round(_shares), "basket_btc": _basket, "net_assets_usd": float(_na.replace(",", "")) if _na else None, "asof": _asof, "src": "ishares"}
+except Exception as e:
+    summary["errors"].append(f"etf_hold ishares -> {str(e)[:140]}")
+if CG:
+    try:
+        time.sleep(2.1)
+        _l = get("https://open-api-v4.coinglass.com/api/etf/bitcoin/list", {"CG-API-KEY": CG})
+        if str(_l.get("code")) == "0" and isinstance(_l.get("data"), list) and _l["data"]:
+            _cgl = []
+            for x in _l["data"]:
+                ad = x.get("asset_details") or {}
+                def _num(d, *subs):
+                    for k, v in d.items():
+                        if all(s_ in k.lower() for s_ in subs):
+                            try: return float(v)
+                            except Exception: pass
+                    return None
+                _cgl.append({"ticker": x.get("ticker"), "btc": _num(ad, "holding") if _num(ad, "btc", "holding") is None else _num(ad, "btc", "holding"),
+                             "chg1d": _num(ad, "change", "24h") if _num(ad, "btc_change_24h") is None else _num(ad, "btc_change_24h"),
+                             "chg7d": _num(ad, "change", "7d") if _num(ad, "btc_change_7d") is None else _num(ad, "btc_change_7d"),
+                             "aum_usd": _num(x, "aum"), "date": ad.get("update_date") or ad.get("date")})
+            _cgl = [r for r in _cgl if r["ticker"]]
+            etfh["cg_list"] = sorted(_cgl, key=lambda r: -(r["btc"] or 0))[:14]
+            etfh["cg_total_btc"] = round(sum(r["btc"] or 0 for r in _cgl))
+            if all(r["btc"] is None for r in _cgl): summary["errors"].append(f"etf_hold cg keys -> top={list(_l['data'][0].keys())[:14]} ad={list((_l['data'][0].get('asset_details') or {}).keys())[:20]}")
+        else:
+            summary["errors"].append(f"etf_hold cg -> code={_l.get('code')} msg={str(_l.get('msg'))[:80]}")
+    except Exception as e:
+        summary["errors"].append(f"etf_hold cg -> {str(e)[:120]}")
+try:
+    _day = dt.datetime.utcnow().strftime("%Y-%m-%d"); _rec = {}
+    if etfh.get("IBIT"): _rec["IBIT"] = etfh["IBIT"]["btc"]; _rec["IBIT_asof"] = etfh["IBIT"].get("asof")
+    for r in etfh.get("cg_list") or []:
+        if r["ticker"] in ("IBIT", "FBTC", "GBTC", "ARKB", "BITB") and r["btc"] and (r["ticker"] != "IBIT" or "IBIT" not in _rec): _rec[r["ticker"]] = round(r["btc"])
+    if etfh.get("cg_total_btc"): _rec["ALL"] = etfh["cg_total_btc"]
+    if _rec: _hst[_day] = _rec
+    _hst = {k: _hst[k] for k in sorted(_hst)[-60:]}
+    etfh["hist"] = [{"d": k, **{kk: vv for kk, vv in _hst[k].items() if kk != "IBIT_asof"}} for k in sorted(_hst)[-15:]]
+    summary["_etf_hold_hist"] = _hst
+except Exception as e:
+    summary["errors"].append(f"etf_hold hist -> {str(e)[:100]}")
+summary["etf_hold"] = etfh
 try:
     opt = {}
     nowms = int(time.time() * 1000)
@@ -1200,12 +1263,14 @@ try:
                     except Exception as e:
                         summary["errors"].append(f"tg {cid[:4]}.. -> {e}")
         state["mk_hist"] = summary.pop("_mk_hist", state.get("mk_hist", {}))
+        state["etf_hold_hist"] = summary.pop("_etf_hold_hist", state.get("etf_hold_hist", {}))
         json.dump(state, open("alerts_state.json", "w"))
         summary["alerts_sent"] = alerts
 except Exception as _e:
     summary['errors'].append(f'alerts block -> {_e}')
 
 with open("summary.json", "w", encoding="utf-8") as f:
+    summary.pop("_etf_hold_hist", None)
     json.dump(summary, f, ensure_ascii=False, indent=1)
 print("ok", summary["ts_utc"], "heatmap=", ",".join(summary["heatmap"].keys()), "errors=", len(summary["errors"]))
 for e in summary["errors"]: print("  ", e[:200])
