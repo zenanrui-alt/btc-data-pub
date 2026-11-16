@@ -799,7 +799,8 @@ try:
         m = _re.search(pat, _txt[i + len(label): i + len(label) + 160])
         return m.group(1) if m else None
     _sh = _after("Shares Outstanding", r"([\d,]{9,})"); _bk = _after("Basket Bitcoin Amount", r"(\d+\.\d+)")
-    _na = _after("Net Assets", r"\$?\s?([\d,]{9,})"); _asof = _after("Shares Outstanding as of", r"([A-Z][a-z]{2} \d{1,2}, \d{4})") or _after("Basket Bitcoin Amount as of", r"([A-Z][a-z]{2} \d{1,2}, \d{4})")
+    _na = _after("Net Assets", r"\$?\s?([\d,]{9,})"); _asof = (_after("Shares Outstanding", r"as of ([A-Z][a-z]{2} \d{1,2}, \d{4})") or _after("Basket Bitcoin Amount", r"as of ([A-Z][a-z]{2} \d{1,2}, \d{4})")
+             or (lambda m: m.group(1) if m else None)(_re.search(r"as of ([A-Z][a-z]{2} \d{1,2}, \d{4})", _txt)))
     if not (_sh and _bk): raise Exception(f"fields not found sh={_sh} bk={_bk} len={len(_pg)}")
     _shares = float(_sh.replace(",", "")); _basket = float(_bk)
     _btc = _shares / 40000.0 * _basket            # IBIT creation unit = 40,000 shares
@@ -826,7 +827,8 @@ if CG:
                              "aum_usd": _num(x, "aum"), "date": ad.get("update_date") or ad.get("date")})
             _cgl = [r for r in _cgl if r["ticker"]]
             etfh["cg_list"] = sorted(_cgl, key=lambda r: -(r["btc"] or 0))[:14]
-            etfh["cg_total_btc"] = round(sum(r["btc"] or 0 for r in _cgl))
+            etfh["cg_total_btc"] = round(sum(r["btc"] or 0 for r in _cgl if r["ticker"] not in ("BITO", "BITX", "BTF", "XBTF")))  # spot ETFs only
+            etfh["chg_unit"] = "pct"
             if all(r["btc"] is None for r in _cgl): summary["errors"].append(f"etf_hold cg keys -> top={list(_l['data'][0].keys())[:14]} ad={list((_l['data'][0].get('asset_details') or {}).keys())[:20]}")
         else:
             summary["errors"].append(f"etf_hold cg -> code={_l.get('code')} msg={str(_l.get('msg'))[:80]}")
@@ -1288,6 +1290,64 @@ try:
         summary["alerts_sent"] = alerts
 except Exception as _e:
     summary['errors'].append(f'alerts block -> {_e}')
+
+# 7) Hourly history snapshot -> hist/YYYY-MM.jsonl (one compact line per UTC hour, for later backtests)
+try:
+    def _last(lst, key=None, i=-1):
+        try:
+            v = lst[i]
+            return float(v[key]) if key else v
+        except Exception:
+            return None
+    _cg = summary.get("cg") or {}
+    _now = time.gmtime()
+    _hk = time.strftime("%Y-%m-%dT%H", _now)
+    os.makedirs("hist", exist_ok=True)
+    _hp = os.path.join("hist", time.strftime("%Y-%m", _now) + ".jsonl")
+    _prev_hk = None
+    if os.path.exists(_hp):
+        with open(_hp, "rb") as _hf:
+            _hf.seek(0, 2); _sz = _hf.tell(); _hf.seek(max(0, _sz - 20000))
+            _tail = [l for l in _hf.read().decode("utf-8", "ignore").splitlines() if l.strip()]
+        if _tail:
+            try: _prev_hk = json.loads(_tail[-1]).get("h")
+            except Exception: _prev_hk = None
+    if _prev_hk != _hk:
+        _lm = summary.get("liq_map_btc") or {}
+        _px = _lm.get("px")
+        def _band(side, pct):
+            if not _px: return None
+            return round(sum(v for p, v in (_lm.get(side) or []) if abs(p - _px) / _px <= pct) / 1e6, 1)
+        _rec = {"h": _hk, "ts": summary.get("ts_utc"), "btc": _px,
+                "oi_all": _last(_cg.get("oi_agg_1h"), "close"),
+                "ls_bn": _last(_cg.get("ls_global_1h"), "global_account_long_short_ratio"),
+                "top_pos_bn": _last(_cg.get("ls_top_pos_1h"), "top_position_long_short_ratio"),
+                "top_acct_bn": _last(_cg.get("ls_top_acct_1h"), "top_account_long_short_ratio"),
+                "fund_oiw": _last(_cg.get("funding_oi_weighted"), "close"),
+                "liq_l_1h": _last(_cg.get("liq_agg_1h"), "aggregated_long_liquidation_usd"),
+                "liq_s_1h": _last(_cg.get("liq_agg_1h"), "aggregated_short_liquidation_usd"),
+                "cb_prem": (summary.get("coinbase") or {}).get("premium_pct"),
+                "okx_ls": (summary.get("reversal") or {}).get("retail_ls"), "okx_top": summary.get("okx_top_pos"),
+                "fuel5": summary.get("fuel5"),
+                "liqmap": {"b5": _band("below", 0.05), "a5": _band("above", 0.05), "b10": _band("below", 0.10), "a10": _band("above", 0.10),
+                           "below": [[p, round(v / 1e6, 1)] for p, v in (_lm.get("below") or [])[:24]],
+                           "above": [[p, round(v / 1e6, 1)] for p, v in (_lm.get("above") or [])[:24]]},
+                "heat": {k: {"px": v.get("price"), "b": [[x.get("price"), x.get("strength")] for x in (v.get("below") or [])[:3]],
+                             "a": [[x.get("price"), x.get("strength")] for x in (v.get("above") or [])[:3]]}
+                         for k, v in {**(summary.get("heatmap") or {}), **(summary.get("heatmap_extra") or {})}.items() if isinstance(v, dict)},
+                "opt": {k: (summary.get("options") or {}).get(k) for k in ("dvol", "skew10", "put10_iv", "call10_iv")},
+                "fg": (summary.get("fear_greed") or {}).get("now"),
+                "macro": {k: (v or {}).get("last") for k, v in (summary.get("macro_mkt") or {}).items()},
+                "stable_all_b": ((summary.get("stablecoins") or {}).get("ALL") or {}).get("now_b"),
+                "etf_last": (lambda e: {"t": e.get("timestamp"), "flow": e.get("flow_usd")} if e else None)((summary.get("etf") or [None])[-1]),
+                "ibit_btc": ((summary.get("etf_hold") or {}).get("IBIT") or {}).get("btc"),
+                "etf_total_btc": (summary.get("etf_hold") or {}).get("cg_total_btc"),
+                "coins": {c: {"oi": _last(d.get("oi"), 1), "ls": _last(d.get("ls"), 1), "top": _last(d.get("top_pos"), 1)}
+                          for c, d in ((_cg.get("coin_agg") or {}).items()) if isinstance(d, dict)}}
+        with open(_hp, "a", encoding="utf-8") as _hf:
+            _hf.write(json.dumps(_rec, ensure_ascii=False, separators=(",", ":")) + "\n")
+except Exception as _e:
+    summary["errors"].append(f"hist -> {str(_e)[:140]}")
 
 with open("summary.json", "w", encoding="utf-8") as f:
     summary.pop("_etf_hold_hist", None)
