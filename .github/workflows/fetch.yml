@@ -52,10 +52,11 @@ jobs:
             [ $first = 0 ] && export FORCE_BRIEF=""; first=0
             timeout 1800 python fetch.py || echo "fetch failed"
             git add summary.json
+            [ -d hist ] && git add hist || true
             [ -f alerts_state.json ] && git add alerts_state.json || true
             git commit -q -m "update $(date -u +%FT%TZ)" || echo "no change"
             for i in 1 2 3; do
-              git pull -q --rebase -X theirs origin main || { git rebase --abort 2>/dev/null; git fetch -q origin main && git reset --soft origin/main && git add summary.json && ([ -f alerts_state.json ] && git add alerts_state.json || true) && git commit -q -m "update $(date -u +%FT%TZ)"; }
+              git pull -q --rebase -X theirs origin main || { git rebase --abort 2>/dev/null; git fetch -q origin main && git reset --soft origin/main && git add summary.json && ([ -d hist ] && git add hist || true) && ([ -f alerts_state.json ] && git add alerts_state.json || true) && git commit -q -m "update $(date -u +%FT%TZ)"; }
               git push -q && break || sleep 5
             done
             [ $SECONDS -ge $end ] && break
