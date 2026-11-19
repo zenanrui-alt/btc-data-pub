@@ -131,6 +131,24 @@ if CQ:
             else: summary["errors"].append(f"cq {k} -> {json.dumps(r)[:160]}")
         except Exception as e:
             summary["errors"].append(f"cq {k} -> {e}")
+    # 4b) CryptoQuant history (120d) for exchange in/out/netflow/reserve — separate keys, old 3-day keys untouched
+    summary["cryptoquant_hist"] = {}
+    for k, u in [
+        ("btc_netflow", "https://api.cryptoquant.com/v1/btc/exchange-flows/netflow?exchange=all_exchange&window=day&limit=120"),
+        ("btc_inflow", "https://api.cryptoquant.com/v1/btc/exchange-flows/inflow?exchange=all_exchange&window=day&limit=120"),
+        ("btc_outflow", "https://api.cryptoquant.com/v1/btc/exchange-flows/outflow?exchange=all_exchange&window=day&limit=120"),
+        ("btc_reserve", "https://api.cryptoquant.com/v1/btc/exchange-flows/reserve?exchange=all_exchange&window=day&limit=120"),
+        ("btc_reserve_binance", "https://api.cryptoquant.com/v1/btc/exchange-flows/reserve?exchange=binance&window=day&limit=120"),
+        ("eth_netflow", "https://api.cryptoquant.com/v1/eth/exchange-flows/netflow?exchange=all_exchange&window=day&limit=120"),
+        ("eth_reserve", "https://api.cryptoquant.com/v1/eth/exchange-flows/reserve?exchange=all_exchange&window=day&limit=120"),
+    ]:
+        try:
+            r = get(u, {"Authorization": f"Bearer {CQ}"})
+            if r.get("status", {}).get("code") == 200 and r.get("result", {}).get("data"):
+                summary["cryptoquant_hist"][k] = r["result"]["data"]
+            else: summary["errors"].append(f"cqh {k} -> {json.dumps(r)[:160]}")
+        except Exception as e:
+            summary["errors"].append(f"cqh {k} -> {e}")
 
 _LIQMAP_RAW = None
 # 5) Coinglass extras: global OI / long-short / top traders / liquidations / liquidation map / orderbook / options / stablecoin
