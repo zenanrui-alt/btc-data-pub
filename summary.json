@@ -1,592 +1,592 @@
 {
- "ts_utc": "2026-11-20T01:44:43Z",
+ "ts_utc": "2026-11-20T01:57:39Z",
  "heatmap": {
   "BTC": {
-   "price": 62018.8,
+   "price": 61603.0,
    "below": [
     {
-     "price": 61856.27,
-     "dist_pct": -0.26,
-     "strength": 0.92
-    },
-    {
-     "price": 61225.43,
-     "dist_pct": -1.28,
+     "price": 61211.2,
+     "dist_pct": -0.64,
      "strength": 0.84
     },
     {
-     "price": 62013.98,
-     "dist_pct": -0.01,
-     "strength": 0.39
-    },
-    {
-     "price": 59963.75,
-     "dist_pct": -3.31,
-     "strength": 0.34
-    },
-    {
-     "price": 61383.14,
-     "dist_pct": -1.02,
-     "strength": 0.3
-    }
-   ],
-   "above": [
-    {
-     "price": 64432.2,
-     "dist_pct": 3.89,
-     "strength": 1.0
-    },
-    {
-     "price": 64537.34,
-     "dist_pct": 4.06,
-     "strength": 0.84
-    },
-    {
-     "price": 63643.65,
-     "dist_pct": 2.62,
-     "strength": 0.64
-    },
-    {
-     "price": 63485.94,
-     "dist_pct": 2.37,
-     "strength": 0.61
-    },
-    {
-     "price": 63538.51,
-     "dist_pct": 2.45,
-     "strength": 0.56
-    }
-   ],
-   "window": "24h",
-   "levels": 143
-  },
-  "ETH": {
-   "price": 1754.55,
-   "below": [
-    {
-     "price": 1745.56,
-     "dist_pct": -0.51,
-     "strength": 0.52
-    },
-    {
-     "price": 1731.96,
-     "dist_pct": -1.29,
-     "strength": 0.48
-    },
-    {
-     "price": 1730.44,
-     "dist_pct": -1.37,
-     "strength": 0.31
-    },
-    {
-     "price": 1739.52,
-     "dist_pct": -0.86,
-     "strength": 0.31
-    },
-    {
-     "price": 1734.98,
-     "dist_pct": -1.12,
-     "strength": 0.27
-    }
-   ],
-   "above": [
-    {
-     "price": 1822.68,
-     "dist_pct": 3.88,
-     "strength": 1.0
-    },
-    {
-     "price": 1819.65,
-     "dist_pct": 3.71,
-     "strength": 0.96
-    },
-    {
-     "price": 1792.44,
-     "dist_pct": 2.16,
-     "strength": 0.89
-    },
-    {
-     "price": 1827.21,
-     "dist_pct": 4.14,
-     "strength": 0.81
-    },
-    {
-     "price": 1763.71,
-     "dist_pct": 0.52,
-     "strength": 0.75
-    }
-   ],
-   "window": "24h",
-   "levels": 136
-  },
-  "SOL": {
-   "price": 72.74,
-   "below": [
-    {
-     "price": 72.18,
-     "dist_pct": -0.77,
-     "strength": 0.5
-    },
-    {
-     "price": 70.71,
-     "dist_pct": -2.79,
-     "strength": 0.39
-    },
-    {
-     "price": 72.63,
-     "dist_pct": -0.15,
+     "price": 59991.97,
+     "dist_pct": -2.62,
      "strength": 0.35
     },
     {
-     "price": 71.35,
-     "dist_pct": -1.91,
-     "strength": 0.28
+     "price": 61370.23,
+     "dist_pct": -0.38,
+     "strength": 0.33
     },
     {
-     "price": 72.69,
-     "dist_pct": -0.07,
-     "strength": 0.28
+     "price": 61158.19,
+     "dist_pct": -0.72,
+     "strength": 0.31
+    },
+    {
+     "price": 61317.22,
+     "dist_pct": -0.46,
+     "strength": 0.29
     }
    ],
    "above": [
     {
-     "price": 75.89,
-     "dist_pct": 4.33,
+     "price": 64497.82,
+     "dist_pct": 4.7,
      "strength": 1.0
     },
     {
-     "price": 75.12,
-     "dist_pct": 3.28,
-     "strength": 0.96
+     "price": 64444.81,
+     "dist_pct": 4.61,
+     "strength": 0.95
     },
     {
-     "price": 75.83,
-     "dist_pct": 4.25,
-     "strength": 0.76
+     "price": 61847.32,
+     "dist_pct": 0.4,
+     "strength": 0.94
     },
     {
-     "price": 75.7,
-     "dist_pct": 4.07,
-     "strength": 0.64
+     "price": 63649.66,
+     "dist_pct": 3.32,
+     "strength": 0.68
     },
     {
-     "price": 73.46,
-     "dist_pct": 0.99,
-     "strength": 0.62
-    }
-   ],
-   "window": "24h",
-   "levels": 137
-  },
-  "UNI": {
-   "price": 4.918,
-   "below": [
-    {
-     "price": 4.8452,
-     "dist_pct": -1.48,
-     "strength": 0.56
-    },
-    {
-     "price": 4.8212,
-     "dist_pct": -1.97,
-     "strength": 0.5
-    },
-    {
-     "price": 4.7204,
-     "dist_pct": -4.02,
-     "strength": 0.26
-    },
-    {
-     "price": 4.8692,
-     "dist_pct": -0.99,
-     "strength": 0.25
-    },
-    {
-     "price": 4.8548,
-     "dist_pct": -1.29,
-     "strength": 0.23
-    }
-   ],
-   "above": [
-    {
-     "price": 5.1524,
-     "dist_pct": 4.77,
-     "strength": 0.66
-    },
-    {
-     "price": 5.042,
-     "dist_pct": 2.52,
-     "strength": 0.54
-    },
-    {
-     "price": 5.09,
-     "dist_pct": 3.5,
-     "strength": 0.53
-    },
-    {
-     "price": 5.114,
-     "dist_pct": 3.99,
-     "strength": 0.5
-    },
-    {
-     "price": 5.1332,
-     "dist_pct": 4.38,
-     "strength": 0.39
-    }
-   ],
-   "window": "24h",
-   "levels": 150
-  },
-  "SUI": {
-   "price": 0.7083,
-   "below": [
-    {
-     "price": 0.7026,
-     "dist_pct": -0.8,
-     "strength": 1.0
-    },
-    {
-     "price": 0.68834,
-     "dist_pct": -2.82,
+     "price": 64338.79,
+     "dist_pct": 4.44,
      "strength": 0.65
-    },
-    {
-     "price": 0.69392,
-     "dist_pct": -2.03,
-     "strength": 0.53
-    },
-    {
-     "price": 0.69826,
-     "dist_pct": -1.42,
-     "strength": 0.36
-    },
-    {
-     "price": 0.69764,
-     "dist_pct": -1.51,
-     "strength": 0.33
-    }
-   ],
-   "above": [
-    {
-     "price": 0.746,
-     "dist_pct": 5.32,
-     "strength": 0.87
-    },
-    {
-     "price": 0.74166,
-     "dist_pct": 4.71,
-     "strength": 0.71
-    },
-    {
-     "price": 0.74104,
-     "dist_pct": 4.62,
-     "strength": 0.64
-    },
-    {
-     "price": 0.73918,
-     "dist_pct": 4.36,
-     "strength": 0.48
-    },
-    {
-     "price": 0.74662,
-     "dist_pct": 5.41,
-     "strength": 0.44
-    }
-   ],
-   "window": "24h",
-   "levels": 142
-  },
-  "ADA": {
-   "price": 0.151,
-   "below": [
-    {
-     "price": 0.14973,
-     "dist_pct": -0.84,
-     "strength": 0.69
-    },
-    {
-     "price": 0.14986,
-     "dist_pct": -0.75,
-     "strength": 0.69
-    },
-    {
-     "price": 0.14856,
-     "dist_pct": -1.62,
-     "strength": 0.62
-    },
-    {
-     "price": 0.14999,
-     "dist_pct": -0.67,
-     "strength": 0.57
-    },
-    {
-     "price": 0.14804,
-     "dist_pct": -1.96,
-     "strength": 0.52
-    }
-   ],
-   "above": [
-    {
-     "price": 0.15727,
-     "dist_pct": 4.15,
-     "strength": 1.0
-    },
-    {
-     "price": 0.1561,
-     "dist_pct": 3.38,
-     "strength": 0.71
-    },
-    {
-     "price": 0.15597,
-     "dist_pct": 3.29,
-     "strength": 0.69
-    },
-    {
-     "price": 0.15818,
-     "dist_pct": 4.75,
-     "strength": 0.63
-    },
-    {
-     "price": 0.15753,
-     "dist_pct": 4.32,
-     "strength": 0.56
-    }
-   ],
-   "window": "24h",
-   "levels": 135
-  },
-  "XRP": {
-   "price": 0.9629,
-   "below": [
-    {
-     "price": 0.9519,
-     "dist_pct": -1.14,
-     "strength": 0.51
-    },
-    {
-     "price": 0.94277,
-     "dist_pct": -2.09,
-     "strength": 0.46
-    },
-    {
-     "price": 0.96186,
-     "dist_pct": -0.11,
-     "strength": 0.45
-    },
-    {
-     "price": 0.94194,
-     "dist_pct": -2.18,
-     "strength": 0.44
-    },
-    {
-     "price": 0.94858,
-     "dist_pct": -1.49,
-     "strength": 0.33
-    }
-   ],
-   "above": [
-    {
-     "price": 1.0017,
-     "dist_pct": 4.03,
-     "strength": 1.0
-    },
-    {
-     "price": 0.97182,
-     "dist_pct": 0.93,
-     "strength": 0.77
-    },
-    {
-     "price": 1.00087,
-     "dist_pct": 3.94,
-     "strength": 0.62
-    },
-    {
-     "price": 0.97265,
-     "dist_pct": 1.01,
-     "strength": 0.6
-    },
-    {
-     "price": 0.9934,
-     "dist_pct": 3.17,
-     "strength": 0.45
     }
    ],
    "window": "24h",
    "levels": 141
   },
-  "DOGE": {
-   "price": 0.05803,
+  "ETH": {
+   "price": 1738.23,
    "below": [
     {
-     "price": 0.05791,
-     "dist_pct": -0.21,
-     "strength": 0.87
+     "price": 1732.43,
+     "dist_pct": -0.33,
+     "strength": 0.41
     },
     {
-     "price": 0.05742,
+     "price": 1730.87,
+     "dist_pct": -0.42,
+     "strength": 0.38
+    },
+    {
+     "price": 1719.95,
      "dist_pct": -1.05,
-     "strength": 0.76
+     "strength": 0.25
     },
     {
-     "price": 0.05673,
-     "dist_pct": -2.24,
-     "strength": 0.75
+     "price": 1733.99,
+     "dist_pct": -0.24,
+     "strength": 0.23
     },
     {
-     "price": 0.05796,
-     "dist_pct": -0.13,
-     "strength": 0.74
-    },
-    {
-     "price": 0.05786,
-     "dist_pct": -0.29,
-     "strength": 0.74
+     "price": 1727.75,
+     "dist_pct": -0.6,
+     "strength": 0.23
     }
    ],
    "above": [
     {
-     "price": 0.06031,
-     "dist_pct": 3.93,
+     "price": 1822.91,
+     "dist_pct": 4.87,
      "strength": 1.0
     },
     {
-     "price": 0.06026,
-     "dist_pct": 3.84,
-     "strength": 0.95
+     "price": 1819.79,
+     "dist_pct": 4.69,
+     "strength": 0.96
     },
     {
-     "price": 0.06021,
-     "dist_pct": 3.76,
-     "strength": 0.93
+     "price": 1827.59,
+     "dist_pct": 5.14,
+     "strength": 0.91
     },
     {
-     "price": 0.0607,
-     "dist_pct": 4.6,
-     "strength": 0.92
+     "price": 1763.63,
+     "dist_pct": 1.46,
+     "strength": 0.78
     },
     {
-     "price": 0.05977,
-     "dist_pct": 3.0,
-     "strength": 0.76
+     "price": 1793.27,
+     "dist_pct": 3.17,
+     "strength": 0.68
     }
    ],
    "window": "24h",
-   "levels": 137
+   "levels": 132
   },
-  "LTC": {
-   "price": 42.09,
+  "SOL": {
+   "price": 72.08,
    "below": [
     {
-     "price": 41.48,
-     "dist_pct": -1.46,
+     "price": 70.7,
+     "dist_pct": -1.91,
+     "strength": 0.41
+    },
+    {
+     "price": 71.36,
+     "dist_pct": -1.01,
      "strength": 0.29
     },
     {
-     "price": 41.72,
-     "dist_pct": -0.88,
-     "strength": 0.23
+     "price": 71.42,
+     "dist_pct": -0.92,
+     "strength": 0.24
     },
     {
-     "price": 40.94,
-     "dist_pct": -2.73,
-     "strength": 0.23
+     "price": 71.22,
+     "dist_pct": -1.19,
+     "strength": 0.24
     },
     {
-     "price": 41.23,
-     "dist_pct": -2.05,
-     "strength": 0.21
-    },
-    {
-     "price": 41.43,
-     "dist_pct": -1.56,
-     "strength": 0.21
+     "price": 71.61,
+     "dist_pct": -0.65,
+     "strength": 0.19
     }
    ],
    "above": [
     {
-     "price": 43.52,
-     "dist_pct": 3.41,
-     "strength": 0.84
+     "price": 75.12,
+     "dist_pct": 4.22,
+     "strength": 1.0
     },
     {
-     "price": 43.2,
-     "dist_pct": 2.63,
-     "strength": 0.65
+     "price": 75.91,
+     "dist_pct": 5.31,
+     "strength": 0.9
     },
     {
-     "price": 43.81,
-     "dist_pct": 4.09,
-     "strength": 0.59
+     "price": 75.84,
+     "dist_pct": 5.22,
+     "strength": 0.79
     },
     {
-     "price": 43.65,
-     "dist_pct": 3.7,
-     "strength": 0.46
+     "price": 75.71,
+     "dist_pct": 5.04,
+     "strength": 0.66
     },
     {
-     "price": 43.4,
-     "dist_pct": 3.12,
-     "strength": 0.39
+     "price": 73.44,
+     "dist_pct": 1.88,
+     "strength": 0.64
     }
    ],
    "window": "24h",
-   "levels": 149
+   "levels": 142
+  },
+  "UNI": {
+   "price": 4.849,
+   "below": [
+    {
+     "price": 4.8476,
+     "dist_pct": -0.03,
+     "strength": 0.55
+    },
+    {
+     "price": 4.8216,
+     "dist_pct": -0.57,
+     "strength": 0.53
+    },
+    {
+     "price": 4.7228,
+     "dist_pct": -2.6,
+     "strength": 0.27
+    },
+    {
+     "price": 4.832,
+     "dist_pct": -0.35,
+     "strength": 0.24
+    },
+    {
+     "price": 4.7488,
+     "dist_pct": -2.07,
+     "strength": 0.23
+    }
+   ],
+   "above": [
+    {
+     "price": 5.04,
+     "dist_pct": 3.94,
+     "strength": 0.66
+    },
+    {
+     "price": 5.0868,
+     "dist_pct": 4.9,
+     "strength": 0.48
+    },
+    {
+     "price": 5.1336,
+     "dist_pct": 5.87,
+     "strength": 0.43
+    },
+    {
+     "price": 5.118,
+     "dist_pct": 5.55,
+     "strength": 0.37
+    },
+    {
+     "price": 5.1388,
+     "dist_pct": 5.98,
+     "strength": 0.31
+    }
+   ],
+   "window": "24h",
+   "levels": 139
+  },
+  "SUI": {
+   "price": 0.7014,
+   "below": [
+    {
+     "price": 0.68825,
+     "dist_pct": -1.87,
+     "strength": 0.6
+    },
+    {
+     "price": 0.69392,
+     "dist_pct": -1.07,
+     "strength": 0.55
+    },
+    {
+     "price": 0.69833,
+     "dist_pct": -0.44,
+     "strength": 0.36
+    },
+    {
+     "price": 0.6977,
+     "dist_pct": -0.53,
+     "strength": 0.33
+    },
+    {
+     "price": 0.67943,
+     "dist_pct": -3.13,
+     "strength": 0.29
+    }
+   ],
+   "above": [
+    {
+     "price": 0.70274,
+     "dist_pct": 0.19,
+     "strength": 1.0
+    },
+    {
+     "price": 0.7418,
+     "dist_pct": 5.76,
+     "strength": 0.72
+    },
+    {
+     "price": 0.74117,
+     "dist_pct": 5.67,
+     "strength": 0.65
+    },
+    {
+     "price": 0.73865,
+     "dist_pct": 5.31,
+     "strength": 0.49
+    },
+    {
+     "price": 0.73991,
+     "dist_pct": 5.49,
+     "strength": 0.43
+    }
+   ],
+   "window": "24h",
+   "levels": 143
+  },
+  "ADA": {
+   "price": 0.1494,
+   "below": [
+    {
+     "price": 0.14859,
+     "dist_pct": -0.54,
+     "strength": 0.59
+    },
+    {
+     "price": 0.14794,
+     "dist_pct": -0.98,
+     "strength": 0.51
+    },
+    {
+     "price": 0.1482,
+     "dist_pct": -0.8,
+     "strength": 0.43
+    },
+    {
+     "price": 0.14716,
+     "dist_pct": -1.5,
+     "strength": 0.43
+    },
+    {
+     "price": 0.14885,
+     "dist_pct": -0.37,
+     "strength": 0.34
+    }
+   ],
+   "above": [
+    {
+     "price": 0.1573,
+     "dist_pct": 5.29,
+     "strength": 1.0
+    },
+    {
+     "price": 0.14976,
+     "dist_pct": 0.24,
+     "strength": 0.92
+    },
+    {
+     "price": 0.15587,
+     "dist_pct": 4.33,
+     "strength": 0.74
+    },
+    {
+     "price": 0.15821,
+     "dist_pct": 5.9,
+     "strength": 0.59
+    },
+    {
+     "price": 0.15613,
+     "dist_pct": 4.5,
+     "strength": 0.53
+    }
+   ],
+   "window": "24h",
+   "levels": 142
+  },
+  "XRP": {
+   "price": 0.9537,
+   "below": [
+    {
+     "price": 0.94254,
+     "dist_pct": -1.17,
+     "strength": 0.72
+    },
+    {
+     "price": 0.95178,
+     "dist_pct": -0.2,
+     "strength": 0.67
+    },
+    {
+     "price": 0.94842,
+     "dist_pct": -0.55,
+     "strength": 0.43
+    },
+    {
+     "price": 0.9417,
+     "dist_pct": -1.26,
+     "strength": 0.43
+    },
+    {
+     "price": 0.94338,
+     "dist_pct": -1.08,
+     "strength": 0.35
+    }
+   ],
+   "above": [
+    {
+     "price": 1.00134,
+     "dist_pct": 5.0,
+     "strength": 1.0
+    },
+    {
+     "price": 1.00218,
+     "dist_pct": 5.08,
+     "strength": 0.92
+    },
+    {
+     "price": 0.97278,
+     "dist_pct": 2.0,
+     "strength": 0.79
+    },
+    {
+     "price": 0.97194,
+     "dist_pct": 1.91,
+     "strength": 0.78
+    },
+    {
+     "price": 0.99378,
+     "dist_pct": 4.2,
+     "strength": 0.62
+    }
+   ],
+   "window": "24h",
+   "levels": 140
+  },
+  "DOGE": {
+   "price": 0.05736,
+   "below": [
+    {
+     "price": 0.05675,
+     "dist_pct": -1.05,
+     "strength": 0.57
+    },
+    {
+     "price": 0.05732,
+     "dist_pct": -0.08,
+     "strength": 0.48
+    },
+    {
+     "price": 0.05696,
+     "dist_pct": -0.7,
+     "strength": 0.4
+    },
+    {
+     "price": 0.05665,
+     "dist_pct": -1.23,
+     "strength": 0.34
+    },
+    {
+     "price": 0.05691,
+     "dist_pct": -0.79,
+     "strength": 0.33
+    }
+   ],
+   "above": [
+    {
+     "price": 0.06027,
+     "dist_pct": 5.08,
+     "strength": 1.0
+    },
+    {
+     "price": 0.05793,
+     "dist_pct": 0.99,
+     "strength": 0.84
+    },
+    {
+     "price": 0.05976,
+     "dist_pct": 4.19,
+     "strength": 0.5
+    },
+    {
+     "price": 0.05742,
+     "dist_pct": 0.1,
+     "strength": 0.49
+    },
+    {
+     "price": 0.06017,
+     "dist_pct": 4.9,
+     "strength": 0.48
+    }
+   ],
+   "window": "24h",
+   "levels": 141
+  },
+  "LTC": {
+   "price": 41.65,
+   "below": [
+    {
+     "price": 41.48,
+     "dist_pct": -0.41,
+     "strength": 0.37
+    },
+    {
+     "price": 40.97,
+     "dist_pct": -1.64,
+     "strength": 0.34
+    },
+    {
+     "price": 40.88,
+     "dist_pct": -1.85,
+     "strength": 0.3
+    },
+    {
+     "price": 41.22,
+     "dist_pct": -1.03,
+     "strength": 0.27
+    },
+    {
+     "price": 41.44,
+     "dist_pct": -0.51,
+     "strength": 0.26
+    }
+   ],
+   "above": [
+    {
+     "price": 43.5,
+     "dist_pct": 4.45,
+     "strength": 0.89
+    },
+    {
+     "price": 43.8,
+     "dist_pct": 5.17,
+     "strength": 0.75
+    },
+    {
+     "price": 43.55,
+     "dist_pct": 4.55,
+     "strength": 0.56
+    },
+    {
+     "price": 43.63,
+     "dist_pct": 4.76,
+     "strength": 0.53
+    },
+    {
+     "price": 43.42,
+     "dist_pct": 4.24,
+     "strength": 0.53
+    }
+   ],
+   "window": "24h",
+   "levels": 142
   }
  },
  "heatmap_extra": {
   "XLM": {
-   "price": 0.13351,
+   "price": 0.13223,
    "below": [
     {
      "price": 0.1317,
-     "dist_pct": -1.35,
-     "strength": 0.59
+     "dist_pct": -0.4,
+     "strength": 0.58
     },
     {
      "price": 0.13183,
-     "dist_pct": -1.26,
-     "strength": 0.47
+     "dist_pct": -0.3,
+     "strength": 0.46
     },
     {
      "price": 0.1301,
-     "dist_pct": -2.55,
-     "strength": 0.37
+     "dist_pct": -1.61,
+     "strength": 0.38
     },
     {
      "price": 0.129,
-     "dist_pct": -3.38,
-     "strength": 0.34
+     "dist_pct": -2.44,
+     "strength": 0.35
     },
     {
      "price": 0.13023,
-     "dist_pct": -2.46,
+     "dist_pct": -1.51,
      "strength": 0.28
     }
    ],
    "above": [
     {
      "price": 0.13995,
-     "dist_pct": 4.82,
+     "dist_pct": 5.83,
      "strength": 1.0
     },
     {
      "price": 0.14007,
-     "dist_pct": 4.91,
-     "strength": 0.9
+     "dist_pct": 5.93,
+     "strength": 0.91
     },
     {
      "price": 0.13982,
-     "dist_pct": 4.73,
+     "dist_pct": 5.74,
      "strength": 0.72
     },
     {
      "price": 0.13712,
-     "dist_pct": 2.7,
-     "strength": 0.66
+     "dist_pct": 3.7,
+     "strength": 0.67
     },
     {
      "price": 0.13933,
-     "dist_pct": 4.36,
+     "dist_pct": 5.37,
      "strength": 0.52
     }
    ],
@@ -594,133 +594,133 @@
    "levels": 142
   },
   "LINK": {
-   "price": 8.959,
+   "price": 8.866,
    "below": [
     {
-     "price": 8.8433,
-     "dist_pct": -1.29,
+     "price": 8.848,
+     "dist_pct": -0.2,
      "strength": 1.0
     },
     {
-     "price": 8.851,
-     "dist_pct": -1.21,
-     "strength": 0.81
+     "price": 8.856,
+     "dist_pct": -0.11,
+     "strength": 0.73
     },
     {
-     "price": 8.8202,
-     "dist_pct": -1.55,
-     "strength": 0.68
+     "price": 8.824,
+     "dist_pct": -0.47,
+     "strength": 0.56
     },
     {
-     "price": 8.6662,
-     "dist_pct": -3.27,
-     "strength": 0.49
+     "price": 8.664,
+     "dist_pct": -2.28,
+     "strength": 0.56
     },
     {
-     "price": 8.6739,
-     "dist_pct": -3.18,
+     "price": 8.672,
+     "dist_pct": -2.19,
      "strength": 0.35
     }
    ],
    "above": [
     {
-     "price": 9.1821,
-     "dist_pct": 2.49,
-     "strength": 0.69
+     "price": 9.384,
+     "dist_pct": 5.84,
+     "strength": 0.66
     },
     {
-     "price": 9.39,
-     "dist_pct": 4.81,
-     "strength": 0.56
+     "price": 9.176,
+     "dist_pct": 3.5,
+     "strength": 0.57
     },
     {
-     "price": 9.3977,
-     "dist_pct": 4.9,
-     "strength": 0.56
+     "price": 9.312,
+     "dist_pct": 5.03,
+     "strength": 0.41
     },
     {
-     "price": 9.3823,
-     "dist_pct": 4.72,
-     "strength": 0.56
+     "price": 9.392,
+     "dist_pct": 5.93,
+     "strength": 0.4
     },
     {
-     "price": 9.313,
-     "dist_pct": 3.95,
-     "strength": 0.46
+     "price": 8.88,
+     "dist_pct": 0.16,
+     "strength": 0.38
     }
    ],
    "window": "24h",
-   "levels": 133
+   "levels": 128
   },
   "AAVE": {
-   "price": 104.25,
+   "price": 103.1,
    "below": [
     {
-     "price": 101.33,
-     "dist_pct": -2.8,
-     "strength": 0.43
+     "price": 101.27,
+     "dist_pct": -1.78,
+     "strength": 0.41
     },
     {
-     "price": 102.59,
-     "dist_pct": -1.59,
-     "strength": 0.28
+     "price": 102.53,
+     "dist_pct": -0.56,
+     "strength": 0.29
     },
     {
-     "price": 99.23,
-     "dist_pct": -4.82,
+     "price": 99.27,
+     "dist_pct": -3.71,
      "strength": 0.2
     },
     {
-     "price": 102.48,
-     "dist_pct": -1.69,
-     "strength": 0.16
+     "price": 101.89,
+     "dist_pct": -1.17,
+     "strength": 0.15
     },
     {
-     "price": 101.86,
-     "dist_pct": -2.3,
+     "price": 101.69,
+     "dist_pct": -1.37,
      "strength": 0.15
     }
    ],
    "above": [
     {
-     "price": 108.26,
-     "dist_pct": 3.85,
-     "strength": 0.46
+     "price": 108.3,
+     "dist_pct": 5.04,
+     "strength": 0.45
     },
     {
-     "price": 109.1,
-     "dist_pct": 4.65,
-     "strength": 0.41
+     "price": 109.14,
+     "dist_pct": 5.86,
+     "strength": 0.42
     },
     {
-     "price": 109.94,
-     "dist_pct": 5.46,
-     "strength": 0.37
+     "price": 106.72,
+     "dist_pct": 3.52,
+     "strength": 0.3
     },
     {
-     "price": 107.53,
-     "dist_pct": 3.14,
-     "strength": 0.37
+     "price": 107.46,
+     "dist_pct": 4.23,
+     "strength": 0.3
     },
     {
-     "price": 106.79,
-     "dist_pct": 2.44,
-     "strength": 0.35
+     "price": 107.56,
+     "dist_pct": 4.33,
+     "strength": 0.26
     }
    ],
    "window": "24h",
-   "levels": 151
+   "levels": 150
   }
  },
  "coinbase": {
-  "price": 61986.31,
+  "price": 61535.46,
   "ref": "okx",
-  "binance_price": 62048.5,
-  "premium_pct": -0.1,
-  "last1000_taker_buy_btc": 0.835,
-  "last1000_taker_sell_btc": 0.795,
-  "buy_ratio": 51.2,
-  "span_min": 0.8
+  "binance_price": 61615.0,
+  "premium_pct": -0.129,
+  "last1000_taker_buy_btc": 1.217,
+  "last1000_taker_sell_btc": 0.486,
+  "buy_ratio": 71.5,
+  "span_min": 0.4
  },
  "etf": [
   {
@@ -1080,7 +1080,8 @@
      "flow_usd": 0.0
     },
     {
-     "etf_ticker": "BRRR"
+     "etf_ticker": "BRRR",
+     "flow_usd": 0.0
     },
     {
      "etf_ticker": "HODL"
@@ -5630,8 +5631,8 @@
     "time": 1795136400000,
     "open": "41659717520",
     "high": "41918483041",
-    "low": "41487046423",
-    "close": 41518551981.6664
+    "low": "41028868847",
+    "close": "41224411278.1590"
    }
   ],
   "ls_global_1h": [
@@ -5775,8 +5776,8 @@
    },
    {
     "time": 1795136400000,
-    "global_account_long_percent": 77.94,
-    "global_account_short_percent": 22.06,
+    "global_account_long_percent": 77.9,
+    "global_account_short_percent": 22.1,
     "global_account_long_short_ratio": 3.53
    }
   ],
@@ -5921,9 +5922,9 @@
    },
    {
     "time": 1795136400000,
-    "top_account_long_percent": 79.95,
-    "top_account_short_percent": 20.05,
-    "top_account_long_short_ratio": 3.99
+    "top_account_long_percent": 79.53,
+    "top_account_short_percent": 20.47,
+    "top_account_long_short_ratio": 3.89
    }
   ],
   "ls_top_pos_1h": [
@@ -6067,9 +6068,9 @@
    },
    {
     "time": 1795136400000,
-    "top_position_long_percent": 65.17,
-    "top_position_short_percent": 34.83,
-    "top_position_long_short_ratio": 1.87
+    "top_position_long_percent": 65.02,
+    "top_position_short_percent": 34.98,
+    "top_position_long_short_ratio": 1.86
    }
   ],
   "liq_agg_1h": [
@@ -6190,62 +6191,62 @@
    },
    {
     "time": 1795136400000,
-    "aggregated_long_liquidation_usd": 969352.47,
-    "aggregated_short_liquidation_usd": 3097993.96
+    "aggregated_long_liquidation_usd": 13145583.47,
+    "aggregated_short_liquidation_usd": 3333350.71
    }
   ],
   "liq_by_exch_24h": [
    {
     "exchange": "Bybit",
-    "liquidation_usd": 26836164.925,
-    "longLiquidation_usd": 23684043.7669,
-    "shortLiquidation_usd": 3152121.1581
+    "liquidation_usd": 30809173.6498,
+    "longLiquidation_usd": 27648478.2504,
+    "shortLiquidation_usd": 3160695.3994
    },
    {
     "exchange": "Gate",
-    "liquidation_usd": 15221889.57981,
-    "longLiquidation_usd": 10772283.17319,
-    "shortLiquidation_usd": 4449606.40662
+    "liquidation_usd": 16282265.116778,
+    "longLiquidation_usd": 11829463.476359,
+    "shortLiquidation_usd": 4452801.640419
    },
    {
     "exchange": "OKX",
-    "liquidation_usd": 11604097.08445,
-    "longLiquidation_usd": 7550800.19558,
-    "shortLiquidation_usd": 4053296.88887
+    "liquidation_usd": 12288820.83649,
+    "longLiquidation_usd": 8247756.70479,
+    "shortLiquidation_usd": 4041064.1317
    },
    {
     "exchange": "Bitget",
-    "liquidation_usd": 8229920.08949111,
-    "longLiquidation_usd": 5791948.43867865,
-    "shortLiquidation_usd": 2437971.65081246
+    "liquidation_usd": 9070976.36905303,
+    "longLiquidation_usd": 6629019.2991683,
+    "shortLiquidation_usd": 2441957.06988473
    },
    {
     "exchange": "HTX",
-    "liquidation_usd": 1693617.606,
-    "longLiquidation_usd": 543148.1065,
-    "shortLiquidation_usd": 1150469.4995
+    "liquidation_usd": 2002339.7604,
+    "longLiquidation_usd": 551509.1653,
+    "shortLiquidation_usd": 1450830.5951
    },
    {
     "exchange": "Aster",
-    "liquidation_usd": 1168585.46662,
-    "longLiquidation_usd": 723018.29412,
-    "shortLiquidation_usd": 445567.1725
+    "liquidation_usd": 1329372.33082,
+    "longLiquidation_usd": 883681.56772,
+    "shortLiquidation_usd": 445690.7631
    },
    {
     "exchange": "Lighter",
-    "liquidation_usd": 872400.377975,
-    "longLiquidation_usd": 764262.887447,
+    "liquidation_usd": 987660.319408,
+    "longLiquidation_usd": 879522.82888,
     "shortLiquidation_usd": 108137.490528
    },
    {
     "exchange": "Bitfinex",
-    "liquidation_usd": 15650.66605969,
-    "longLiquidation_usd": 12646.84640173,
+    "liquidation_usd": 16272.45041394,
+    "longLiquidation_usd": 13268.63075598,
     "shortLiquidation_usd": 3003.81965796
    }
   ],
   "liq_map_agg": {
-   "truncated_sample": "{\"data\": [{\"liqMapV2\": {\"59081\": [[59081, 1032438.67, null, null]], \"66451\": [[66451, 3121092.83, null, null]], \"61560\": [[61560, 2886510.85, null, null]], \"65245\": [[65245, 8819173.23, null, null]], \"63101\": [[63101, 11183709.47, null, null]], \"62498\": [[62498, 7149653.41, null, null]], \"64039\": [[64039, 10615595.45, null, null]], \"65647\": [[65647, 3666417.67, null, null]], \"63503\": [[63503, 13371243.49, null, null]], \"59483\": [[59483, 5390776.78, null, null]], \"60756\": [[60756, 18104497.03, null, null]], \"56535\": [[56535, 1348233.44, null, null]], \"64709\": [[64709, 8578204.94, null, null]], \"59885\": [[59885, 5622100.7, null, null]], \"56133\": [[56133, 1061706.51, null, null]], \"60354\": [[60354, 2488413.78, null, null]], \"56937\": [[56937, 890996.59, null, null]], \"68193\": [[68193, 2098354.5, null, null]], \"68595\": [[68595, 1040925.51, null, null]], \"68126\": [[68126, 848270.23, null, null]], \"66585\": [[66585, 2158155.1, null, null]], \"64441\": [[64441, 33944761.55, null, null]], \"61694\": [[61694, 3652086.49, null, null]], \"63235\": [[63235, 19892800.66, null, null]], \"65379\": [[65379, 1881062.28, null, null]], \"64843\": [[64843, 12531615.83, null, null]], \"57473\": [[57473, 1399774.61, null, null]], \"59014\": [[59014, 731646.89, null, null]], \"68528\": [[68528, 856711.51, null, null]], \"57071\": [[57071, 352393.46, null, null]], \"63637\": [[63637, 18556713.83, null, null]], \"63905\": [[63905, 14920399.5, null, null]], \"59416\": [[59416, 1824979.18, null, null]], \"60488\": [[60488, 7537924.85, null, null]], \"56267\": [[56267, 1862426.81, null, null]], \"55731\": [[55731, 1563235.57, null, null]], \"60086\": [[60086, 3892300.73, null, null]], \"56669\": [[56669, 1193423.99, null, null]], \"67791\": [[67791, 1319326.18, null, null]], \"66183\": [[66183, 6320196.05, null, null]], \"59818\": [[59818, 3696796.17, null, null]], \"61292\": [[61292, 28546113.49, null, null]], \"65781\": [[65781, 2512449.36, null, null]], \"66116\": [[66116, 4313298.95, null, null]], \"64575\": [[64575, 17637894.96, null, null]], \"62431\": [[62431, 3591154.63, null, null]], \"68930\": [[68930, 583595.59, null, null]], \"63369\": [[63369, 19697622.51, null, null]], \"64977\": [[64977, 12769899.1, null, null]], \"67724\": [[67724, 60964.5, null, null]], \"62833\": [[62833, 23779862.58, null, null]], \"66518\": [[66518, 2748745.19, null, null]], \"60019\": [[60019, 3805852.37, null, null]], \"59148\": [[59148, 4407541.86, null, null]], \"55865\": [[55865, 377974.69, null, null]], \"61225\": [[61225, 18781926.38, null, null]], \"57004\": [[57004, 715039.68, null, null]], \"60890\": [[60890, 21176881.29, null, null]], \"57406\": [[57406, 1077952.69, null, null]], \"64173\": [[64173, 20509082.16, null, null]], \"68662\": [[68662, 2082638.65, null, null]], \"65312\": [[65312, 7479119.29, null, null]], \"63771\": [[63771, 26605477.88, null, null]], \"64106\": [[64106, 13909137.61, null, null]], \"62565\": [[62565, 12827113.55, null, null]], \"67858\": [[67858, 70624.5, null, null]], \"59550\": [[59550, 6329081.15, null, null]], \"65714\": [[65714, 3753109.6"
+   "truncated_sample": "{\"data\": [{\"liqMapV2\": {\"64153\": [[64153, 15738481.91, null, null]], \"66212\": [[66212, 5001720.53, null, null]], \"64792\": [[64792, 11111829.78, null, null]], \"68910\": [[68910, 698226.27, null, null]], \"63585\": [[63585, 21275868.4, null, null]], \"65644\": [[65644, 3563879.75, null, null]], \"65005\": [[65005, 10500004.12, null, null]], \"56130\": [[56130, 1061706.51, null, null]], \"64437\": [[64437, 36870251.16, null, null]], \"67703\": [[67703, 79481.5, null, null]], \"63869\": [[63869, 5431849.88, null, null]], \"62804\": [[62804, 7977814.16, null, null]], \"56414\": [[56414, 895841.47, null, null]], \"55562\": [[55562, 168951.0, null, null]], \"57621\": [[57621, 852374.41, null, null]], \"55846\": [[55846, 1782459.81, null, null]], \"65360\": [[65360, 1411571.31, null, null]], \"63230\": [[63230, 19892800.66, null, null]], \"68768\": [[68768, 1213207.59, null, null]], \"68129\": [[68129, 848270.23, null, null]], \"62662\": [[62662, 21263449.15, null, null]], \"59254\": [[59254, 1869481.74, null, null]], \"64721\": [[64721, 7947074.67, null, null]], \"61455\": [[61455, 5276608.82, null, null]], \"63514\": [[63514, 15599815.83, null, null]], \"59893\": [[59893, 6020562.96, null, null]], \"62307\": [[62307, 5249397.24, null, null]], \"62946\": [[62946, 21661200.11, null, null]], \"57195\": [[57195, 915228.36, null, null]], \"57479\": [[57479, 1399774.61, null, null]], \"65928\": [[65928, 1281963.57, null, null]], \"60887\": [[60887, 22731561.96, null, null]], \"59538\": [[59538, 7702433.17, null, null]], \"60248\": [[60248, 2563290.86, null, null]], \"68484\": [[68484, 1408349.19, null, null]], \"61171\": [[61171, 17399113.09, null, null]], \"66354\": [[66354, 5817388.63, null, null]], \"64295\": [[64295, 30715990.69, null, null]], \"63088\": [[63088, 18493639.56, null, null]], \"65147\": [[65147, 11414615.23, null, null]], \"65786\": [[65786, 2512449.36, null, null]], \"68413\": [[68413, 345932.58, null, null]], \"56272\": [[56272, 1213207.59, null, null]], \"64579\": [[64579, 18904130.35, null, null]], \"56556\": [[56556, 1348233.44, null, null]], \"59822\": [[59822, 4313839.57, null, null]], \"61739\": [[61739, 3448471.36, null, null]], \"60532\": [[60532, 1467363.0, null, null]], \"57124\": [[57124, 506440.86, null, null]], \"61100\": [[61100, 21608158.91, null, null]], \"55988\": [[55988, 1624019.61, null, null]], \"66070\": [[66070, 2620942.35, null, null]], \"57408\": [[57408, 1098856.19, null, null]], \"63372\": [[63372, 19697622.51, null, null]], \"65431\": [[65431, 1851968.51, null, null]], \"62165\": [[62165, 2209162.34, null, null]], \"64863\": [[64863, 10992174.04, null, null]], \"64224\": [[64224, 24305272.22, null, null]], \"61597\": [[61597, 3148476.85, null, null]], \"63017\": [[63017, 12727882.32, null, null]], \"59396\": [[59396, 1907742.02, null, null]], \"63656\": [[63656, 18351062.86, null, null]], \"60816\": [[60816, 10625560.83, null, null]], \"62449\": [[62449, 3591154.63, null, null]], \"65715\": [[65715, 4488447.21, null, null]], \"64508\": [[64508, 26972367.93, null, null]], \"55633\": [[55633, 396176.13, null, null]], \"56201\": [[56201, 30"
   },
   "orderbook_hist": {
    "truncated_sample": "[[1795111200, [[31800, 1.0129], [31880, 6.72331], [32000, 17.0676], [32500, 10.14336], [32900, 2.883], [32990, 2.13432], [33000, 22.96977], [34000, 6.35461], [34100, 3.63134], [34800, 1.07361], [35000, 55.21912], [35800, 1.10432], [36000, 7.07798], [36880, 1.55463], [37000, 4.18826], [38000, 36.9679], [38500, 8.78882], [39000, 9.11209], [39100, 1.20163], [39500, 2.94314], [39990, 2.17503], [40000, 114.21403], [40500, 4.64259], [41000, 41.19996], [41110, 6.45789], [41500, 5.50744], [42000, 741.88906], [42340, 7.08831], [42350, 4.39257], [42500, 5.97133], [42800, 1.65682], [42880, 1.11361], [43000, 41.96447], [43500, 4.69746], [43600, 1.36635], [43800, 1.33687], [44000, 20.2389], [44440, 2.109], [45000, 112.64578], [45030, 1.31621], [45100, 1.41953], [45110, 4.08921], [45500, 6.9331], [45670, 2.39983], [45800, 1.04908], [46000, 24.65003], [46190, 2.93991], [46200, 1.06023], [46500, 4.25265], [46600, 1.64862], [47000, 6.76341], [47200, 1.8336], [47400, 1.02197], [47450, 1.26448], [47500, 2.71281], [47800, 2.34971], [48000, 65.00618], [48100, 1.39154], [48200, 1.41056], [48210, 1.0002], [48500, 5.65701], [48560, 1.88978], [48700, 2.59309], [48800, 3.78749], [48880, 16.00257], [49000, 34.27525], [49100, 1.86215], [49300, 1.60866], [49500, 9.06746], [49600, 1.01451], [49800, 2.35693], [49870, 1.01681], [49880, 3.20622], [49910, 1.05095], [49990, 1.82755], [50000, 175.23534], [50010, 7.829], [50050, 2.29384], [50100, 51.76385], [50150, 1.15626], [50200, 2.37725], [50220, 1.62219], [50250, 1.25469], [50390, 2.45724], [50400, 2.53333], [50470, 1.23268], [50500, 12.36895], [50550, 1.01639], [50700, 8.80641], [50800, 1.05139], [50860, 2.99414], [50880, 1.7035], [50900, 1.96484], [51000, 74.15091], [51010, 1.3142], [51050, 1.68138], [51090, 10.08802], [51110, 4.10603], [51150, 5.80753], [51200, 20.05763], [51220, 4.56954], [51230, 1.69978], [51400, 2.03423], [51500, 10.64631], [51770, 1.15761], [51800, 1.58466], [51880, 2.30135], [51900, 7.19818], [52000, 72.58098], [52010, 1.01922], [52050, 2.14901], [52100, 8.7237], [52200, 2.83372], [52220, 1.23971], [52300, 4.47835], [52500, 11.52707], [52550, 1.43838], [52660, 1.24828], [52700, 1.72339], [52800, 1.85063], [52880, 3.72386], [52900, 3.29322], [53000, 51.75992], [53050, 1.76783], [53100, 1.5592], [53110, 4.0], [53120, 1.1094], [53130, 6.06], [53200, 4.28294], [53330, 9.56627], [53500, 17.1663], [53800, 53.54751], [53900, 2.43468], [54000, 56.19619], [54050, 2.20651], [54080, 3.08232], [54100, 4.35061], [54200, 3.48486], [54250, 8.00018], [54300, 2.82867], [54500, 9.31457], [54600, 2.39967], [54670, 1.50568], [54770, 1.06318], [54800, 1.47331], [54880, 8.44282], [54900, 2.32929], [55000, 291.5031], [55010, 1.05208], [55050, 4.97259], [55100, 13.63668], [55110, 2.82366], [55120, 5.0529], [55200, 4.49067], [55250, 3.38356], [55300, 3.95513], [55400, 4.57125], [55420, 1.14258], [55500, 24.41769], [55550, 44.55512], [55600, 4.48159], [55650, 1.12686], [55700, 1.1411], [55800, 7.8598], [55880, 9.25915], [55890, "
@@ -6253,134 +6254,134 @@
   "opt_max_pain": [
    {
     "date": "261127",
-    "call_open_interest_market_value": 3439239.33,
+    "call_open_interest_market_value": 3436577.51,
     "put_open_interest": 52818.33,
-    "put_open_interest_market_value": 318144532.05,
+    "put_open_interest_market_value": 317866955.81,
     "max_pain_price": "74000",
-    "call_open_interest": 55232.33,
-    "call_open_interest_notional": 3485841714.93,
-    "put_open_interest_notional": 3320441019.96
+    "call_open_interest": 55233.33,
+    "call_open_interest_notional": 3482225686.71,
+    "put_open_interest_notional": 3318157886.95
    },
    {
     "date": "261204",
-    "call_open_interest_market_value": 1841933.93,
-    "put_open_interest": 10001.1,
-    "put_open_interest_market_value": 16891405.76,
+    "call_open_interest_market_value": 1841844.64,
+    "put_open_interest": 10035.5,
+    "put_open_interest_market_value": 16826432.95,
     "max_pain_price": "67000",
     "call_open_interest": 5275.02,
-    "call_open_interest_notional": 332538500.32,
-    "put_open_interest_notional": 624412014.56
+    "call_open_interest_notional": 332425793.28,
+    "put_open_interest_notional": 624876363.21
    },
    {
     "date": "261211",
-    "call_open_interest_market_value": 7540.77,
+    "call_open_interest_market_value": 7481.12,
     "put_open_interest": 142.4,
-    "put_open_interest_market_value": 380730.86,
+    "put_open_interest_market_value": 380215.11,
     "max_pain_price": "62000",
     "call_open_interest": 27.0,
-    "call_open_interest_notional": 1674240.25,
-    "put_open_interest_notional": 8862800.59
+    "call_open_interest_notional": 1668782.57,
+    "put_open_interest_notional": 8749285.43
    },
    {
     "date": "261225",
-    "call_open_interest_market_value": 54802603.55,
+    "call_open_interest_market_value": 54630530.26,
     "put_open_interest": 63351.62,
-    "put_open_interest_market_value": 353495223.14,
+    "put_open_interest_market_value": 353270867.1,
     "max_pain_price": "75000",
     "call_open_interest": 90409.23,
-    "call_open_interest_notional": 5669243082.94,
-    "put_open_interest_notional": 3970445971.24
+    "call_open_interest_notional": 5650361770.4,
+    "put_open_interest_notional": 3964638738.89
    },
    {
     "date": "270129",
-    "call_open_interest_market_value": 10086301.38,
+    "call_open_interest_market_value": 10067302.12,
     "put_open_interest": 7631.6,
-    "put_open_interest_market_value": 38940289.48,
+    "put_open_interest_market_value": 38864049.11,
     "max_pain_price": "70000",
     "call_open_interest": 8492.1,
-    "call_open_interest_notional": 533163991.78,
-    "put_open_interest_notional": 480752746.01
+    "call_open_interest_notional": 532390105.21,
+    "put_open_interest_notional": 479844457.01
    },
    {
     "date": "270326",
-    "call_open_interest_market_value": 36846652.43,
+    "call_open_interest_market_value": 36775109.7,
     "put_open_interest": 19474.2,
-    "put_open_interest_market_value": 155315197.93,
+    "put_open_interest_market_value": 155190337.23,
     "max_pain_price": "76000",
     "call_open_interest": 29721.26,
-    "call_open_interest_notional": 1870563860.49,
-    "put_open_interest_notional": 1223308641.23
+    "call_open_interest_notional": 1868092992.91,
+    "put_open_interest_notional": 1222219979.22
    },
    {
     "date": "270625",
-    "call_open_interest_market_value": 34862075.71,
+    "call_open_interest_market_value": 34850504.56,
     "put_open_interest": 10032.8,
-    "put_open_interest_market_value": 76168285.1,
+    "put_open_interest_market_value": 76063475.62,
     "max_pain_price": "70000",
     "call_open_interest": 12009.3,
-    "call_open_interest_notional": 756931448.07,
-    "put_open_interest_notional": 632116944.3
+    "call_open_interest_notional": 756591161.58,
+    "put_open_interest_notional": 631626391.3
    },
    {
     "date": "270924",
-    "call_open_interest_market_value": 14367407.94,
+    "call_open_interest_market_value": 14350926.41,
     "put_open_interest": 4461.9,
-    "put_open_interest_market_value": 40519458.61,
+    "put_open_interest_market_value": 40510482.52,
     "max_pain_price": "80000",
     "call_open_interest": 7509.6,
-    "call_open_interest_notional": 472966485.43,
-    "put_open_interest_notional": 281975771.38
+    "call_open_interest_notional": 471723310.87,
+    "put_open_interest_notional": 281935859.22
    }
   ],
   "opt_info": [
    {
     "exchange_name": "All",
-    "open_interest": 540036.31,
+    "open_interest": 540596.17,
     "oi_market_share": 100,
-    "open_interest_change_24h": 2.26,
-    "open_interest_usd": 33827127459.66678,
-    "volume_usd_24h": 5587601201.371446,
-    "volume_change_percent_24h": 13.1
+    "open_interest_change_24h": 2.37,
+    "open_interest_usd": 33772143547.61792,
+    "volume_usd_24h": 5636233305.881504,
+    "volume_change_percent_24h": 14.53
    },
    {
     "exchange_name": "Deribit",
-    "open_interest": 415132.21,
-    "oi_market_share": 76.87,
-    "open_interest_change_24h": 1.28,
-    "open_interest_usd": 26086587031.4268,
-    "volume_usd_24h": 2572581521.9653
+    "open_interest": 415167.71,
+    "oi_market_share": 76.79,
+    "open_interest_change_24h": 1.29,
+    "open_interest_usd": 26045907086.7018,
+    "volume_usd_24h": 2568599780.0702
    },
    {
     "exchange_name": "OKX",
-    "open_interest": 58318.68,
-    "oi_market_share": 10.79,
-    "open_interest_change_24h": 5.24,
-    "open_interest_usd": 3611057674.392,
-    "volume_usd_24h": 856614651.39
+    "open_interest": 58640.06,
+    "oi_market_share": 10.84,
+    "open_interest_change_24h": 5.82,
+    "open_interest_usd": 3608486460.172,
+    "volume_usd_24h": 878663092.56
    },
    {
     "exchange_name": "Bybit",
-    "open_interest": 30132.93,
-    "oi_market_share": 5.57,
-    "open_interest_change_24h": 9.18,
-    "open_interest_usd": 1868724488.7949648,
-    "volume_usd_24h": 1288820717.0562665
+    "open_interest": 30298.52,
+    "oi_market_share": 5.6,
+    "open_interest_change_24h": 9.78,
+    "open_interest_usd": 1868321656.3880174,
+    "volume_usd_24h": 1312505811.3202765
    },
    {
     "exchange_name": "Binance",
-    "open_interest": 28410.29,
+    "open_interest": 28447.68,
     "oi_market_share": 5.26,
-    "open_interest_change_24h": 4.23,
-    "open_interest_usd": 1762061443.0530121,
-    "volume_usd_24h": 851756435.9598788
+    "open_interest_change_24h": 4.37,
+    "open_interest_usd": 1753615455.2761028,
+    "volume_usd_24h": 858739844.4310277
    },
    {
     "exchange_name": "CME",
     "open_interest": 8042.2,
     "oi_market_share": 1.48,
     "open_interest_change_24h": 1.5,
-    "open_interest_usd": 498696822,
-    "volume_usd_24h": 17827875
+    "open_interest_usd": 495812889.08,
+    "volume_usd_24h": 17724777.5
    }
   ],
   "funding_oi_weighted": [
@@ -6550,7 +6551,7 @@
     "open": "0.002354",
     "high": "0.002727",
     "low": "0.00204",
-    "close": "0.002375"
+    "close": "0.002558"
    }
   ],
   "stablecoin_mcap": {
@@ -6595,8 +6596,8 @@
     },
     {
      "t": 1795132800000,
-     "L": 1365784,
-     "S": 3547795
+     "L": 13542015,
+     "S": 3783152
     }
    ],
    "ETH": [
@@ -6637,8 +6638,8 @@
     },
     {
      "t": 1795132800000,
-     "L": 1258880,
-     "S": 2660845
+     "L": 13548384,
+     "S": 2800426
     }
    ],
    "SOL": [
@@ -6679,8 +6680,8 @@
     },
     {
      "t": 1795132800000,
-     "L": 348469,
-     "S": 61467
+     "L": 2192276,
+     "S": 62431
     }
    ],
    "UNI": [
@@ -6721,7 +6722,7 @@
     },
     {
      "t": 1795132800000,
-     "L": 9611,
+     "L": 433853,
      "S": 74
     }
    ],
@@ -6763,8 +6764,8 @@
     },
     {
      "t": 1795132800000,
-     "L": 10043,
-     "S": 1558
+     "L": 362230,
+     "S": 4653
     }
    ],
    "DOGE": [
@@ -6805,7 +6806,7 @@
     },
     {
      "t": 1795132800000,
-     "L": 18754,
+     "L": 511539,
      "S": 3546
     }
    ],
@@ -6847,8 +6848,8 @@
     },
     {
      "t": 1795132800000,
-     "L": 30355,
-     "S": 19656
+     "L": 783026,
+     "S": 21966
     }
    ],
    "XLM": [
@@ -6889,7 +6890,7 @@
     },
     {
      "t": 1795132800000,
-     "L": 5098,
+     "L": 31744,
      "S": 4029
     }
    ],
@@ -6931,7 +6932,7 @@
     },
     {
      "t": 1795132800000,
-     "L": 8602,
+     "L": 211166,
      "S": 536
     }
    ],
@@ -6973,7 +6974,7 @@
     },
     {
      "t": 1795132800000,
-     "L": 3073,
+     "L": 178104,
      "S": 53
     }
    ],
@@ -7015,8 +7016,8 @@
     },
     {
      "t": 1795132800000,
-     "L": 3664,
-     "S": 1544
+     "L": 132210,
+     "S": 1587
     }
    ],
    "AAVE": [
@@ -7057,8 +7058,8 @@
     },
     {
      "t": 1795132800000,
-     "L": 4446,
-     "S": 5537
+     "L": 143999,
+     "S": 5558
     }
    ]
   },
@@ -7159,7 +7160,7 @@
      ],
      [
       1795136400000,
-      22818617044.2278
+      22517961575.3169
      ]
     ],
     "ls": [
@@ -7453,7 +7454,7 @@
      ],
      [
       1795136400000,
-      4.55
+      4.46
      ]
     ],
     "liq_1h": [
@@ -7574,8 +7575,8 @@
      ],
      [
       1795136400000,
-      821219,
-      2332530
+      13110723,
+      2472111
      ]
     ]
    },
@@ -7675,7 +7676,7 @@
      ],
      [
       1795136400000,
-      4052897530.4086
+      4005039848.0172
      ]
     ],
     "ls": [
@@ -7773,7 +7774,7 @@
      ],
      [
       1795136400000,
-      3.63
+      3.62
      ]
     ],
     "top_pos": [
@@ -7969,7 +7970,7 @@
      ],
      [
       1795136400000,
-      4.3
+      4.23
      ]
     ],
     "liq_1h": [
@@ -8090,8 +8091,8 @@
      ],
      [
       1795136400000,
-      218505,
-      61467
+      2062313,
+      62431
      ]
     ]
    },
@@ -8191,7 +8192,7 @@
      ],
      [
       1795136400000,
-      1879405417.41
+      1855184758.5038
      ]
     ],
     "ls": [
@@ -8289,7 +8290,7 @@
      ],
      [
       1795136400000,
-      2.99
+      3.01
      ]
     ],
     "top_pos": [
@@ -8387,7 +8388,7 @@
      ],
      [
       1795136400000,
-      1.71
+      1.73
      ]
     ]
    },
@@ -8487,7 +8488,7 @@
      ],
      [
       1795136400000,
-      166807161.3888
+      165580967.5702
      ]
     ],
     "ls": [
@@ -8783,7 +8784,7 @@
      ],
      [
       1795136400000,
-      344143464.3955
+      336933272.5999
      ]
     ],
     "ls": [
@@ -8881,7 +8882,7 @@
      ],
      [
       1795136400000,
-      1.3
+      1.31
      ]
     ],
     "top_pos": [
@@ -8979,7 +8980,7 @@
      ],
      [
       1795136400000,
-      2.66
+      2.61
      ]
     ]
    },
@@ -9079,7 +9080,7 @@
      ],
      [
       1795136400000,
-      409600988.4058
+      403273508.0454
      ]
     ],
     "ls": [
@@ -9177,7 +9178,7 @@
      ],
      [
       1795136400000,
-      2.22
+      2.23
      ]
     ],
     "top_pos": [
@@ -9275,7 +9276,7 @@
      ],
      [
       1795136400000,
-      1.75
+      1.76
      ]
     ]
    },
@@ -9375,7 +9376,7 @@
      ],
      [
       1795136400000,
-      311865824.2826
+      306181414.9052
      ]
     ],
     "ls": [
@@ -9473,7 +9474,7 @@
      ],
      [
       1795136400000,
-      1.96
+      1.95
      ]
     ],
     "top_pos": [
@@ -9571,7 +9572,7 @@
      ],
      [
       1795136400000,
-      1.56
+      1.57
      ]
     ]
    },
@@ -9671,7 +9672,7 @@
      ],
      [
       1795136400000,
-      379008494.1717
+      372973198.2422
      ]
     ],
     "ls": [
@@ -9769,7 +9770,7 @@
      ],
      [
       1795136400000,
-      1.78
+      1.79
      ]
     ],
     "top_pos": [
@@ -9867,7 +9868,7 @@
      ],
      [
       1795136400000,
-      2.05
+      2.06
      ]
     ]
    },
@@ -9967,7 +9968,7 @@
      ],
      [
       1795136400000,
-      319546019.9274
+      315870717.1958
      ]
     ],
     "ls": [
@@ -10065,7 +10066,7 @@
      ],
      [
       1795136400000,
-      2.31
+      2.37
      ]
     ],
     "top_pos": [
@@ -10163,7 +10164,7 @@
      ],
      [
       1795136400000,
-      1.55
+      1.57
      ]
     ]
    },
@@ -10263,7 +10264,7 @@
      ],
      [
       1795136400000,
-      776560877.1245
+      769120463.8092
      ]
     ],
     "ls": [
@@ -10361,7 +10362,7 @@
      ],
      [
       1795136400000,
-      2.48
+      2.51
      ]
     ],
     "top_pos": [
@@ -10459,7 +10460,7 @@
      ],
      [
       1795136400000,
-      2.32
+      2.31
      ]
     ]
    },
@@ -10559,7 +10560,7 @@
      ],
      [
       1795136400000,
-      268843707.1128
+      264447879.1899
      ]
     ],
     "ls": [
@@ -10764,70 +10765,80 @@
  "accounts": {
   "大神1": {
    "n_isolated": 5,
-   "n_cross": 1,
-   "mgn_ratio_pct": 10443.4,
-   "leverage": 5.45,
+   "n_cross": 2,
+   "mgn_ratio_pct": 8149.0,
+   "leverage": 5.8,
    "drop_to_liq_pct": null,
    "coins": {
-    "NEAR": {
-     "notional_pct": 2.8,
+    "HYPE": {
+     "notional_pct": 0.7,
      "mode": "cross",
-     "vs_avg_pct": -4.35,
-     "liq": 0.8977421234696776,
-     "mark": 3.144,
+     "vs_avg_pct": -0.04,
+     "liq": 0.0,
+     "mark": 65.396,
+     "avg": 65.42435602094241,
+     "liq_dist_pct": null,
+     "iso_mgn_ratio_pct": null
+    },
+    "NEAR": {
+     "notional_pct": 2.7,
+     "mode": "cross",
+     "vs_avg_pct": -6.05,
+     "liq": 0.9042145181587679,
+     "mark": 3.088,
      "avg": 3.286898134140192,
-     "liq_dist_pct": -71.45,
+     "liq_dist_pct": -70.72,
      "iso_mgn_ratio_pct": null
     },
     "SOL": {
-     "notional_pct": 37.6,
+     "notional_pct": 37.4,
      "mode": "isolated",
-     "vs_avg_pct": -28.01,
+     "vs_avg_pct": -28.69,
      "liq": 62.14723587901332,
-     "mark": 72.71,
+     "mark": 72.02,
      "avg": 100.99755222416407,
-     "liq_dist_pct": -14.53,
-     "iso_mgn_ratio_pct": 3420.6
+     "liq_dist_pct": -13.71,
+     "iso_mgn_ratio_pct": 3233.6
     },
     "XRP": {
-     "notional_pct": 20.9,
+     "notional_pct": 20.8,
      "mode": "isolated",
-     "vs_avg_pct": -25.01,
+     "vs_avg_pct": -25.85,
      "liq": 0.8164139035404684,
-     "mark": 0.9626,
+     "mark": 0.9519,
      "avg": 1.2837174535645197,
-     "liq_dist_pct": -15.19,
-     "iso_mgn_ratio_pct": 3570.3
+     "liq_dist_pct": -14.23,
+     "iso_mgn_ratio_pct": 3352.7
     },
     "LTC": {
-     "notional_pct": 16.9,
+     "notional_pct": 16.8,
      "mode": "isolated",
-     "vs_avg_pct": -27.19,
+     "vs_avg_pct": -28.09,
      "liq": 37.874024286372325,
-     "mark": 42.08,
+     "mark": 41.56,
      "avg": 57.79621697680416,
-     "liq_dist_pct": -10.0,
-     "iso_mgn_ratio_pct": 1057.1
+     "liq_dist_pct": -8.87,
+     "iso_mgn_ratio_pct": 949.5
     },
     "UNI": {
-     "notional_pct": 8.9,
+     "notional_pct": 8.8,
      "mode": "isolated",
-     "vs_avg_pct": -37.65,
+     "vs_avg_pct": -38.77,
      "liq": 4.085561240145284,
-     "mark": 4.916,
+     "mark": 4.828,
      "avg": 7.884721112284512,
-     "liq_dist_pct": -16.89,
-     "iso_mgn_ratio_pct": 2548.5
+     "liq_dist_pct": -15.38,
+     "iso_mgn_ratio_pct": 2329.3
     },
     "DOGE": {
-     "notional_pct": 12.9,
+     "notional_pct": 12.8,
      "mode": "isolated",
-     "vs_avg_pct": -63.9,
+     "vs_avg_pct": -64.35,
      "liq": 0.0459149281073736,
-     "mark": 0.05794,
+     "mark": 0.05722,
      "avg": 0.1604900230946898,
-     "liq_dist_pct": -20.75,
-     "iso_mgn_ratio_pct": 3107.2
+     "liq_dist_pct": -19.76,
+     "iso_mgn_ratio_pct": 2962.8
     }
    },
    "avail_pct": 9.4
@@ -10835,49 +10846,49 @@
   "大神2": {
    "n_isolated": 4,
    "n_cross": 0,
-   "mgn_ratio_pct": 2656.2,
-   "leverage": 8.46,
+   "mgn_ratio_pct": 2471.5,
+   "leverage": 9.18,
    "drop_to_liq_pct": null,
    "coins": {
     "SOL": {
-     "notional_pct": 55.9,
+     "notional_pct": 56.0,
      "mode": "isolated",
-     "vs_avg_pct": -28.11,
+     "vs_avg_pct": -28.79,
      "liq": 64.30954024959436,
-     "mark": 72.7,
+     "mark": 72.02,
      "avg": 101.13341362145393,
-     "liq_dist_pct": -11.54,
-     "iso_mgn_ratio_pct": 2656.2
+     "liq_dist_pct": -10.71,
+     "iso_mgn_ratio_pct": 2471.5
     },
     "ETH": {
      "notional_pct": 12.8,
      "mode": "isolated",
-     "vs_avg_pct": -30.92,
+     "vs_avg_pct": -31.77,
      "liq": 1598.5022803588188,
-     "mark": 1753.93,
+     "mark": 1732.53,
      "avg": 2539.0713548262265,
-     "liq_dist_pct": -8.86,
-     "iso_mgn_ratio_pct": 2060.5
+     "liq_dist_pct": -7.74,
+     "iso_mgn_ratio_pct": 1811.5
     },
     "DOGE": {
      "notional_pct": 22.2,
      "mode": "isolated",
-     "vs_avg_pct": -31.09,
+     "vs_avg_pct": -31.95,
      "liq": 0.0513431291633544,
-     "mark": 0.05794,
+     "mark": 0.05722,
      "avg": 0.0840857347999958,
-     "liq_dist_pct": -11.39,
-     "iso_mgn_ratio_pct": 1717.6
+     "liq_dist_pct": -10.27,
+     "iso_mgn_ratio_pct": 1559.4
     },
     "BCH": {
      "notional_pct": 9.1,
      "mode": "isolated",
-     "vs_avg_pct": -29.46,
+     "vs_avg_pct": -30.06,
      "liq": 178.54325432507983,
-     "mark": 206.1,
+     "mark": 204.34,
      "avg": 292.17346852692054,
-     "liq_dist_pct": -13.37,
-     "iso_mgn_ratio_pct": 1997.4
+     "liq_dist_pct": -12.62,
+     "iso_mgn_ratio_pct": 1891.6
     }
    },
    "avail_pct": 0.0
@@ -10901,107 +10912,107 @@
  ],
  "onchain_liq": {
   "BTC": {
-   "price": 61996.6,
-   "n_whales": 84,
-   "total_usd": 3021918576,
+   "price": 61491.0,
+   "n_whales": 86,
+   "total_usd": 2999210691,
    "below": [
     {
-     "price": 56106.923,
-     "usd": 33050704.767,
+     "price": 57494.085,
+     "usd": 25284819.6016,
+     "n": 2,
+     "long": 25284819.6016,
+     "short": 0,
+     "dist_pct": -6.5
+    },
+    {
+     "price": 52574.805,
+     "usd": 12307722.4606,
      "n": 1,
-     "long": 33050704.767,
+     "long": 12307722.4606,
+     "short": 0,
+     "dist_pct": -14.5
+    },
+    {
+     "price": 55649.354999999996,
+     "usd": 10008766.0896,
+     "n": 1,
+     "long": 10008766.0896,
      "short": 0,
      "dist_pct": -9.5
     },
     {
-     "price": 56416.906,
-     "usd": 19937890.111199997,
-     "n": 2,
-     "long": 19937890.111199997,
+     "price": 58723.905,
+     "usd": 9999595.6515,
+     "n": 1,
+     "long": 9999595.6515,
      "short": 0,
-     "dist_pct": -9.0
+     "dist_pct": -4.5
     },
     {
-     "price": 57346.855,
-     "usd": 12682577.2434,
+     "price": 56264.265,
+     "usd": 9773420.3511,
      "n": 1,
-     "long": 12682577.2434,
+     "long": 9773420.3511,
      "short": 0,
-     "dist_pct": -7.5
+     "dist_pct": -8.5
     },
     {
-     "price": 58586.787000000004,
-     "usd": 10097109.0059,
+     "price": 56571.719999999994,
+     "usd": 7080550.0,
      "n": 1,
-     "long": 10097109.0059,
+     "long": 7080550.0,
      "short": 0,
-     "dist_pct": -5.5
-    },
-    {
-     "price": 55176.974,
-     "usd": 9837493.7936,
-     "n": 1,
-     "long": 9837493.7936,
-     "short": 0,
-     "dist_pct": -11.0
-    },
-    {
-     "price": 61376.634,
-     "usd": 8628732.1875,
-     "n": 1,
-     "long": 8628732.1875,
-     "short": 0,
-     "dist_pct": -1.0
+     "dist_pct": -8.0
     }
    ],
    "above": [
     {
-     "price": 68196.26,
-     "usd": 30737764.106200002,
+     "price": 63950.64,
+     "usd": 31060309.226099998,
      "n": 2,
      "long": 0,
-     "short": 30737764.106200002,
-     "dist_pct": 10.0
+     "short": 31060309.226099998,
+     "dist_pct": 4.0
     },
     {
-     "price": 63856.498,
-     "usd": 21563705.3342,
-     "n": 1,
+     "price": 68255.01,
+     "usd": 30530713.670199998,
+     "n": 2,
      "long": 0,
-     "short": 21563705.3342,
-     "dist_pct": 3.0
+     "short": 30530713.670199998,
+     "dist_pct": 11.0
     },
     {
-     "price": 67576.294,
-     "usd": 9992337.0865,
+     "price": 62105.909999999996,
+     "usd": 10240463.0547,
      "n": 1,
      "long": 0,
-     "short": 9992337.0865,
-     "dist_pct": 9.0
+     "short": 10240463.0547,
+     "dist_pct": 1.0
     },
     {
-     "price": 64166.481,
-     "usd": 9153785.628,
+     "price": 69177.375,
+     "usd": 7721118.8064,
      "n": 1,
      "long": 0,
-     "short": 9153785.628,
-     "dist_pct": 3.5
+     "short": 7721118.8064,
+     "dist_pct": 12.5
     },
     {
-     "price": 70676.124,
-     "usd": 7447800.0,
+     "price": 70714.65,
+     "usd": 7379760.0,
      "n": 1,
      "long": 0,
-     "short": 7447800.0,
-     "dist_pct": 14.0
+     "short": 7379760.0,
+     "dist_pct": 15.0
     },
     {
-     "price": 65716.39600000001,
-     "usd": 6202800.0,
+     "price": 65795.37,
+     "usd": 6165400.0,
      "n": 1,
      "long": 0,
-     "short": 6202800.0,
-     "dist_pct": 6.0
+     "short": 6165400.0,
+     "dist_pct": 7.0
     }
    ],
    "top": [
@@ -11012,7 +11023,7 @@
      "liq": 22575.02286214341,
      "lev": 1.5,
      "hf": 2.715,
-     "dist_pct": -63.59,
+     "dist_pct": -63.29,
      "addr": "0x7cd0…c912"
     },
     {
@@ -11022,7 +11033,7 @@
      "liq": 29776.95840410129,
      "lev": 1.7,
      "hf": 2.082,
-     "dist_pct": -51.97,
+     "dist_pct": -51.58,
      "addr": "0xabdb…f8d6"
     },
     {
@@ -11032,18 +11043,8 @@
      "liq": 26532.60124321406,
      "lev": 1.6,
      "hf": 2.336,
-     "dist_pct": -57.2,
+     "dist_pct": -56.85,
      "addr": "0x6ebb…936a"
-    },
-    {
-     "src": "HL",
-     "side": "long",
-     "usd": 76096654.5113,
-     "liq": 51097.0434,
-     "lev": 18.0,
-     "hf": null,
-     "dist_pct": -17.58,
-     "addr": "0xefe4…194b"
     },
     {
      "src": "Aave-eth",
@@ -11052,8 +11053,18 @@
      "liq": 25184.14611602261,
      "lev": 1.5,
      "hf": 2.462,
-     "dist_pct": -59.38,
+     "dist_pct": -59.04,
      "addr": "0x834b…8389"
+    },
+    {
+     "src": "HL",
+     "side": "long",
+     "usd": 75361747.1197,
+     "liq": 51233.5317,
+     "lev": 18.0,
+     "hf": null,
+     "dist_pct": -16.68,
+     "addr": "0xefe4…194b"
     },
     {
      "src": "Aave-eth",
@@ -11062,38 +11073,28 @@
      "liq": 28082.193073927367,
      "lev": 1.6,
      "hf": 2.208,
-     "dist_pct": -54.7,
+     "dist_pct": -54.33,
      "addr": "0xb561…5f60"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 63369185.6398,
-     "liq": 76458.0166,
+     "usd": 62115910.0096,
+     "liq": 76915.1534,
      "lev": 25.0,
      "hf": null,
-     "dist_pct": 23.33,
+     "dist_pct": 25.08,
      "addr": "0xfc27…9d9d"
     },
     {
      "src": "HL",
      "side": "long",
-     "usd": 62003000.0,
+     "usd": 61498000.0,
      "liq": 51857.0969,
      "lev": 3.0,
      "hf": null,
-     "dist_pct": -16.35,
+     "dist_pct": -15.67,
      "addr": "0x8ea8…edbc"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 59831902.8998,
-     "liq": 74517.5373,
-     "lev": 13.0,
-     "hf": null,
-     "dist_pct": 20.2,
-     "addr": "0x3ff5…f705"
     },
     {
      "src": "Aave-eth",
@@ -11102,47 +11103,57 @@
      "liq": 32352.157723024575,
      "lev": 1.6,
      "hf": 1.916,
-     "dist_pct": -47.82,
+     "dist_pct": -47.39,
      "addr": "0x9d8f…b9ea"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 55442124.1795,
-     "liq": 82892.5539,
+     "usd": 56504101.5219,
+     "liq": 73999.2229,
+     "lev": 13.0,
+     "hf": null,
+     "dist_pct": 20.34,
+     "addr": "0x3ff5…f705"
+    },
+    {
+     "src": "HL",
+     "side": "short",
+     "usd": 55027198.1321,
+     "liq": 82959.8869,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": 33.7,
+     "dist_pct": 34.91,
      "addr": "0xb695…a92d"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 53946261.3783,
+     "usd": 53472446.0901,
      "liq": 72494.9083,
      "lev": 8.0,
      "hf": null,
-     "dist_pct": 16.93,
+     "dist_pct": 17.9,
      "addr": "0x218a…7da2"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 51480882.4621,
-     "liq": 83278.4334,
+     "usd": 51170203.8607,
+     "liq": 83788.3033,
      "lev": 30.0,
      "hf": null,
-     "dist_pct": 34.33,
+     "dist_pct": 36.26,
      "addr": "0x7fda…17d1"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 49606400.0,
-     "liq": 71643.9774,
+     "usd": 49217600.0,
+     "liq": 71643.9782,
      "lev": 40.0,
      "hf": null,
-     "dist_pct": 15.56,
+     "dist_pct": 16.51,
      "addr": "0xb37f…66ca"
     },
     {
@@ -11152,96 +11163,96 @@
      "liq": 19532.395620149382,
      "lev": 1.4,
      "hf": 3.174,
-     "dist_pct": -68.49,
+     "dist_pct": -68.24,
      "addr": "0x8559…36c0"
     }
    ]
   },
   "ETH": {
-   "price": 1753.9,
-   "n_whales": 87,
-   "total_usd": 2461824582,
+   "price": 1732.62,
+   "n_whales": 86,
+   "total_usd": 2449244082,
    "below": [
     {
-     "price": 1508.354,
+     "price": 1507.3794,
      "usd": 42642919.401674844,
      "n": 2,
      "long": 42642919.401674844,
      "short": 0,
+     "dist_pct": -13.0
+    },
+    {
+     "price": 1550.6949,
+     "usd": 22919443.83538125,
+     "n": 2,
+     "long": 22919443.83538125,
+     "short": 0,
+     "dist_pct": -10.5
+    },
+    {
+     "price": 1490.0532,
+     "usd": 21343494.16916862,
+     "n": 1,
+     "long": 21343494.16916862,
+     "short": 0,
      "dist_pct": -14.0
     },
     {
-     "price": 1648.6660000000002,
-     "usd": 27616151.3657,
-     "n": 2,
-     "long": 27616151.3657,
-     "short": 0,
-     "dist_pct": -6.0
-    },
-    {
-     "price": 1631.1270000000002,
-     "usd": 15786000.0,
+     "price": 1654.6521,
+     "usd": 17378000.0,
      "n": 1,
-     "long": 15786000.0,
+     "long": 17378000.0,
      "short": 0,
-     "dist_pct": -7.0
+     "dist_pct": -4.5
     },
     {
-     "price": 1543.4320000000002,
-     "usd": 12304994.0885,
+     "price": 1637.3259,
+     "usd": 15588000.0,
      "n": 1,
-     "long": 12304994.0885,
+     "long": 15588000.0,
      "short": 0,
-     "dist_pct": -12.0
+     "dist_pct": -5.5
     },
     {
-     "price": 1587.2795,
+     "price": 1585.3473,
      "usd": 11738037.701700013,
      "n": 1,
      "long": 11738037.701700013,
      "short": 0,
-     "dist_pct": -9.5
-    },
-    {
-     "price": 1578.5100000000002,
-     "usd": 11413738.9318,
-     "n": 1,
-     "long": 11413738.9318,
-     "short": 0,
-     "dist_pct": -10.0
+     "dist_pct": -8.5
     }
    ],
    "above": [
     {
-     "price": 1920.5205,
+     "price": 1923.2082,
      "usd": 133471552.60261604,
      "n": 1,
      "long": 133471552.60261604,
      "short": 0,
-     "dist_pct": 9.5
+     "dist_pct": 11.0
     },
     {
-     "price": 1911.7510000000002,
-     "usd": 25024923.5723,
+     "price": 1914.5451,
+     "usd": 24703816.7685,
      "n": 1,
      "long": 0,
-     "short": 25024923.5723,
-     "dist_pct": 9.0
+     "short": 24703816.7685,
+     "dist_pct": 10.5
     },
     {
-     "price": 1981.9070000000002,
-     "usd": 14566114.9813,
-     "n": 1,
-     "long": 0,
-     "short": 14566114.9813,
-     "dist_pct": 13.0
-    },
-    {
-     "price": 1990.6765000000003,
-     "usd": 13454923.4718,
+     "price": 1983.8499,
+     "usd": 22376070.5481,
      "n": 2,
      "long": 0,
-     "short": 13454923.4718,
+     "short": 22376070.5481,
+     "dist_pct": 14.5
+    },
+    {
+     "price": 1966.5237,
+     "usd": 5321292.7385,
+     "n": 1,
+     "long": 0,
+     "short": 5321292.7385,
      "dist_pct": 13.5
     }
    ],
@@ -11253,7 +11264,7 @@
      "liq": 1062.2165692838164,
      "lev": 2.0,
      "hf": 1.655,
-     "dist_pct": -39.44,
+     "dist_pct": -38.69,
      "addr": "0x741a…31f3"
     },
     {
@@ -11263,7 +11274,7 @@
      "liq": 1342.6843026285912,
      "lev": 2.8,
      "hf": 1.309,
-     "dist_pct": -23.45,
+     "dist_pct": -22.51,
      "addr": "0xc70a…3810"
     },
     {
@@ -11273,7 +11284,7 @@
      "liq": 901.9178073205449,
      "lev": 1.8,
      "hf": 1.949,
-     "dist_pct": -48.58,
+     "dist_pct": -47.94,
      "addr": "0x28a5…a6b0"
     },
     {
@@ -11283,7 +11294,7 @@
      "liq": 851.7816181309464,
      "lev": 1.7,
      "hf": 2.064,
-     "dist_pct": -51.43,
+     "dist_pct": -50.84,
      "addr": "0x3478…ddcf"
     },
     {
@@ -11293,7 +11304,7 @@
      "liq": 1922.0229559782676,
      "lev": 12.3,
      "hf": 0.915,
-     "dist_pct": 9.59,
+     "dist_pct": 10.93,
      "addr": "0x9992…f242"
     },
     {
@@ -11303,7 +11314,7 @@
      "liq": 1124.8221692747866,
      "lev": 2.2,
      "hf": 1.563,
-     "dist_pct": -35.87,
+     "dist_pct": -35.08,
      "addr": "0xdc3a…1a95"
     },
     {
@@ -11313,7 +11324,7 @@
      "liq": 1343.6572785923295,
      "lev": 2.8,
      "hf": 1.308,
-     "dist_pct": -23.39,
+     "dist_pct": -22.45,
      "addr": "0x2bd7…fb82"
     },
     {
@@ -11323,7 +11334,7 @@
      "liq": 1459.2478386795574,
      "lev": 3.3,
      "hf": 1.205,
-     "dist_pct": -16.8,
+     "dist_pct": -15.78,
      "addr": "0xc3fe…31e4"
     },
     {
@@ -11333,17 +11344,17 @@
      "liq": 1446.0099325678984,
      "lev": 3.2,
      "hf": 1.216,
-     "dist_pct": -17.55,
+     "dist_pct": -16.54,
      "addr": "0x34d1…4ac1"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 52605000.0,
+     "usd": 51960000.0,
      "liq": 2913.2816,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": 66.1,
+     "dist_pct": 68.14,
      "addr": "0x15a4…dfdb"
     },
     {
@@ -11353,17 +11364,17 @@
      "liq": 1389.6918272752032,
      "lev": 3.0,
      "hf": 1.265,
-     "dist_pct": -20.77,
+     "dist_pct": -19.79,
      "addr": "0x2269…3588"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 46761131.5749,
-     "liq": 3812.6381,
+     "usd": 46138458.8165,
+     "liq": 3832.2491,
      "lev": 25.0,
      "hf": null,
-     "dist_pct": 117.38,
+     "dist_pct": 121.18,
      "addr": "0xdf95…7d72"
     },
     {
@@ -11373,7 +11384,7 @@
      "liq": 1061.7274318084496,
      "lev": 2.0,
      "hf": 1.656,
-     "dist_pct": -39.46,
+     "dist_pct": -38.72,
      "addr": "0xdea6…1d5c"
     },
     {
@@ -11383,7 +11394,7 @@
      "liq": 1383.0468892476683,
      "lev": 2.9,
      "hf": 1.271,
-     "dist_pct": -21.14,
+     "dist_pct": -20.18,
      "addr": "0xa028…5bb4"
     },
     {
@@ -11393,175 +11404,157 @@
      "liq": 787.1384421909922,
      "lev": 1.6,
      "hf": 2.233,
-     "dist_pct": -55.12,
+     "dist_pct": -54.57,
      "addr": "0xbf7e…35ee"
     }
    ]
   },
   "SOL": {
-   "price": 72.72,
-   "n_whales": 10,
-   "total_usd": 117211519,
+   "price": 72.02,
+   "n_whales": 9,
+   "total_usd": 110865407,
    "below": [],
    "above": [],
    "top": [
     {
      "src": "HL",
      "side": "long",
-     "usd": 27877168.8589,
+     "usd": 27623064.1108,
      "liq": 36.8103,
      "lev": 3.0,
      "hf": null,
-     "dist_pct": -49.38,
+     "dist_pct": -48.89,
      "addr": "0xe813…6d74"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 18388389.5304,
-     "liq": 187.7477,
+     "usd": 18109036.0983,
+     "liq": 190.114,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": 158.18,
+     "dist_pct": 163.97,
      "addr": "0xecb6…2b00"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 16001713.8197,
-     "liq": 172.7534,
+     "usd": 15826373.6682,
+     "liq": 173.5802,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": 137.56,
+     "dist_pct": 141.02,
      "addr": "0x3dc9…54b0"
     },
     {
      "src": "HL",
      "side": "long",
-     "usd": 13784768.5815,
-     "liq": 36.1086,
+     "usd": 13622314.86,
+     "liq": 36.1445,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": -50.35,
+     "dist_pct": -49.81,
      "addr": "0x9c89…600e"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 9616724.8908,
-     "liq": 204.8773,
+     "usd": 9515756.3028,
+     "liq": 210.454,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": 181.73,
+     "dist_pct": 192.22,
      "addr": "0x7fda…17d1"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 7738068.7871,
-     "liq": 180.9252,
+     "usd": 7638184.2813,
+     "liq": 186.0774,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": 148.8,
+     "dist_pct": 158.37,
      "addr": "0xca49…53c8"
     },
     {
      "src": "HL",
      "side": "long",
-     "usd": 6771423.0,
-     "liq": 54.3457,
+     "usd": 6698325.0,
+     "liq": 54.3764,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": -25.27,
+     "dist_pct": -24.5,
      "addr": "0x4a20…3c26"
     },
     {
      "src": "HL",
      "side": "short",
-     "usd": 6089928.4007,
-     "liq": 246.6711,
+     "usd": 6003268.4891,
+     "liq": 256.1281,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": 239.21,
+     "dist_pct": 255.63,
      "addr": "0xfc27…9d9d"
     },
     {
      "src": "HL",
      "side": "long",
-     "usd": 5900274.9,
-     "liq": 50.6615,
+     "usd": 5829084.0,
+     "liq": 51.0905,
      "lev": 20.0,
      "hf": null,
-     "dist_pct": -30.33,
+     "dist_pct": -29.06,
      "addr": "0xe927…98ef"
-    },
-    {
-     "src": "HL",
-     "side": "short",
-     "usd": 5043058.5313,
-     "liq": 163.0063,
-     "lev": 20.0,
-     "hf": null,
-     "dist_pct": 124.16,
-     "addr": "0xf517…c032"
     }
    ]
   }
  },
  "fuel5": {
-  "ex_long": 391591878,
-  "ex_short": 654141711,
-  "oc_long": 8628732,
-  "oc_short": 30717491,
+  "ex_long": 344756530,
+  "ex_short": 580131392,
+  "oc_long": 23441417,
+  "oc_short": 41300772,
   "has_exmap": true
  },
  "liq_map_btc": {
-  "px": 61996.6,
+  "px": 61491.0,
   "bucket": 250,
   "below": [
    [
-    61500,
-    16474672
-   ],
-   [
-    61250,
-    90248041
-   ],
-   [
     61000,
-    90542808
+    96013664
    ],
    [
     60750,
-    56084844
+    44868428
    ],
    [
     60500,
-    21359890
+    35112790
    ],
    [
     60250,
-    25894878
+    27396269
    ],
    [
     60000,
-    15413668
+    13533848
    ],
    [
     59750,
-    21366691
+    21610810
    ],
    [
     59500,
-    14864170
+    17315974
    ],
    [
     59250,
-    9333297
+    7876245
    ],
    [
     59000,
-    7166380
+    7301678
    ],
    [
     57500,
@@ -11569,15 +11562,15 @@
    ],
    [
     57250,
-    5081692
+    5545317
    ],
    [
     57000,
-    2952727
+    2189606
    ],
    [
     56750,
-    3316549
+    3616045
    ],
    [
     56500,
@@ -11585,114 +11578,122 @@
    ],
    [
     56250,
-    4450434
+    3500367
    ],
    [
     56000,
-    4423602
+    5111613
    ],
    [
     55750,
-    6196238
+    6990689
+   ],
+   [
+    55500,
+    1295119
+   ],
+   [
+    55250,
+    1459772
    ]
   ],
   "above": [
    [
+    61500,
+    6687290
+   ],
+   [
+    61750,
+    20345582
+   ],
+   [
+    62000,
+    2209162
+   ],
+   [
     62250,
-    13679166
+    8840552
    ],
    [
     62500,
-    56568929
+    88931064
    ],
    [
     62750,
-    81618415
+    58454681
    ],
    [
     63000,
-    65101726
+    65313079
    ],
    [
     63250,
-    32571574
+    35473083
    ],
    [
     63500,
-    67973253
+    75227748
    ],
    [
     63750,
-    53526052
+    38594092
    ],
    [
     64000,
-    70610288
+    64848847
    ],
    [
     64250,
-    77503329
+    88233845
    ],
    [
     64500,
-    75213549
+    77356692
    ],
    [
     64750,
-    52490923
+    41838188
    ],
    [
     65000,
-    38956284
+    43547759
    ],
    [
     65250,
-    11304968
+    13136535
    ],
    [
     65500,
-    12599352
+    13555745
    ],
    [
     65750,
-    8323038
+    9785039
    ],
    [
     66000,
-    12794498
+    12201790
    ],
    [
     66250,
-    14291074
+    15030918
    ],
    [
     66500,
-    4906900
-   ],
-   [
-    67500,
-    140446
-   ],
-   [
-    67750,
-    1884453
-   ],
-   [
-    68000,
-    3661590
+    3297764
    ]
   ]
  },
- "okx_top_pos": 0.8855974218801731,
+ "okx_top_pos": 0.8880751437399032,
  "whale_entry": {
   "long": {
-   "avg": 73507,
-   "usd": 231941499,
-   "n": 5
+   "avg": 75386,
+   "usd": 197136607,
+   "n": 4
   },
   "short": {
-   "avg": 70073,
-   "usd": 496906473,
+   "avg": 70107,
+   "usd": 489387264,
    "n": 12
   }
  },
@@ -11720,23 +11721,23 @@
   }
  ],
  "ma": {
-  "d_ema200": 75471,
-  "d_sma200": 72605,
-  "d_sma50": 77777,
-  "d_sma365": 75566,
-  "w_ema200": 69275,
+  "d_ema200": 75465,
+  "d_sma200": 72602,
+  "d_sma50": 77766,
+  "d_sma365": 75565,
+  "w_ema200": 69269,
   "n_d": 1000,
   "n_w": 463
  },
  "reversal": {
-  "oi_yi": 30.83,
+  "oi_yi": 30.69,
   "oi_target_yi": 36.3,
-  "retail_ls": 3.46,
+  "retail_ls": 3.4,
   "retail_ls_bn": 3.53,
   "retail_ls_bn_24h_high": 3.53,
   "bn_ok": false,
   "wick": null,
-  "spot_buy_15m": 43.4,
+  "spot_buy_15m": 31.9,
   "conds": {
    "oi": true,
    "ls": false,
@@ -11744,14 +11745,7 @@
   },
   "n_ok": 1
  },
- "jin10": [
-  {
-   "id": "20261120093150166800",
-   "time": "2026-11-20 09:31:50",
-   "text": "【期货热点追踪】沪银逼近1万关口！美联储加息预期彻底倒戈，Anthropic世纪IPO引发跨市场流动性抽血，现货黄金跌破3600关口带动国内贵金属早盘低开低走！价格底部何在？",
-   "imp": 1
-  }
- ],
+ "jin10": [],
  "stablecoins": {
   "USDT": {
    "now_b": 175.07,
@@ -11768,29 +11762,29 @@
  },
  "macro_mkt": {
   "NQ": {
-   "last": 26419.0,
-   "chg24h": -3.45,
-   "chg1h": -0.3
+   "last": 26372.0,
+   "chg24h": -3.69,
+   "chg1h": -0.48
   },
   "NVDA": {
-   "last": 145.0,
-   "chg24h": -4.37,
-   "chg1h": -0.91
+   "last": 143.62,
+   "chg24h": -5.47,
+   "chg1h": -1.85
   },
   "GOLD": {
-   "last": 3578.7,
-   "chg24h": -4.8,
-   "chg1h": -1.35
+   "last": 3565.0,
+   "chg24h": -5.18,
+   "chg1h": -1.73
   },
   "OIL": {
-   "last": 83.04,
-   "chg24h": 0.3,
-   "chg1h": 0.05
+   "last": 82.9,
+   "chg24h": 0.01,
+   "chg1h": -0.12
   },
   "DXY": {
-   "last": 103.892,
-   "chg24h": 0.03,
-   "chg1h": -0.03
+   "last": 103.927,
+   "chg24h": 0.06,
+   "chg1h": 0.0
   },
   "US10Y": {
    "last": 5.052,
@@ -11800,13 +11794,13 @@
  },
  "gold": {
   "GC": {
-   "last": 3576.2,
+   "last": 3567.6,
    "prev": 3741.9,
-   "chg1d": -4.43,
-   "chg5d": -7.96,
+   "chg1d": -4.66,
+   "chg5d": -8.18,
    "hi1m": 4160.1,
-   "lo1m": 3576.2,
-   "t": 1795138639
+   "lo1m": 3567.6,
+   "t": 1795139417
   },
   "GVZ": {
    "last": 28.7,
@@ -11827,13 +11821,13 @@
    "t": 1795122000
   },
   "SI": {
-   "last": 42.01,
+   "last": 41.82,
    "prev": 44.999,
-   "chg1d": -6.64,
-   "chg5d": -15.93,
+   "chg1d": -7.06,
+   "chg5d": -16.31,
    "hi1m": 57.706,
-   "lo1m": 42.01,
-   "t": 1795138640
+   "lo1m": 41.82,
+   "t": 1795139416
   },
   "VIX": {
    "last": 28.44,
@@ -12085,12 +12079,12 @@
   ]
  },
  "options": {
-  "dvol": 46.1,
-  "dvol_24h": 0.4,
+  "dvol": 48.1,
+  "dvol_24h": 2.0,
   "skew_exp": "27NOV26",
-  "put10_iv": 59.9,
-  "call10_iv": 43.74,
-  "skew10": 16.2,
+  "put10_iv": 62.93,
+  "call10_iv": 45.09,
+  "skew10": 17.8,
   "key_exp": "25DEC26",
   "key_puts": [
    60000,
@@ -12102,8 +12096,8 @@
    100000,
    120000
   ],
-  "buy_puts_1h": 102,
-  "buy_calls_1h": 63,
+  "buy_puts_1h": 210,
+  "buy_calls_1h": 143,
   "big_1h": [
    {
     "inst": "BTC-26MAR27-50000-P",
@@ -12125,50 +12119,50 @@
   "ETH": {
    "oi_m": 1504.4,
    "oi_chg24": -2.2,
-   "ls": 3.67,
-   "fund": 0.0056
+   "ls": 3.66,
+   "fund": 0.0048
   },
   "SOL": {
    "oi_m": 264.4,
    "oi_chg24": -4.2,
-   "ls": 2.68,
-   "fund": -0.0008
+   "ls": 2.7,
+   "fund": -0.001
   },
   "XRP": {
    "oi_m": 86.8,
    "oi_chg24": -5.3,
-   "ls": 2.22,
-   "fund": -0.0024
+   "ls": 2.23,
+   "fund": -0.003
   },
   "ADA": {
    "oi_m": 24.3,
    "oi_chg24": 1.7,
-   "ls": 2.54,
-   "fund": 0.0022
+   "ls": 2.6,
+   "fund": 0.0009
   },
   "DOGE": {
    "oi_m": 83.1,
    "oi_chg24": 0.0,
-   "ls": 4.11,
-   "fund": -0.0012
+   "ls": 4.12,
+   "fund": -0.0013
   },
   "UNI": {
    "oi_m": 31.4,
    "oi_chg24": -5.2,
-   "ls": 1.74,
-   "fund": 0.01
+   "ls": 1.75,
+   "fund": 0.0096
   },
   "SUI": {
    "oi_m": 24.7,
    "oi_chg24": -1.3,
-   "ls": 2.77,
-   "fund": -0.0036
+   "ls": 2.78,
+   "fund": -0.0041
   },
   "LTC": {
    "oi_m": 27.7,
    "oi_chg24": 0.1,
-   "ls": 2.82,
-   "fund": -0.0013
+   "ls": 2.83,
+   "fund": -0.0022
   }
  },
  "fear_greed": {
@@ -12177,7 +12171,6 @@
   "prev": 10
  },
  "alerts_sent": [
-  "🔥 BTC 62019 逼近短期支撑 61856（-0.26%，强度0.92）",
-  "📰 Odaily｜24小时盈利436万美元，Hyperliquid两名巨鲸做空SNDK获利208万美元\nOdaily星球日报讯 据 Onchain Lens 监测，两名 Hyperliquid 巨鲸过去 24 小时合计盈利约 436 万美元，其中做空 SNDK 合计获利约 208 万美元。一名巨鲸做空 SNDK 获利约 76.71 万美元，过去 24 小时总盈利约 210 万美元；另一名巨鲸做空 SNDK 获利约 131 万美元，过去 24 小时总盈利约 226 万美元。两名巨鲸累计盈利约 2566 万美元。\nhttps://www.odaily.news/zh-CN/newsflash/536735"
+  "🚨 大神2 ETH[逐仓] 距强平仅 7.7%（强平价 1599）：立即给该仓加 ≈1,647 USDT 或减仓"
  ]
 }
