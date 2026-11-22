@@ -78,7 +78,17 @@ try:
         except Exception as e: summary["errors"].append(f"ref price -> {e}")
     def ts(s): return dt.datetime.strptime(s[:19], "%Y-%m-%dT%H:%M:%S")
     span = round((ts(tmax) - ts(tmin)).total_seconds() / 60, 1) if tmin and tmax else None
+    # USDC/USDT rate: corrects the premium for USDT trading away from $1 (raw premium = Coinbase BTC/USD vs BTC/USDT)
+    usdc_usdt = None
+    try: usdc_usdt = float(get("https://www.okx.com/api/v5/market/ticker?instId=USDC-USDT")["data"][0]["last"])
+    except Exception:
+        try: usdc_usdt = float(get("https://api.binance.com/api/v3/ticker/price?symbol=USDCUSDT")["price"])
+        except Exception as e: summary["errors"].append(f"usdc_usdt -> {e}")
+    if usdc_usdt is not None and not (0.95 < usdc_usdt < 1.05): summary["errors"].append(f"usdc_usdt out of range {usdc_usdt}"); usdc_usdt = None
     summary["coinbase"] = {"price": cbpx, "ref": ref, "binance_price": bnpx, "premium_pct": round((cbpx / bnpx - 1) * 100, 3) if (cbpx and bnpx) else None,
+                           "usdc_usdt": usdc_usdt,
+                           "usdt_disc_pct": round((1 / usdc_usdt - 1) * 100, 3) if usdc_usdt else None,
+                           "premium_adj_pct": round((cbpx / (bnpx / usdc_usdt) - 1) * 100, 3) if (cbpx and bnpx and usdc_usdt) else None,
                            "last1000_taker_buy_btc": round(buy, 3), "last1000_taker_sell_btc": round(sell, 3),
                            "buy_ratio": round(buy / (buy + sell) * 100, 1) if buy + sell else None, "span_min": span}
 except Exception as e:
@@ -997,15 +1007,20 @@ try:
                 if rate >= 0.05 or rate <= -0.02:
                     fire(f"fund_{int(now//3600)}", f"💸 BTC 全网费率 {rate:.3f}%（{'多头过热' if rate>0 else '空头过热'}）", 4)
         except Exception as e: summary["errors"].append(f"funding -> {e}")
-        # 5) Coinbase premium flip (negative -> positive, persisted)
+        # 5) Coinbase premium flip (negative -> positive, persisted) — uses the USDT-corrected premium when available
         try:
-            cbp = (summary.get("coinbase") or {}).get("premium_pct")
+            _cb = summary.get("coinbase") or {}
+            cbp = _cb.get("premium_adj_pct")
             if cbp is not None:
-                hist = state.get("cbp_hist", []); hist = (hist + [cbp])[-4:]; state["cbp_hist"] = hist
-                if len(hist) == 4 and all(x > 0.02 for x in hist) and state.get("cbp_sign", -1) < 0:
-                    fire("cbp_flip_pos", f"🇺🇸 Coinbase 溢价转正并持续 1 小时（{cbp:+.3f}%）= 美国买盘回来", 6); state["cbp_sign"] = 1
-                if len(hist) == 4 and all(x < -0.02 for x in hist) and state.get("cbp_sign", 1) > 0:
-                    fire("cbp_flip_neg", f"🇺🇸 Coinbase 溢价转负并持续 1 小时（{cbp:+.3f}%）", 6); state["cbp_sign"] = -1
+                hist = state.get("cbpa_hist", []); hist = (hist + [cbp])[-4:]; state["cbpa_hist"] = hist
+                if len(hist) == 4 and all(x > 0.03 for x in hist) and state.get("cbpa_sign", -1) < 0:
+                    fire("cbpa_flip_pos", f"🇺🇸 Coinbase 修正溢价转正并持续 1 小时（{cbp:+.3f}%，原始 {_cb.get('premium_pct')}%）= 美国买盘回来", 6); state["cbpa_sign"] = 1
+                if len(hist) == 4 and all(x < -0.03 for x in hist) and state.get("cbpa_sign", 1) > 0:
+                    fire("cbpa_flip_neg", f"🇺🇸 Coinbase 修正溢价转负并持续 1 小时（{cbp:+.3f}%，原始 {_cb.get('premium_pct')}%）", 6); state["cbpa_sign"] = -1
+            # USDT discount warning (USDT below $1 by >= 0.5%)
+            ud = _cb.get("usdt_disc_pct")
+            if ud is not None and ud <= -0.5:
+                fire(f"usdt_disc_{int(now//3600)}", f"⚠️ USDT 折价 {ud:.2f}%（USDC/USDT {_cb.get('usdc_usdt')}），稳定币层面压力", 6)
         except Exception as e: summary["errors"].append(f"cbp -> {e}")
         # 3) Deribit weekly expiry (Fri 08:00Z) reminder 2h before, with max pain
         try:
@@ -1171,7 +1186,10 @@ try:
                         e = summary["etf"][-1]; L.append(f"ETF {dt.datetime.utcfromtimestamp(e['timestamp']/1000).strftime('%m-%d')}: {e.get('flow_usd',0)/1e6:+.0f}M")
                     cb = summary.get("coinbase") or {}
                     row = []
-                    if cb.get("premium_pct") is not None: row.append(f"Coinbase 溢价 {cb.get('premium_pct')}%")
+                    if cb.get("premium_pct") is not None:
+                        if cb.get("premium_adj_pct") is not None:
+                            row.append(f"Coinbase 溢价 修正 {cb.get('premium_adj_pct')}%（原始 {cb.get('premium_pct')}%，USDT {cb.get('usdt_disc_pct'):+.3f}%）")
+                        else: row.append(f"Coinbase 溢价 {cb.get('premium_pct')}%")
                     if summary.get("okx_top_pos") is not None: row.append(f"OKX大户持仓比 {summary['okx_top_pos']:.2f}(<1偏空)")
                     if row: L.append(" | ".join(row))
                     op = summary.get("options") or {}
@@ -1345,6 +1363,8 @@ try:
                 "liq_l_1h": _last(_cg.get("liq_agg_1h"), "aggregated_long_liquidation_usd"),
                 "liq_s_1h": _last(_cg.get("liq_agg_1h"), "aggregated_short_liquidation_usd"),
                 "cb_prem": (summary.get("coinbase") or {}).get("premium_pct"),
+                "cb_prem_adj": (summary.get("coinbase") or {}).get("premium_adj_pct"),
+                "usdt_disc": (summary.get("coinbase") or {}).get("usdt_disc_pct"),
                 "okx_ls": (summary.get("reversal") or {}).get("retail_ls"), "okx_top": summary.get("okx_top_pos"),
                 "fuel5": summary.get("fuel5"),
                 "liqmap": {"b5": _band("below", 0.05), "a5": _band("above", 0.05), "b10": _band("below", 0.10), "a10": _band("above", 0.10),
