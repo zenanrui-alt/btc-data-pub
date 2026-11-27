@@ -292,7 +292,7 @@ def okx_get(path, key, sec, pwd):
     sign = base64.b64encode(hmac.new(sec.encode(), (ts + "GET" + path).encode(), hashlib.sha256).digest()).decode()
     req = urllib.request.Request("https://www.okx.com" + path, headers={"OK-ACCESS-KEY": key, "OK-ACCESS-SIGN": sign, "OK-ACCESS-TIMESTAMP": ts, "OK-ACCESS-PASSPHRASE": pwd, "Content-Type": "application/json", "User-Agent": UA})
     with urllib.request.urlopen(req, timeout=20) as r: return json.loads(r.read().decode())
-ACCTS = [("大神1", "OKX_1"), ("大神2", "OKX_2"), ("大神3", "OKX_3"), ("OKX4", "OKX_4")]
+ACCTS = [("大神1", "OKX_1"), ("大神2", "OKX_2"), ("OKX4", "OKX_4")]  # 大神3 (OKX_3) removed 2026-11-27 at owner request (key returned 401)
 summary["accounts"] = {}
 _priv_acct = {}
 _priv_pos = {}
