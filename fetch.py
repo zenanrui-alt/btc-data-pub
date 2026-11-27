@@ -124,26 +124,44 @@ if CG:
     except Exception as ex:
         summary["errors"].append(f"coinglass etf -> {ex}")
 
-# 4) CryptoQuant on-chain
+# 4) CryptoQuant on-chain — credit-saving cache (credits are charged per returned row):
+#    3-day series refreshed at most once per hour; 120-day history at most once per UTC day.
+#    Between refreshes the previous summary.json values are reused. A 402 (credits exhausted) stops further CQ calls this pass.
 if CQ:
-    summary["cryptoquant"] = {}
-    for k, u in [
+    try: _cq_prev = json.load(open("summary.json", encoding="utf-8")) if os.path.exists("summary.json") else {}
+    except Exception: _cq_prev = {}
+    _cq_now = time.time(); _cq_today = dt.datetime.utcnow().strftime("%Y-%m-%d"); _cq_stop = [False]
+    def _cq_get(k, u, tag):
+        if _cq_stop[0]: return None
+        try:
+            r = get(u, {"Authorization": f"Bearer {CQ}"})
+            if r.get("status", {}).get("code") == 200 and r.get("result", {}).get("data"):
+                return r["result"]["data"]
+            summary["errors"].append(f"{tag} {k} -> {json.dumps(r)[:160]}")
+        except Exception as e:
+            if "402" in str(e): _cq_stop[0] = True
+            summary["errors"].append(f"{tag} {k} -> {e}")
+        return None
+    _cq3_specs = [
         ("exch_netflow_day", "https://api.cryptoquant.com/v1/btc/exchange-flows/netflow?exchange=all_exchange&window=day&limit=3"),
         ("exch_reserve_day", "https://api.cryptoquant.com/v1/btc/exchange-flows/reserve?exchange=all_exchange&window=day&limit=3"),
         ("taker_buy_sell", "https://api.cryptoquant.com/v1/btc/market-data/taker-buy-sell-stats?exchange=all_exchange&window=day&limit=3"),
         ("lth_sopr", "https://api.cryptoquant.com/v1/btc/market-indicator/sopr-ratio?window=day&limit=3"),
         ("miner_outflow", "https://api.cryptoquant.com/v1/btc/miner-flows/outflow?miner=all_miner&window=day&limit=3"),
-    ]:
-        try:
-            r = get(u, {"Authorization": f"Bearer {CQ}"})
-            if r.get("status", {}).get("code") == 200 and r.get("result", {}).get("data"):
-                summary["cryptoquant"][k] = r["result"]["data"]
-            else: summary["errors"].append(f"cq {k} -> {json.dumps(r)[:160]}")
-        except Exception as e:
-            summary["errors"].append(f"cq {k} -> {e}")
-    # 4b) CryptoQuant history (120d) for exchange in/out/netflow/reserve — separate keys, old 3-day keys untouched
-    summary["cryptoquant_hist"] = {}
-    for k, u in [
+    ]
+    _p3 = _cq_prev.get("cryptoquant") or {}
+    _p3_try = float(_cq_prev.get("cryptoquant_try") or 0)
+    summary["cryptoquant"] = dict(_p3)
+    summary["cryptoquant_try"] = _p3_try
+    summary["cryptoquant_ts"] = _cq_prev.get("cryptoquant_ts")
+    if _cq_now - _p3_try >= 3600 or len(_p3) < len(_cq3_specs) and _cq_now - _p3_try >= 900:
+        summary["cryptoquant_try"] = _cq_now; _ok = 0
+        for k, u in _cq3_specs:
+            d = _cq_get(k, u, "cq")
+            if d is not None: summary["cryptoquant"][k] = d; _ok += 1
+        if _ok: summary["cryptoquant_ts"] = summary["ts_utc"]
+    # 4b) CryptoQuant history (120d) for exchange in/out/netflow/reserve — once per UTC day
+    _cqh_specs = [
         ("btc_netflow", "https://api.cryptoquant.com/v1/btc/exchange-flows/netflow?exchange=all_exchange&window=day&limit=120"),
         ("btc_inflow", "https://api.cryptoquant.com/v1/btc/exchange-flows/inflow?exchange=all_exchange&window=day&limit=120"),
         ("btc_outflow", "https://api.cryptoquant.com/v1/btc/exchange-flows/outflow?exchange=all_exchange&window=day&limit=120"),
@@ -151,14 +169,21 @@ if CQ:
         ("btc_reserve_binance", "https://api.cryptoquant.com/v1/btc/exchange-flows/reserve?exchange=binance&window=day&limit=120"),
         ("eth_netflow", "https://api.cryptoquant.com/v1/eth/exchange-flows/netflow?exchange=all_exchange&window=day&limit=120"),
         ("eth_reserve", "https://api.cryptoquant.com/v1/eth/exchange-flows/reserve?exchange=all_exchange&window=day&limit=120"),
-    ]:
-        try:
-            r = get(u, {"Authorization": f"Bearer {CQ}"})
-            if r.get("status", {}).get("code") == 200 and r.get("result", {}).get("data"):
-                summary["cryptoquant_hist"][k] = r["result"]["data"]
-            else: summary["errors"].append(f"cqh {k} -> {json.dumps(r)[:160]}")
-        except Exception as e:
-            summary["errors"].append(f"cqh {k} -> {e}")
+    ]
+    _ph = _cq_prev.get("cryptoquant_hist") or {}
+    _ph_day = _cq_prev.get("cryptoquant_hist_day")
+    _ph_try = float(_cq_prev.get("cryptoquant_hist_try") or 0)
+    summary["cryptoquant_hist"] = dict(_ph)
+    summary["cryptoquant_hist_day"] = _ph_day
+    summary["cryptoquant_hist_try"] = _ph_try
+    _need = (_ph_day != _cq_today) or (len(_ph) < len(_cqh_specs))
+    if _need and _cq_now - _ph_try >= 3600:
+        summary["cryptoquant_hist_try"] = _cq_now; _ok = 0
+        for k, u in _cqh_specs:
+            if _ph_day == _cq_today and k in _ph: continue   # same-day retry: only fetch the keys still missing
+            d = _cq_get(k, u, "cqh")
+            if d is not None: summary["cryptoquant_hist"][k] = d; _ok += 1
+        if _ok and all(k in summary["cryptoquant_hist"] for k, _ in _cqh_specs): summary["cryptoquant_hist_day"] = _cq_today
 
 _LIQMAP_RAW = None
 # 5) Coinglass extras: global OI / long-short / top traders / liquidations / liquidation map / orderbook / options / stablecoin
